@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI IT-Консультант | Миграция, AD, Облака</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #0a0a1a 0%, #1a0a2e 50%, #16213e 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        .chat-container {
+            width: 90%;
+            max-width: 800px;
+            height: 85vh;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .chat-header {
+            padding: 25px 30px;
+            background: linear-gradient(90deg, rgba(0, 240, 255, 0.1) 0%, rgba(57, 255, 20, 0.05) 100%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .bot-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00f0ff 0%, #39ff14 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        .header-info h1 { color: #fff; font-size: 1.3rem; }
+        .header-info p { color: #00f0ff; font-size: 0.85rem; margin-top: 4px; }
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .message {
+            max-width: 80%;
+            padding: 18px 22px;
+            border-radius: 20px;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+        .message.bot {
+            background: rgba(0, 240, 255, 0.08);
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            color: #e0f7ff;
+            align-self: flex-start;
+        }
+        .message.user {
+            background: linear-gradient(135deg, rgba(57, 255, 20, 0.15) 0%, rgba(0, 240, 255, 0.1) 100%);
+            border: 1px solid rgba(57, 255, 20, 0.3);
+            color: #fff;
+            align-self: flex-end;
+        }
+        .quick-questions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 0 30px 20px;
+        }
+        .quick-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            color: #00f0ff;
+            padding: 10px 18px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+        .quick-btn:hover {
+            background: rgba(0, 240, 255, 0.2);
+        }
+        .report-section {
+            padding: 0 30px 15px;
+            display: none;
+        }
+        .report-section.visible { display: block; }
+        .report-btn {
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+            border: none;
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .chat-input-area {
+            padding: 25px 30px;
+            background: rgba(0, 0, 0, 0.2);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        .chat-input {
+            flex: 1;
+            padding: 16px 25px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            color: #fff;
+            font-size: 1rem;
+            outline: none;
+        }
+        .mic-btn, .send-btn {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            border: none;
+        }
+        .mic-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(0, 240, 255, 0.3);
+        }
+        .send-btn {
+            background: linear-gradient(135deg, #00f0ff 0%, #39ff14 100%);
+        }
+        .mic-btn.recording {
+            background: #ff4444;
+            animation: pulse 1s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        @media (max-width: 600px) {
+            .chat-container { width: 95%; height: 90vh; }
+            .message { max-width: 90%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <div class="bot-avatar">🤖</div>
+            <div class="header-info">
+                <h1>AI IT-Консультант</h1>
+                <p>⚡ Онлайн • Миграция • AD • Облака</p>
+            </div>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="message bot">
+                Привет! Я AI-ассистент по IT-инфраструктуре. 
+                Специализируюсь на миграции почты, настройке Active Directory, 
+                переносе файлов в облако. Нажмите микрофон для голосового ввода 
+                или выберите вопрос ниже.
+            </div>
+        </div>
+        <div class="quick-questions">
+            <button class="quick-btn" onclick="sendQuick('Миграция Exchange Online')">📧 Миграция</button>
+            <button class="quick-btn" onclick="sendQuick('Настройка Active Directory')">🏢 AD</button>
+            <button class="quick-btn" onclick="sendQuick('Перенос в облако')">☁️ Облако</button>
+            <button class="quick-btn" onclick="sendQuick('Стоимость')">💰 Цены</button>
+        </div>
+        <div class="report-section" id="reportSection">
+            <button class="report-btn" onclick="generateReport()">📋 Скачать аудит</button>
+        </div>
+        <div class="chat-input-area">
+            <input type="text" class="chat-input" id="userInput" placeholder="Введите вопрос..." onkeypress="handleKeyPress(event)">
+            <button class="mic-btn" id="micBtn" onclick="toggleVoiceInput()">🎤</button>
+            <button class="send-btn" onclick="sendMessage()">➤</button>
+        </div>
+    </div>
+
+    <script>
+        let messageHistory = [];
+        let recognition = null;
+        let isRecording = false;
+
+        if ('webkitSpeechRecognition' in window) {
+            recognition = new webkitSpeechRecognition();
+            recognition.lang = 'ru-RU';
+            recognition.onresult = function(e) {
+                document.getElementById('userInput').value = e.results[0][0].transcript;
+                setTimeout(sendMessage, 500);
+            };
+            recognition.onstart = function() {
+                isRecording = true;
+                document.getElementById('micBtn').classList.add('recording');
+            };
+            recognition.onend = function() {
+                isRecording = false;
+                document.getElementById('micBtn').classList.remove('recording');
+            };
+        }
+
+        function toggleVoiceInput() {
+            if (!recognition) {
+                alert('Голосовой ввод не поддерживается. Используйте Chrome.');
+                return;
+            }
+            isRecording ? recognition.stop() : recognition.start();
+        }
+
+        function sendQuick(text) {
+            document.getElementById('userInput').value = text;
+            sendMessage();
+        }
+
+        function handleKeyPress(e) {
+            if (e.key === 'Enter') sendMessage();
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('userInput');
+            const text = input.value.trim();
+            if (!text) return;
+            
+            addMessage(text, 'user');
+            input.value = '';
+            messageHistory.push({role: 'user', content: text});
+            
+            setTimeout(function() {
+                const responses = {
+                    'миграция': 'Миграция почты: 1) Аудит текущей системы 2) Подготовка лицензий 3) Пилотная группа 4) Массовый перенос 5) Обновление DNS. Важно: сделайте бэкап!',
+                    'ad': 'Настройка AD: создайте структуру OU по отделам, настройте групповые политики, включите MFA для админов.',
+                    'облако': 'Перенос файлов: OneDrive/SharePoint — сохраняйте права доступа. Яндекс.Диск — API для автоматизации.',
+                    'цена': 'Миграция 100 ящиков — от 150000₽. Настройка AD — от 80000₽. Аудит — от 40000₽.'
+                };
+                
+                let answer = 'Уточните: миграция почты, настройка AD, перенос файлов или стоимость?';
+                for (let key in responses) {
+                    if (text.toLowerCase().indexOf(key) !== -1) {
+                        answer = responses[key];
+                        break;
+                    }
+                }
+                
+                addMessage(answer, 'bot');
+                messageHistory.push({role: 'assistant', content: answer});
+                
+                if (messageHistory.length >= 3) {
+                    document.getElementById('reportSection').classList.add('visible');
+                }
+            }, 1000);
+        }
+
+        function addMessage(text, sender) {
+            const container = document.getElementById('chatMessages');
+            const div = document.createElement('div');
+            div.className = 'message ' + sender;
+            div.textContent = text;
+            container.appendChild(div);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function generateReport() {
+            let content = 'IT-АУДИТ\n\nДата: ' + new Date().toLocaleString() + '\n\n';
+            messageHistory.forEach(function(m, i) {
+                content += (i+1) + '. ' + m.role + ': ' + m.content.substring(0, 50) + '\n';
+            });
+            
+            const blob = new Blob([content], {type: 'text/plain'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'IT-Audit.txt';
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            addMessage('Отчёт скачан! В полной версии будет PDF.', 'bot');
+        }
+    </script>
+</body>
+</html>
