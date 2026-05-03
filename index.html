@@ -1,1184 +1,956 @@
-<!DOCTYPE html><html lang="ru"><head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Анализ программной архитектуры: Два репозитория и семантика агента</title>
-    <script src="https://cdn.tailwindcss.com/3.4.0"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
-    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Морской помощник Елабуга — бесплатные инструкции по документам для моряков, вахтовиков и их семей. Госуслуги, налоги, пособия, МФЦ.">
+    <meta name="keywords" content="моряк, вахтовик, документы, госуслуги, налоги, пособия, Елабуга, Татарстан, помощь">
+    <meta property="og:title" content="Морской помощник | Елабуга">
+    <meta property="og:description" content="Бесплатные инструкции для моряков и вахтовиков">
+    <meta property="og:type" content="website">
+    <title>Морской помощник | Елабуга — Документы для моряков</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         :root {
-            --primary: #1e293b;
-            --secondary: #475569;
-            --accent: #0f172a;
-            --surface: #f8fafc;
-            --text: #0f172a;
-            --text-muted: #64748b;
-            --border: #e2e8f0;
+            --primary: #1a5f9e;
+            --primary-dark: #0d3d5c;
+            --accent: #e8913a;
+            --accent-light: #f5b76a;
+            --dark: #1a2332;
+            --light: #f0f4f8;
+            --card: rgba(255,255,255,0.95);
+            --text: #2c3e50;
+            --text-light: #5a6c7d;
+            --success: #27ae60;
+            --warning: #e67e22;
         }
-        
+
         body {
-            font-family: 'Inter', sans-serif;
-            line-height: 1.7;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #e8f0f8 0%, #d4e4f0 100%);
             color: var(--text);
-        }
-        
-        .serif {
-            font-family: 'Playfair Display', serif;
-        }
-        
-        .toc-fixed {
-            position: fixed;
-            left: 0;
-            top: 0;
-            width: 280px;
-            height: 100vh;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-            color: white;
-            overflow-y: auto;
-            z-index: 50;
-            padding: 2rem 1.5rem;
-            box-shadow: 4px 0 20px rgba(0,0,0,0.1);
-        }
-        
-        .main-content {
-            margin-left: 280px;
+            line-height: 1.6;
             min-height: 100vh;
         }
-        
-        .hero-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 2rem;
-            align-items: center;
-        }
-        
-        .bento-card {
-            background: white;
-            border-radius: 16px;
-            padding: 2rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            border: 1px solid var(--border);
-        }
-        
-        .section-divider {
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--border), transparent);
-            margin: 4rem 0;
-        }
-        
-        .citation {
-            color: var(--primary);
-            text-decoration: none;
-            border-bottom: 1px dotted var(--primary);
-            transition: all 0.2s ease;
-        }
-        
-        .citation:hover {
-            background: rgba(30, 41, 59, 0.05);
-            padding: 2px 4px;
-            border-radius: 4px;
-        }
-        
-        .quote-block {
-            border-left: 4px solid var(--primary);
-            background: var(--surface);
-            padding: 2rem;
-            margin: 2rem 0;
-            border-radius: 0 8px 8px 0;
-            font-style: italic;
-        }
-        
-        /* Mermaid diagram styling */
-        .mermaid-container {
-            display: flex;
-            justify-content: center;
-            min-height: 300px;
-            max-height: 800px;
-            background: white;
-            border: 2px solid #e5e7eb;
-            border-radius: 12px;
-            padding: 30px;
-            margin: 30px 0;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+
+        /* ШАПКА */
+        .header {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 50%, #2a7cc7 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
             position: relative;
             overflow: hidden;
         }
 
-        .mermaid-container .mermaid {
-            width: 100%;
-            max-width: 100%;
-            height: 100%;
-            cursor: grab;
-            transition: transform 0.3s ease;
-            transform-origin: center center;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            touch-action: none; /* 防止触摸设备上的默认行为 */
-            -webkit-user-select: none; /* 防止文本选择 */
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
-
-        .mermaid-container .mermaid svg {
-            max-width: 100%;
-            height: 100%;
-            display: block;
-            margin: 0 auto;
-        }
-
-        .mermaid-container .mermaid:active {
-            cursor: grabbing;
-        }
-
-        .mermaid-container.zoomed .mermaid {
-            height: 100%;
-            width: 100%;
-            cursor: grab;
-        }
-
-        .mermaid-controls {
+        .header::before {
+            content: '⚓';
             position: absolute;
-            top: 15px;
-            right: 15px;
-            display: flex;
-            gap: 10px;
-            z-index: 20;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 8px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            font-size: 200px;
+            opacity: 0.05;
+            top: -50px;
+            right: -30px;
         }
 
-        .mermaid-control-btn {
-            background: #ffffff;
-            border: 1px solid #d1d5db;
-            border-radius: 6px;
-            padding: 10px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            color: #374151;
-            font-size: 14px;
-            min-width: 36px;
-            height: 36px;
-            text-align: center;
+        .header h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header .subtitle {
+            font-size: 1.1em;
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+
+        .header .badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 0.9em;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .header .location {
+            margin-top: 15px;
+            font-size: 0.95em;
+            opacity: 0.85;
+        }
+
+        /* НАВИГАЦИЯ */
+        .nav {
+            background: white;
+            padding: 15px 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
             display: flex;
-            align-items: center;
             justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
-        .mermaid-control-btn:hover {
-            background: #f8fafc;
-            border-color: #3b82f6;
-            color: #3b82f6;
-            transform: translateY(-1px);
-        }
-
-        .mermaid-control-btn:active {
-            transform: scale(0.95);
-        }
-        
-        /* Enhanced contrast for mermaid elements */
-        .mermaid .node rect,
-        .mermaid .node circle,
-        .mermaid .node ellipse,
-        .mermaid .node polygon {
-            stroke-width: 2.5px !important;
-            stroke: var(--accent) !important;
-        }
-        
-        .mermaid .node .label {
-            color: var(--text) !important;
-            font-weight: 600 !important;
-            font-size: 13px !important;
-            font-family: 'Inter', sans-serif !important;
-        }
-        
-        .mermaid .edgePath .path {
-            stroke: var(--secondary) !important;
-            stroke-width: 2.5px !important;
-        }
-        
-        .mermaid .edgeLabel {
-            background-color: white !important;
-            color: var(--text) !important;
-            font-weight: 600 !important;
-            padding: 4px 8px !important;
-            border-radius: 4px !important;
-            border: 1px solid var(--border) !important;
-            font-family: 'Inter', sans-serif !important;
-        }
-        
-        /* Specific node color contrasts */
-        .mermaid .node[id*="A"] rect,
-        .mermaid .node[id*="A"] polygon,
-        .mermaid .node[id*="A"] circle {
-            fill: #e3f2fd !important;
-            stroke: #1976d2 !important;
-            stroke-width: 3px !important;
-        }
-        
-        .mermaid .node[id*="B"] rect,
-        .mermaid .node[id*="B"] polygon,
-        .mermaid .node[id*="B"] circle {
-            fill: #f3e5f5 !important;
-            stroke: #7b1fa2 !important;
-            stroke-width: 3px !important;
-        }
-        
-        .mermaid .node[id*="C"] rect,
-        .mermaid .node[id*="C"] polygon,
-        .mermaid .node[id*="C"] circle {
-            fill: #e8f5e8 !important;
-            stroke: #388e3c !important;
-            stroke-width: 3px !important;
-        }
-        
-        .mermaid .node[id*="D"] rect,
-        .mermaid .node[id*="D"] polygon,
-        .mermaid .node[id*="D"] circle {
-            fill: #fff3e0 !important;
-            stroke: #f57c00 !important;
-            stroke-width: 3px !important;
-        }
-        
-        .mermaid .node[id*="E"] rect,
-        .mermaid .node[id*="E"] polygon,
-        .mermaid .node[id*="E"] circle {
-            fill: #fce4ec !important;
-            stroke: #c2185b !important;
-            stroke-width: 3px !important;
-        }
-        
-        .mermaid .node[id*="F"] rect,
-        .mermaid .node[id*="F"] polygon,
-        .mermaid .node[id*="F"] circle {
-            fill: #f5f5f5 !important;
-            stroke: #424242 !important;
-            stroke-width: 3px !important;
-        }
-        
-        /* Ensure all text in mermaid is readable */
-        .mermaid text {
-            fill: var(--text) !important;
-            font-weight: 600 !important;
-            font-size: 13px !important;
-            font-family: 'Inter', sans-serif !important;
-        }
-        
-        /* Responsive adjustments for mermaid controls */
-        @media (max-width: 1024px) {
-            .mermaid-control-btn:not(.reset-zoom) {
-                display: none;
-            }
-            .mermaid-controls {
-                top: auto;
-                bottom: 15px;
-                right: 15px;
-            }
-        }
-        
-        .toc-link {
-            display: block;
-            padding: 0.75rem 0;
-            color: rgba(255,255,255,0.8);
+        .nav a {
+            color: var(--primary);
             text-decoration: none;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            transition: all 0.2s ease;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: all 0.3s;
+            font-weight: 500;
+            font-size: 0.95em;
         }
-        
-        .toc-link:hover {
+
+        .nav a:hover {
+            background: var(--primary);
             color: white;
-            padding-left: 0.5rem;
         }
-        
-        .toc-link.level-2 {
-            padding-left: 1rem;
+
+        /* КОНТЕЙНЕР */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        /* ГЕРОЙ-БЛОК */
+        .hero {
+            background: var(--card);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            text-align: center;
+            border-left: 5px solid var(--accent);
+        }
+
+        .hero h2 {
+            color: var(--primary-dark);
+            font-size: 1.8em;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            color: var(--text-light);
+            font-size: 1.1em;
+            max-width: 700px;
+            margin: 0 auto 25px;
+        }
+
+        .hero .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .stat-box {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+        }
+
+        .stat-box .number {
+            font-size: 2em;
+            font-weight: bold;
+            display: block;
+        }
+
+        .stat-box .label {
             font-size: 0.9em;
             opacity: 0.9;
         }
-        
-        .toc-link.level-3 {
-            padding-left: 2rem;
-            font-size: 0.85em;
-            opacity: 0.8;
+
+        /* КАРТОЧКИ УСЛУГ */
+        .section-title {
+            text-align: center;
+            font-size: 1.6em;
+            color: var(--primary-dark);
+            margin: 40px 0 25px;
+            position: relative;
         }
-        
-        @media (max-width: 1024px) {
-            .toc-fixed {
-                display: none;
-            }
-            .main-content {
-                margin-left: 0;
-            }
-            .hero-grid {
-                grid-template-columns: 1fr;
-            }
-            .mermaid-container {
-                overflow-x: auto;
-            }
-            .mermaid-container .mermaid {
-                min-width: 600px;
-            }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background: var(--accent);
+            margin: 10px auto;
+            border-radius: 2px;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: var(--card);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 20px;
+            font-size: 1.2em;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-body {
+            padding: 25px;
+        }
+
+        .card-body ul {
+            list-style: none;
+        }
+
+        .card-body li {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            padding-left: 30px;
+            position: relative;
+            color: var(--text-light);
+        }
+
+        .card-body li:last-child {
+            border-bottom: none;
+        }
+
+        .card-body li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--success);
+            font-weight: bold;
+        }
+
+        .card-body li strong {
+            color: var(--text);
+        }
+
+        .card-btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 25px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-light));
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 1em;
+        }
+
+        .card-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(232,145,58,0.4);
+        }
+
+        /* ФОРМА ПОДПИСКИ */
+        .subscribe-section {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            color: white;
+            padding: 50px 40px;
+            border-radius: 20px;
+            text-align: center;
+            margin: 40px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .subscribe-section::before {
+            content: '📧';
+            position: absolute;
+            font-size: 150px;
+            opacity: 0.05;
+            top: -30px;
+            left: -20px;
+        }
+
+        .subscribe-section h2 {
+            font-size: 1.8em;
+            margin-bottom: 15px;
+        }
+
+        .subscribe-section p {
+            opacity: 0.9;
+            margin-bottom: 25px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .subscribe-form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .subscribe-form input {
+            flex: 1;
+            min-width: 250px;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1em;
+            outline: none;
+        }
+
+        .subscribe-form input::placeholder {
+            color: #999;
+        }
+
+        .subscribe-form button {
+            padding: 15px 35px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .subscribe-form button:hover {
+            background: var(--accent-light);
+            transform: scale(1.05);
+        }
+
+        .privacy-note {
+            margin-top: 15px;
+            font-size: 0.85em;
+            opacity: 0.7;
+        }
+
+        /* БЛОК ПРЕДУПРЕЖДЕНИЯ */
+        .warning-box {
+            background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+            border-left: 5px solid var(--warning);
+            padding: 25px;
+            border-radius: 12px;
+            margin: 30px 0;
+        }
+
+        .warning-box h3 {
+            color: var(--warning);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .warning-box p {
+            color: var(--text-light);
+            font-size: 0.95em;
+        }
+
+        /* ТАЙМЛАЙН */
+        .timeline {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .timeline h3 {
+            color: var(--primary-dark);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px dashed #ddd;
+        }
+
+        .timeline-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .timeline-date {
+            min-width: 100px;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .timeline-content {
+            color: var(--text-light);
+        }
+
+        .timeline-content strong {
+            color: var(--text);
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        /* КОНТАКТЫ */
+        .contacts {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .contacts h3 {
+            color: var(--primary-dark);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .contact-item {
+            background: var(--light);
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .contact-item h4 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .contact-item p {
+            color: var(--text-light);
+            font-size: 0.95em;
+            line-height: 1.8;
+        }
+
+        .contact-item a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .contact-item a:hover {
+            text-decoration: underline;
+        }
+
+        /* ФУТЕР */
+        .footer {
+            background: var(--dark);
+            color: rgba(255,255,255,0.7);
+            padding: 40px 20px;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .footer p {
+            margin-bottom: 10px;
+            font-size: 0.9em;
+        }
+
+        .footer .highlight {
+            color: var(--accent-light);
+            font-weight: 600;
+        }
+
+        .footer-links {
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .footer-links a {
+            color: rgba(255,255,255,0.6);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-light);
+        }
+
+        /* МОДАЛЬНОЕ ОКНО */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            animation: modalIn 0.3s ease;
+        }
+
+        @keyframes modalIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-content h3 {
+            color: var(--primary-dark);
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .modal-content p {
+            color: var(--text-light);
+            margin-bottom: 20px;
+        }
+
+        .modal-close {
+            padding: 12px 30px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+
+        /* АДАПТИВНОСТЬ */
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.6em; }
+            .hero { padding: 25px; }
+            .hero h2 { font-size: 1.4em; }
+            .subscribe-section { padding: 30px 20px; }
+            .subscribe-form input { min-width: 100%; }
+            .cards-grid { grid-template-columns: 1fr; }
+            .timeline-item { flex-direction: column; gap: 5px; }
         }
     </style>
-  <base target="_blank">
 </head>
+<body>
 
-  <body class="bg-slate-50">
-    <!-- Fixed Table of Contents -->
-    <nav class="toc-fixed">
-      <h3 class="text-lg font-bold mb-6 text-white">Содержание</h3>
-      <div class="space-y-1">
-        <a href="#executive-summary" class="toc-link">Краткий ответ</a>
-        <a href="#analysis" class="toc-link">Анализ запроса</a>
-        <a href="#repositories" class="toc-link level-2">Репозитории GitHub</a>
-        <a href="#emotional-tone" class="toc-link level-2">Эмоциональная окраска</a>
-        <a href="#linguistic-context" class="toc-link">Лингвистический контекст</a>
-        <a href="#dialect-research" class="toc-link level-2">Исследование диалектов</a>
-        <a href="#semantic-findings" class="toc-link level-2">Семантические находки</a>
-        <a href="#technical-analysis" class="toc-link">Технический анализ</a>
-        <a href="#architecture" class="toc-link level-2">Архитектура системы</a>
-        <a href="#synchronization" class="toc-link level-2">Синхронизация</a>
-        <a href="#recommendations" class="toc-link">Рекомендации</a>
-      </div>
+    <!-- ШАПКА -->
+    <header class="header">
+        <h1>⚓ Морской помощник</h1>
+        <p class="subtitle">Бесплатные инструкции по документам для моряков и вахтовиков</p>
+        <span class="badge">✓ Независимый образовательный проект</span>
+        <p class="location">📍 Елабуга, Республика Татарстан | Работаем по всей России</p>
+    </header>
+
+    <!-- НАВИГАЦИЯ -->
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="#documents">📄 Документы</a>
+            <a href="#timeline">📅 Сроки</a>
+            <a href="#subscribe">✉️ Подписка</a>
+            <a href="#contacts">📞 Контакты</a>
+        </div>
     </nav>
 
-    <!-- Main Content -->
-    <main class="main-content">
-      <!-- Hero Section -->
-      <section class="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 relative overflow-hidden">
-        <div class="absolute inset-0 bg-gradient-to-r from-slate-900/5 to-transparent"></div>
-        <div class="relative container mx-auto px-4 sm:px-6 md:px-8 py-16">
-          <div class="hero-grid max-w-7xl mx-auto">
-            <!-- Left Column: Title and Summary -->
-            <div class="space-y-8">
-              <div class="space-y-6">
-                <h1 class="serif text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 leading-tight italic">
-                  Анализ программной
-                  <br/>
-                  <span class="text-blue-900">архитектуры</span>
-                </h1>
-                <p class="text-lg sm:text-xl text-slate-600 font-light leading-relaxed">
-                  Исследование семантики двух репозиториев GitHub и трансформация эмоциональной коммуникации в технический контекст
-                </p>
-              </div>
+    <!-- КОНТЕЙНЕР -->
+    <div class="container">
 
-              <!-- Executive Summary Card -->
-              <div id="executive-summary" class="bento-card bg-white/80 backdrop-blur-sm border-2 border-blue-100">
-                <div class="flex items-center mb-4">
-                  <i class="fas fa-microscope text-2xl text-blue-600 mr-3"></i>
-                  <h3 class="serif text-xl font-semibold text-slate-900">Краткий ответ</h3>
+        <!-- ГЕРОЙ -->
+        <section class="hero">
+            <h2>Моряк — не значит «вне закона»</h2>
+            <p>Вы 4 месяца в рейсе, а документы требуют внимания каждый месяц. Мы собрали пошаговые инструкции, которые помогут вам и вашей семье не пропустить сроки и получить все положенные пособия.</p>
+            
+            <div class="stats">
+                <div class="stat-box">
+                    <span class="number">50+</span>
+                    <span class="label">Инструкций</span>
                 </div>
-                <p class="text-slate-700 leading-relaxed">
-                  <strong>Да, наличие двух репозиториев не только возможно, но и является стандартной практикой.</strong> Количество репозиториев не определяет «силу» агента — это архитектурное решение о разделении ответственности. Синхронное обновление скорее указывает на связанность компонентов, чем на их дублирование.
-                </p>
-              </div>
+                <div class="stat-box">
+                    <span class="number">200K</span>
+                    <span class="label">Моряков в РФ</span>
+                </div>
+                <div class="stat-box">
+                    <span class="number">0 ₽</span>
+                    <span class="label">Стоимость</span>
+                </div>
+                <div class="stat-box">
+                    <span class="number">24/7</span>
+                    <span class="label">Доступ</span>
+                </div>
             </div>
+        </section>
 
-            <!-- Right Column: Visual Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div class="space-y-4">
-                <div class="bento-card bg-gradient-to-br from-blue-50 to-indigo-50">
-                  <i class="fas fa-code-branch text-3xl text-blue-600 mb-3"></i>
-                  <h4 class="font-semibold text-slate-900 mb-2">Разделение ответственности</h4>
-                  <p class="text-sm text-slate-600">Модульная архитектура системы</p>
-                </div>
-                <div class="bento-card bg-gradient-to-br from-green-50 to-emerald-50">
-                  <i class="fas fa-sync-alt text-3xl text-green-600 mb-3"></i>
-                  <h4 class="font-semibold text-slate-900 mb-2">Синхронизация</h4>
-                  <p class="text-sm text-slate-600">Обновление каждые 2 часа</p>
-                </div>
-              </div>
-              <div class="space-y-4">
-                <div class="bento-card bg-gradient-to-br from-purple-50 to-violet-50">
-                  <i class="fas fa-brain text-3xl text-purple-600 mb-3"></i>
-                  <h4 class="font-semibold text-slate-900 mb-2">AI-виджет</h4>
-                  <p class="text-sm text-slate-600">Интерактивный компонент</p>
-                </div>
-                <div class="bento-card bg-gradient-to-br from-orange-50 to-amber-50">
-                  <i class="fas fa-language text-3xl text-orange-600 mb-3"></i>
-                  <h4 class="font-semibold text-slate-900 mb-2">Семантика</h4>
-                  <p class="text-sm text-slate-600">Китайские диалектные коннотации</p>
-                </div>
-              </div>
-            </div>
-          </div>
+        <!-- ПРЕДУПРЕЖДЕНИЕ -->
+        <div class="warning-box">
+            <h3>⚠️ Важно знать</h3>
+            <p>Все материалы предоставлены в информационных целях и не являются юридической консультацией. Перед подачей документов уточняйте актуальные требования в официальных инстанциях (МФЦ, ФНС, ФСС, ФАВТ). Проект не связан с государственными органами.</p>
         </div>
-      </section>
 
-      <!-- Main Analysis -->
-      <div class="container mx-auto px-8 py-16 max-w-6xl">
-
-        <!-- Analysis Section -->
-        <section id="analysis" class="mb-16">
-          <h2 class="serif text-4xl font-bold text-slate-900 mb-8">Анализ пользовательского запроса</h2>
-
-          <div id="repositories" class="mb-12">
-            <h3 class="serif text-2xl font-semibold text-slate-800 mb-6">Исходные объекты запроса</h3>
-
-            <div class="grid md:grid-cols-2 gap-6 mb-8">
-              <div class="bento-card bg-blue-50 border-blue-200">
-                <h4 class="font-semibold text-blue-900 mb-3 flex items-center">
-                  <i class="fas fa-folder-open mr-2"></i>
-                  trainingsw75-cloud.github.io
-                </h4>
-                <ul class="space-y-2 text-sm text-blue-800">
-                  <li>• Публичный репозиторий GitHub Pages</li>
-                  <li>• Обучающие материалы по облачным технологиям</li>
-                  <li>• Содержимое: HTML</li>
-                  <li>• Обновление: 2 часа назад</li>
-                </ul>
-              </div>
-
-              <div class="bento-card bg-purple-50 border-purple-200">
-                <h4 class="font-semibold text-purple-900 mb-3 flex items-center">
-                  <i class="fas fa-robot mr-2"></i>
-                  ai-widget
-                </h4>
-                <ul class="space-y-2 text-sm text-purple-800">
-                  <li>• Публичный репозиторий</li>
-                  <li>• Компонент искусственного интеллекта</li>
-                  <li>• Содержимое: HTML</li>
-                  <li>• Обновление: 2 часа назад</li>
-                </ul>
-              </div>
-            </div>
-
-            <p class="text-slate-700 mb-6">
-              <strong>Синхронность временных меток</strong> — ключевой технический индикатор. Обновление обоих репозиториев с точностью до часа указывает на возможные сценарии: автоматизированную систему CI/CD, ручную координацию разработчиков или функциональную взаимосвязь компонентов.
-            </p>
-          </div>
-
-          <div id="emotional-tone" class="mb-12">
-            <h3 class="serif text-2xl font-semibold text-slate-800 mb-6">Эмоциональная окраска запроса</h3>
-
-            <div class="quote-block">
-              <p class="text-lg mb-4">
-                &#34;МОЖЕТ 2 РЕПОЗИТОРИЯ? ОН СЛАБЫЙ АГЕНТ ТАКОЙ ЖЕ ТУПОЙ КАК И ТЫ!&#34;
-              </p>
-              <p class="text-slate-600">
-                Лингвистическая структура демонстрирует выраженную эмоциональную нагруженность, переходящую в агрессивную коммуникативную регистрацию.
-              </p>
-            </div>
-
-            <div class="grid md:grid-cols-3 gap-6 mt-8">
-              <div class="bento-card bg-red-50 border-red-200">
-                <h4 class="font-semibold text-red-900 mb-3">Когнитивный диссонас</h4>
-                <p class="text-sm text-red-800">
-                  Вопрос о «двух репозиториях» содержит предпосылку о ненормативности ситуации
-                </p>
-              </div>
-              <div class="bento-card bg-orange-50 border-orange-200">
-                <h4 class="font-semibold text-orange-900 mb-3">Ad hominem атака</h4>
-                <p class="text-sm text-orange-800">
-                  Сравнение «ТАКОЙ ЖЕ ТУПОЙ КАК И ТЫ» реализует прямую персонализацию
-                </p>
-              </div>
-              <div class="bento-card bg-yellow-50 border-yellow-200">
-                <h4 class="font-semibold text-yellow-900 mb-3">Техническая метафора</h4>
-                <p class="text-sm text-yellow-800">
-                  Характеристика «СЛАБЫЙ АГЕНТ» трансформирует обсуждение в оценку компетентности
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <div class="section-divider"></div>
-
-        <!-- Linguistic Context Section -->
-        <section id="linguistic-context" class="mb-16">
-          <h2 class="serif text-4xl font-bold text-slate-900 mb-8">Лингвистический контекст исследования</h2>
-
-          <div id="dialect-research" class="mb-12">
-            <h3 class="serif text-2xl font-semibold text-slate-800 mb-6">Тематика предшествующих исследований</h3>
-
-            <div class="bento-card mb-8">
-              <img src="https://kimi-web-img.moonshot.cn/img/pic.616pic.com/8239f97666883e2b9a430bf42bc4c2cc834fd246.jpg" alt="Китайский иероглиф 苕 на традиционном фоне" class="w-full h-48 object-cover rounded-lg mb-6" size="medium" aspect="wide" color="white" style="photo" query="苕 Chinese character calligraphy" referrerpolicy="no-referrer" data-modified="1" data-score="0.00"/>
-
-              <p class="text-slate-700 mb-6">
-                Предшествующий диалогический контекст был сосредоточен на области <strong>китайской диалектной лексикологии</strong>, с конкретной фокусировкой на полисемантическом иероглифе <strong>«苕»</strong> (tiáo/sháo). Исследование включало многоступенчатый процесс верификации гипотез о семантической эволюции лексемы.
-              </p>
-            </div>
-
-            <div class="grid md:grid-cols-2 gap-8">
-              <div class="bento-card bg-green-50 border-green-200">
-                <h4 class="font-semibold text-green-900 mb-4">Хубэйский диалект</h4>
-                <ul class="space-y-2 text-sm text-green-800">
-                  <li>• <strong>苕货</strong> (sháo huò) — дурак, болван</li>
-                  <li>• <strong>哈巴苕</strong> (hǎ ba sháo) — усиленная форма</li>
-                  <li>• <strong>苕坯子</strong> (sháo pī zi) — недоделанный человек</li>
-                  <li>• <strong>体面苕</strong> (tǐ miàn sháo) — приличный снаружи, глупый внутри</li>
-                </ul>
-              </div>
-
-              <div class="bento-card bg-blue-50 border-blue-200">
-                <h4 class="font-semibold text-blue-900 mb-4">Сычуаньский диалект</h4>
-                <ul class="space-y-2 text-sm text-blue-800">
-                  <li>• <strong>苕头苕脑</strong> (sháo tóu sháo nǎo) — консервативное мышление</li>
-                  <li>• <strong>红配绿，苕得哭</strong> — нелепое сочетание</li>
-                  <li>• Эстетическая коннотация «деревенскости»</li>
-                  <li>• Социально-эстетическая оценка</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-
-          <div id="semantic-findings" class="mb-12">
-            <h3 class="serif text-2xl font-semibold text-slate-800 mb-6">Ключевые находки</h3>
-
-            <div class="bento-card bg-slate-100">
-              <h4 class="font-semibold text-slate-900 mb-4">Механизмы семантической трансформации</h4>
-              <div class="space-y-4">
-                <div class="flex items-start space-x-3">
-                  <div class="w-2 h-2 bg-slate-600 rounded-full mt-2"></div>
-                  <p class="text-slate-700">
-                    <strong>Когнитивная метафора:</strong> Перенос характеристик растения (батата) на человеческие качества
-                  </p>
-                </div>
-                <div class="flex items-start space-x-3">
-                  <div class="w-2 h-2 bg-slate-600 rounded-full mt-2"></div>
-                  <p class="text-slate-700">
-                    <strong>Диалектная диффузия:</strong> Распространение через миграционные процессы («湖广填四川»)
-                  </p>
-                </div>
-                <div class="flex items-start space-x-3">
-                  <div class="w-2 h-2 bg-slate-600 rounded-full mt-2"></div>
-                  <p class="text-slate-700">
-                    <strong>Регистровая вариативность:</strong> От ругательства до ласкового обращения
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <p class="text-slate-700 mt-6">
-              Исследование выявило <a href="#" class="citation">百度百科</a> как основной авторитетный источник, подтвердивший пейоративную семантику иероглифа в хубэйском диалекте. Методология включала систематический поиск на китайских платформах и критическую оценку источников.
-            </p>
-          </div>
-        </section>
-
-        <div class="section-divider"></div>
-
-        <!-- Technical Analysis Section -->
-        <section id="technical-analysis" class="mb-16">
-          <h2 class="serif text-4xl font-bold text-slate-900 mb-8">Техническая структура репозиториев</h2>
-
-          <div id="architecture" class="mb-12">
-            <h3 class="serif text-2xl font-semibold text-slate-800 mb-6">Архитектурный анализ</h3>
-
-            <div class="grid md:grid-cols-2 gap-8 mb-8">
-              <div class="bento-card">
-                <h4 class="font-semibold text-slate-900 mb-4 flex items-center">
-                  <i class="fas fa-graduation-cap text-blue-600 mr-2"></i>
-                  Обучающий портал
-                </h4>
-                <p class="text-slate-700 mb-4">
-                  <strong>trainingsw75-cloud.github.io</strong> — статический сайт GitHub Pages, специализированный на обучении облачным технологиям.
-                </p>
-                <div class="space-y-2 text-sm text-slate-600">
-                  <div class="flex items-center">
-                    <i class="fas fa-check text-green-500 mr-2"></i>
-                    Структурированный контент (Markdown/HTML)
-                  </div>
-                  <div class="flex items-center">
-                    <i class="fas fa-check text-green-500 mr-2"></i>
-                    Система навигации по модулям
-                  </div>
-                  <div class="flex items-center">
-                    <i class="fas fa-check text-green-500 mr-2"></i>
-                    Интерактивные элементы и sandboxes
-                  </div>
-                </div>
-              </div>
-
-              <div class="bento-card">
-                <h4 class="font-semibold text-slate-900 mb-4 flex items-center">
-                  <i class="fas fa-robot text-purple-600 mr-2"></i>
-                  AI-компонент
-                </h4>
-                <p class="text-slate-700 mb-4">
-                  <strong>ai-widget</strong> — автономный, переиспользуемый компонент пользовательского интерфейса с AI-функциональностью.
-                </p>
-                <div class="space-y-2 text-sm text-slate-600">
-                  <div class="flex items-center">
-                    <i class="fas fa-check text-green-500 mr-2"></i>
-                    Встраиваемый интерактивный элемент
-                  </div>
-                  <div class="flex items-center">
-                    <i class="fas fa-check text-green-500 mr-2"></i>
-                    Функциональность обработки естественного языка
-                  </div>
-                  <div class="flex items-center">
-                    <i class="fas fa-check text-green-500 mr-2"></i>
-                    Инкапсулированная логика
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="mermaid-container">
-              <div class="mermaid-controls">
-                <button class="mermaid-control-btn zoom-in" title="Увеличить">
-                  <i class="fas fa-search-plus"></i>
-                </button>
-                <button class="mermaid-control-btn zoom-out" title="Уменьшить">
-                  <i class="fas fa-search-minus"></i>
-                </button>
-                <button class="mermaid-control-btn reset-zoom" title="Сбросить">
-                  <i class="fas fa-expand-arrows-alt"></i>
-                </button>
-                <button class="mermaid-control-btn fullscreen" title="Полный экран">
-                  <i class="fas fa-expand"></i>
-                </button>
-              </div>
-              <div class="mermaid" id="architecture-diagram">
-                graph TB
-                A[&#34;trainingsw75-cloud.github.io&#34;] --&gt; B[&#34;GitHub Pages&#34;]
-                C[&#34;ai-widget&#34;] --&gt; D[&#34;NPM Package&#34;]
-                B --&gt; E[&#34;Обучающий портал&#34;]
-                D --&gt; F[&#34;Встраиваемый компонент&#34;]
-                E --&gt; G[&#34;Пользовательский интерфейс&#34;]
-                F --&gt; G
-
-                style A fill:#e3f2fd,stroke:#1976d2,stroke-width:3px,color:#0f172a
-                style C fill:#f3e5f5,stroke:#7b1fa2,stroke-width:3px,color:#0f172a
-                style E fill:#e8f5e8,stroke:#388e3c,stroke-width:3px,color:#0f172a
-                style F fill:#fff3e0,stroke:#f57c00,stroke-width:3px,color:#0f172a
-                style G fill:#fce4ec,stroke:#c2185b,stroke-width:3px,color:#0f172a
-                style B fill:#f5f5f5,stroke:#424242,stroke-width:2px,color:#0f172a
-                style D fill:#f5f5f5,stroke:#424242,stroke-width:2px,color:#0f172a
-              </div>
-            </div>
-          </div>
-
-          <div id="synchronization" class="mb-12">
-            <h3 class="serif text-2xl font-semibold text-slate-800 mb-6">Анализ синхронизации</h3>
-
-            <div class="bento-card bg-yellow-50 border-yellow-200 mb-8">
-              <h4 class="font-semibold text-yellow-900 mb-4">Возможные сценарии синхронизации</h4>
-              <div class="overflow-x-auto">
-                <table class="w-full text-sm">
-                  <thead>
-                    <tr class="border-b border-yellow-200">
-                      <th class="text-left py-3 px-4 font-semibold">Сценарий</th>
-                      <th class="text-left py-3 px-4 font-semibold">Вероятность</th>
-                      <th class="text-left py-3 px-4 font-semibold">Диагностические признаки</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr class="border-b border-yellow-100">
-                      <td class="py-3 px-4 font-medium">Единый CI/CD pipeline</td>
-                      <td class="py-3 px-4 text-green-700">Высокая</td>
-                      <td class="py-3 px-4 text-slate-600">.github/workflows/, идентичные коммиты</td>
-                    </tr>
-                    <tr class="border-b border-yellow-100">
-                      <td class="py-3 px-4 font-medium">Монорепозиторий с субмодулями</td>
-                      <td class="py-3 px-4 text-yellow-700">Средняя</td>
-                      <td class="py-3 px-4 text-slate-600">.gitmodules, специфическая структура</td>
-                    </tr>
-                    <tr class="border-b border-yellow-100">
-                      <td class="py-3 px-4 font-medium">Ручная координация</td>
-                      <td class="py-3 px-4 text-yellow-700">Средняя</td>
-                      <td class="py-3 px-4 text-slate-600">Разные сообщения коммитов, разница в минутах</td>
-                    </tr>
-                    <tr class="border-b border-yellow-100">
-                      <td class="py-3 px-4 font-medium">Зависимость через package manager</td>
-                      <td class="py-3 px-4 text-red-700">Низкая</td>
-                      <td class="py-3 px-4 text-slate-600">package.json, requirements.txt</td>
-                    </tr>
-                    <tr>
-                      <td class="py-3 px-4 font-medium">Совпадение</td>
-                      <td class="py-3 px-4 text-red-700">Низкая</td>
-                      <td class="py-3 px-4 text-slate-600">Статистический анализ частоты</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            <p class="text-slate-700">
-              <strong>Техническое замечание:</strong> GitHub отображает время обновлений с дискретностью в один час («2 hours ago» может означать интервал 1:30–2:30). Синхронность, следовательно, указывает на скоординированные изменения, а не на идентичность содержимого.
-            </p>
-          </div>
-        </section>
-
-        <div class="section-divider"></div>
-
-        <!-- Recommendations Section -->
-        <section id="recommendations" class="mb-16">
-          <h2 class="serif text-4xl font-bold text-slate-900 mb-8">Рекомендации и выводы</h2>
-
-          <div class="grid md:grid-cols-2 gap-8 mb-12">
-            <div class="bento-card bg-green-50 border-green-200">
-              <h3 class="font-semibold text-green-900 mb-4 flex items-center">
-                <i class="fas fa-check-circle mr-2"></i>
-                Архитектурные преимущества
-              </h3>
-              <ul class="space-y-3 text-green-800">
-                <li class="flex items-start">
-                  <i class="fas fa-arrow-right text-green-600 mr-2 mt-1 text-sm"></i>
-                  <span><strong>Разделение ответственности</strong> — каждый компонент имеет четко определенную функцию</span>
-                </li>
-                <li class="flex items-start">
-                  <i class="fas fa-arrow-right text-green-600 mr-2 mt-1 text-sm"></i>
-                  <span><strong>Модульность</strong> — возможность независимой эволюции компонентов</span>
-                </li>
-                <li class="flex items-start">
-                  <i class="fas fa-arrow-right text-green-600 mr-2 mt-1 text-sm"></i>
-                  <span><strong>Переиспользование</strong> — виджет может использоваться в других контекстах</span>
-                </li>
-                <li class="flex items-start">
-                  <i class="fas fa-arrow-right text-green-600 mr-2 mt-1 text-sm"></i>
-                  <span><strong>Тестируемость</strong> — изолированные компоненты легче тестировать</span>
-                </li>
-              </ul>
-            </div>
-
-            <div class="bento-card bg-red-50 border-red-200">
-              <h3 class="font-semibold text-red-900 mb-4 flex items-center">
-                <i class="fas fa-exclamation-triangle mr-2"></i>
-                Технические заблуждения
-              </h3>
-              <ul class="space-y-3 text-red-800">
-                <li class="flex items-start">
-                  <i class="fas fa-times text-red-600 mr-2 mt-1 text-sm"></i>
-                  <span>Два репозитория ≠ дублирование (разные функции: сайт vs компонент)</span>
-                </li>
-                <li class="flex items-start">
-                  <i class="fas fa-times text-red-600 mr-2 mt-1 text-sm"></i>
-                  <span>Синхронное обновление ≠ идентичность (указывает на связанность)</span>
-                </li>
-                <li class="flex items-start">
-                  <i class="fas fa-times text-red-600 mr-2 mt-1 text-sm"></i>
-                  <span>Количество репозиториев ≠ сила агента (агентность определяется runtime)</span>
-                </li>
-                <li class="flex items-start">
-                  <i class="fas fa-times text-red-600 mr-2 mt-1 text-sm"></i>
-                  <span>Репозитории как хранилища ≠ агенты как исполняемые системы</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="bento-card bg-blue-50 border-blue-200 mb-8">
-            <h3 class="font-semibold text-blue-900 mb-6">Диагностическая процедура</h3>
-            <div class="grid md:grid-cols-3 gap-6">
-              <div>
-                <h4 class="font-medium text-blue-900 mb-3">1. Анализ истории коммитов</h4>
-                <p class="text-sm text-blue-800 mb-2">git log, GitHub Web Interface</p>
-                <p class="text-xs text-blue-600">Выявление паттернов синхронизации</p>
-              </div>
-              <div>
-                <h4 class="font-medium text-blue-900 mb-3">2. Изучение зависимостей</h4>
-                <p class="text-sm text-blue-800 mb-2">package.json, requirements.txt</p>
-                <p class="text-xs text-blue-600">Перекрёстные ссылки между репозиториями</p>
-              </div>
-              <div>
-                <h4 class="font-medium text-blue-900 mb-3">3. Функциональное тестирование</h4>
-                <p class="text-sm text-blue-800 mb-2">Browser DevTools, Network tab</p>
-                <p class="text-xs text-blue-600">Измерение функциональных характеристик</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="quote-block bg-gradient-to-r from-blue-50 to-indigo-50 border-l-blue-500">
-            <p class="text-lg text-slate-800 font-medium mb-4">
-              &#34;Синхронное обновление репозиториев — это не признак слабости, а индикатор тщательно спланированной архитектуры, где изменения в одном компоненте требуют соответствующих адаптаций в другом.&#34;
-            </p>
-            <p class="text-slate-600 text-sm">
-              — Технический анализ программной архитектуры
-            </p>
-          </div>
-        </section>
-
-        <!-- Conclusion -->
-        <section class="mb-16">
-          <div class="bento-card bg-gradient-to-br from-slate-50 to-blue-50 border-2 border-slate-200">
-            <div class="text-center">
-              <h2 class="serif text-3xl font-bold text-slate-900 mb-6">Заключение</h2>
-              <p class="text-lg text-slate-700 leading-relaxed max-w-4xl mx-auto">
-                Наличие двух синхронизированных репозиториев GitHub представляет собой не просто допустимый, но <strong>архитектурно целесообразный подход</strong> к разработке программных систем. Разделение ответственности между обучающим порталом и AI-компонентом обеспечивает модульность, тестируемость и масштабируемость системы. Синхронное обновление указывает на <strong>скоординированную разработку</strong>, а не на дублирование функциональности.
-              </p>
-            </div>
-          </div>
-        </section>
-      </div>
-    </main>
-
-    <script>
-        // Initialize Mermaid with enhanced theme and contrast
-        mermaid.initialize({ 
-            startOnLoad: true, 
-            theme: 'base',
-            themeVariables: {
-                primaryColor: '#f8fafc',
-                primaryTextColor: '#0f172a',
-                primaryBorderColor: '#1e293b',
-                lineColor: '#475569',
-                secondaryColor: '#e2e8f0',
-                tertiaryColor: '#f1f5f9',
-                background: '#ffffff',
-                mainBkg: '#f8fafc',
-                secondBkg: '#e2e8f0',
-                tertiaryBkg: '#f1f5f9',
-                nodeBorder: '#1e293b',
-                clusterBkg: '#f8fafc',
-                clusterBorder: '#475569',
-                defaultLinkColor: '#475569',
-                titleColor: '#0f172a',
-                edgeLabelBackground: '#ffffff',
-                nodeTextColor: '#0f172a',
-                // Enhanced contrast colors for different node types
-                cScale0: '#e3f2fd',
-                cScale1: '#f3e5f5', 
-                cScale2: '#e8f5e8',
-                cScale3: '#fff3e0',
-                cScale4: '#fce4ec',
-                cScale5: '#f5f5f5'
-            },
-            flowchart: {
-                useMaxWidth: false,
-                htmlLabels: true,
-                curve: 'basis',
-                padding: 20,
-                nodeSpacing: 50,
-                rankSpacing: 80,
-                diagramPadding: 20
-            },
-            fontSize: 13,
-            fontFamily: 'Inter, sans-serif'
-        });
+        <!-- КАРТОЧКИ -->
+        <h2 class="section-title" id="documents">Что мы помогаем оформить</h2>
         
-        // Initialize Mermaid Controls for zoom and pan
-        function initializeMermaidControls() {
-            const containers = document.querySelectorAll('.mermaid-container');
+        <div class="cards-grid">
+            <div class="card">
+                <div class="card-header">📝 Госуслуги</div>
+                <div class="card-body">
+                    <ul>
+                        <li><strong>Запись к врачу</strong> — как записаться удалённо</li>
+                        <li><strong>Загранпаспорт</strong> — для моряков ускоренно</li>
+                        <li><strong>СНИЛС и ИНН</strong> — восстановление, дубликаты</li>
+                        <li><strong>Регистрация ИП</strong> — пошагово через МФЦ</li>
+                        <li><strong>Налоговая декларация</strong> — 3-НДФЛ для моряков</li>
+                    </ul>
+                    <button class="card-btn" onclick="showModal('Госуслуги', 'Раздел в разработке. Подпишитесь на обновления — пришлём инструкцию, как только она будет готова!')">Смотреть инструкции →</button>
+                </div>
+            </div>
 
-            containers.forEach(container => {
-            const mermaidElement = container.querySelector('.mermaid');
-            let scale = 1;
-            let isDragging = false;
-            let startX, startY, translateX = 0, translateY = 0;
+            <div class="card">
+                <div class="card-header">💰 Пособия и выплаты</div>
+                <div class="card-body">
+                    <ul>
+                        <li><strong>Пособие по безработице</strong> — как получить в отпуске</li>
+                        <li><strong>Социальный контракт</strong> — до 350 000 ₽ на бизнес</li>
+                        <li><strong>Субсидия на жильё</strong> — для моряков-северян</li>
+                        <li><strong>Детские пособия</strong> — оформление женой</li>
+                        <li><strong>Пенсия моряка</strong> — льготный стаж, северные</li>
+                    </ul>
+                    <button class="card-btn" onclick="showModal('Пособия', 'Раздел в разработке. Подпишитесь — первыми получите чек-лист по всем пособиям для моряков!')">Смотреть инструкции →</button>
+                </div>
+            </div>
 
-            // 触摸相关状态
-            let isTouch = false;
-            let touchStartTime = 0;
-            let initialDistance = 0;
-            let initialScale = 1;
-            let isPinching = false;
+            <div class="card">
+                <div class="card-header">⚖️ Налоги и ФНС</div>
+                <div class="card-body">
+                    <ul>
+                        <li><strong>3-НДФЛ</strong> — когда моряк должен подать</li>
+                        <li><strong>Налоговый вычет</strong> — имущественный, социальный</li>
+                        <li><strong>Уплата налогов ИП</strong> — УСН, НПД, патент</li>
+                        <li><strong>Проверка задолженности</strong> — через Госуслуги</li>
+                        <li><strong>КБМ по ОСАГО</strong> — как не переплатить</li>
+                    </ul>
+                    <button class="card-btn" onclick="showModal('Налоги', 'Раздел в разработке. Подпишитесь — вышлем калькулятор налогов для моряков!')">Смотреть инструкции →</button>
+                </div>
+            </div>
 
-            // Zoom controls
-            const zoomInBtn = container.querySelector('.zoom-in');
-            const zoomOutBtn = container.querySelector('.zoom-out');
-            const resetBtn = container.querySelector('.reset-zoom');
-            const fullscreenBtn = container.querySelector('.fullscreen');
+            <div class="card">
+                <div class="card-header">🏠 МФЦ и документы</div>
+                <div class="card-body">
+                    <ul>
+                        <li><strong>Справка о составе семьи</strong> — через МФЦ</li>
+                        <li><strong>Справка о доходах</strong> — для пособий</li>
+                        <li><strong>Выписка из ЕГРН</strong> — на квартиру, землю</li>
+                        <li><strong>Смена прописки</strong> — без личного присутствия</li>
+                        <li><strong>Заверение копий</strong> — дистанционно</li>
+                    </ul>
+                    <button class="card-btn" onclick="showModal('МФЦ', 'Раздел в разработке. Подпишитесь — пришлём шаблоны всех заявлений!')">Смотреть инструкции →</button>
+                </div>
+            </div>
 
-            function updateTransform() {
-                mermaidElement.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+            <div class="card">
+                <div class="card-header">🎓 Обучение и гранты</div>
+                <div class="card-body">
+                    <ul>
+                        <li><strong>Курсы предпринимательства</strong> — бесплатно в ЦЗН</li>
+                        <li><strong>Грант на открытие дела</strong> — до 350 000 ₽</li>
+                        <li><strong>Профпереподготовка</strong> — IT, цифровые навыки</li>
+                        <li><strong>Сертификат пилота БПЛА</strong> — через ФАВТ</li>
+                        <li><strong>Курсы повышения квалификации</strong> — для моряков</li>
+                    </ul>
+                    <button class="card-btn" onclick="showModal('Обучение', 'Раздел в разработке. Подпишитесь — расскажем, какие курсы бесплатны для моряков!')">Смотреть инструкции →</button>
+                </div>
+            </div>
 
-                if (scale > 1) {
-                container.classList.add('zoomed');
-                } else {
-                container.classList.remove('zoomed');
-                }
+            <div class="card">
+                <div class="card-header">📱 Цифровые навыки</div>
+                <div class="card-body">
+                    <ul>
+                        <li><strong>Termux на Android</strong> — работа как на компьютере</li>
+                        <li><strong>Создание сайтов</strong> — бесплатно на GitHub</li>
+                        <li><strong>Работа с документами</strong> — на телефоне</li>
+                        <li><strong>Безопасность данных</strong> — пароли, шифрование</li>
+                        <li><strong>Удалённая работа</strong> — фриланс для моряков</li>
+                    </ul>
+                    <button class="card-btn" onclick="showModal('Цифровые навыки', 'Раздел в разработке. Подпишитесь — первыми получите гайд по Termux для моряков!')">Смотреть инструкции →</button>
+                </div>
+            </div>
+        </div>
 
-                mermaidElement.style.cursor = isDragging ? 'grabbing' : 'grab';
-            }
+        <!-- ТАЙМЛАЙН -->
+        <div class="timeline" id="timeline">
+            <h3>📅 Календарь моряка: что делать в отпуске</h3>
+            
+            <div class="timeline-item">
+                <div class="timeline-date">День 1</div>
+                <div class="timeline-content">
+                    <strong>Получить документы с судна</strong>
+                    Трудовая книжка/СТД-Р, справка о заработке, расчётный лист
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-date">День 2-3</div>
+                <div class="timeline-content">
+                    <strong>МФЦ — справки для пособий</strong>
+                    Состав семьи, доходы, выписки. Взять талон через Госуслуги заранее!
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-date">День 4-5</div>
+                <div class="timeline-content">
+                    <strong>Центр занятости</strong>
+                    Встать на учёт, подать на пособие, записаться на курсы
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-date">Неделя 2</div>
+                <div class="timeline-content">
+                    <strong>Налоговая — проверить задолженности</strong>
+                    Через личный кабинет ФНС или Госуслуги. Подать 3-НДФЛ, если нужно.
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-date">Неделя 3-4</div>
+                <div class="timeline-content">
+                    <strong>Социальная защита — соцконтракт</strong>
+                    Подать заявление на открытие дела. Прикрепить бизнес-план.
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-date">Месяц 2</div>
+                <div class="timeline-content">
+                    <strong>Курсы + ожидание решений</strong>
+                    Проходим бесплатные курсы предпринимательства. Корректируем план.
+                </div>
+            </div>
+        </div>
 
-            if (zoomInBtn) {
-                zoomInBtn.addEventListener('click', () => {
-                scale = Math.min(scale * 1.25, 4);
-                updateTransform();
-                });
-            }
+        <!-- ФОРМА ПОДПИСКИ -->
+        <section class="subscribe-section" id="subscribe">
+            <h2>✉️ Получайте инструкции первым</h2>
+            <p>Каждую неделю — новая инструкция по документам для моряков. Бесплатно, без спама, только полезная информация.</p>
+            
+            <form class="subscribe-form" onsubmit="handleSubscribe(event)">
+                <input type="email" id="emailInput" placeholder="Ваш e-mail (Mail.ru, Яндекс, Gmail...)" required>
+                <button type="submit">Подписаться</button>
+            </form>
+            
+            <p class="privacy-note">🔒 Мы не передаём e-mail третьим лицам. Отписаться можно в любой момент.</p>
+        </section>
 
-            if (zoomOutBtn) {
-                zoomOutBtn.addEventListener('click', () => {
-                scale = Math.max(scale / 1.25, 0.3);
-                if (scale <= 1) {
-                    translateX = 0;
-                    translateY = 0;
-                }
-                updateTransform();
-                });
-            }
+        <!-- КОНТАКТЫ -->
+        <div class="contacts" id="contacts">
+            <h3>📞 Полезные контакты для моряков</h3>
+            
+            <div class="contact-grid">
+                <div class="contact-item">
+                    <h4>🏛️ Единый портал Госуслуг</h4>
+                    <p>
+                        <a href="https://gosuslugi.ru" target="_blank">gosuslugi.ru</a><br>
+                        Запись к врачу, налоги, паспорта, пособия<br>
+                        Тел.: 8 (800) 100-70-10
+                    </p>
+                </div>
+                
+                <div class="contact-item">
+                    <h4>💼 ФНС России (налоговая)</h4>
+                    <p>
+                        <a href="https://nalog.gov.ru" target="_blank">nalog.gov.ru</a><br>
+                        Проверка задолженностей, 3-НДФЛ, вычеты<br>
+                        Личный кабинет: lkfl2.nalog.ru
+                    </p>
+                </div>
+                
+                <div class="contact-item">
+                    <h4>🛡️ ФСС (пособия)</h4>
+                    <p>
+                        <a href="https://fss.ru" target="_blank">fss.ru</a><br>
+                        Больничные, пособия по безработице<br>
+                        Тел.: 8 (800) 302-00-00
+                    </p>
+                </div>
+                
+                <div class="contact-item">
+                    <h4>✈️ ФАВТ (для пилотов БПЛА)</h4>
+                    <p>
+                        <a href="https://favt.gov.ru" target="_blank">favt.gov.ru</a><br>
+                        Регистрация дронов, сертификация пилотов<br>
+                        Лицензированные центры обучения
+                    </p>
+                </div>
+                
+                <div class="contact-item">
+                    <h4>📍 МФЦ Елабуга</h4>
+                    <p>
+                        <a href="https://md.tatarstan.ru" target="_blank">md.tatarstan.ru</a><br>
+                        Справки, регистрация, копии, ИП<br>
+                        Запись: через Госуслуги или телефон
+                    </p>
+                </div>
+                
+                <div class="contact-item">
+                    <h4>⚓ Профсоюз моряков</h4>
+                    <p>
+                        <a href="https://seafarers-union.ru" target="_blank">seafarers-union.ru</a><br>
+                        Правовая помощь, защита трудовых прав<br>
+                        Консультации для членов профсоюза
+                    </p>
+                </div>
+            </div>
+        </div>
 
-            if (resetBtn) {
-                resetBtn.addEventListener('click', () => {
-                scale = 1;
-                translateX = 0;
-                translateY = 0;
-                updateTransform();
-                });
-            }
+    </div>
 
-            if (fullscreenBtn) {
-                fullscreenBtn.addEventListener('click', () => {
-                if (container.requestFullscreen) {
-                    container.requestFullscreen();
-                } else if (container.webkitRequestFullscreen) {
-                    container.webkitRequestFullscreen();
-                } else if (container.msRequestFullscreen) {
-                    container.msRequestFullscreen();
-                }
-                });
-            }
+    <!-- ФУТЕР -->
+    <footer class="footer">
+        <p class="highlight">⚓ Морской помощник | Елабуга</p>
+        <p>Независимый образовательный проект для моряков, вахтовиков и их семей</p>
+        <p>Автор: Крюков Роман Львович | Моряк-повар с 25-летним стажем</p>
+        
+        <div class="footer-links">
+            <a href="https://vk.com" target="_blank">ВКонтакте</a>
+            <a href="https://rutube.ru" target="_blank">RuTube</a>
+            <a href="https://dzen.ru" target="_blank">Яндекс.Дзен</a>
+            <a href="#" onclick="showModal('О проекте', 'Проект создан в 2026 году моряком-поваром для помощи коллегам в оформлении документов. Все материалы бесплатны. Мы не связаны с государственными органами.')">О проекте</a>
+        </div>
+        
+        <p style="margin-top: 20px; font-size: 0.85em; opacity: 0.6;">
+            © 2026 Морской помощник | Все материалы предоставлены в информационных целях<br>
+            Не является юридической консультацией | Проверяйте актуальность данных в официальных источниках
+        </p>
+    </footer>
 
-            // Mouse Events
-            mermaidElement.addEventListener('mousedown', (e) => {
-                if (isTouch) return; // 如果是触摸设备，忽略鼠标事件
+    <!-- МОДАЛЬНОЕ ОКНО -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <h3 id="modalTitle">Заголовок</h3>
+            <p id="modalText">Текст сообщения</p>
+            <button class="modal-close" onclick="closeModal()">Понятно</button>
+        </div>
+    </div>
 
-                isDragging = true;
-                startX = e.clientX - translateX;
-                startY = e.clientY - translateY;
-                mermaidElement.style.cursor = 'grabbing';
-                updateTransform();
-                e.preventDefault();
-            });
-
-            document.addEventListener('mousemove', (e) => {
-                if (isDragging && !isTouch) {
-                translateX = e.clientX - startX;
-                translateY = e.clientY - startY;
-                updateTransform();
-                }
-            });
-
-            document.addEventListener('mouseup', () => {
-                if (isDragging && !isTouch) {
-                isDragging = false;
-                mermaidElement.style.cursor = 'grab';
-                updateTransform();
-                }
-            });
-
-            document.addEventListener('mouseleave', () => {
-                if (isDragging && !isTouch) {
-                isDragging = false;
-                mermaidElement.style.cursor = 'grab';
-                updateTransform();
-                }
-            });
-
-            // 获取两点之间的距离
-            function getTouchDistance(touch1, touch2) {
-                return Math.hypot(
-                touch2.clientX - touch1.clientX,
-                touch2.clientY - touch1.clientY
-                );
-            }
-
-            // Touch Events - 触摸事件处理
-            mermaidElement.addEventListener('touchstart', (e) => {
-                isTouch = true;
-                touchStartTime = Date.now();
-
-                if (e.touches.length === 1) {
-                // 单指拖动
-                isPinching = false;
-                isDragging = true;
-
-                const touch = e.touches[0];
-                startX = touch.clientX - translateX;
-                startY = touch.clientY - translateY;
-
-                } else if (e.touches.length === 2) {
-                // 双指缩放
-                isPinching = true;
-                isDragging = false;
-
-                const touch1 = e.touches[0];
-                const touch2 = e.touches[1];
-                initialDistance = getTouchDistance(touch1, touch2);
-                initialScale = scale;
-                }
-
-                e.preventDefault();
-            }, { passive: false });
-
-            mermaidElement.addEventListener('touchmove', (e) => {
-                if (e.touches.length === 1 && isDragging && !isPinching) {
-                // 单指拖动
-                const touch = e.touches[0];
-                translateX = touch.clientX - startX;
-                translateY = touch.clientY - startY;
-                updateTransform();
-
-                } else if (e.touches.length === 2 && isPinching) {
-                // 双指缩放
-                const touch1 = e.touches[0];
-                const touch2 = e.touches[1];
-                const currentDistance = getTouchDistance(touch1, touch2);
-
-                if (initialDistance > 0) {
-                    const newScale = Math.min(Math.max(
-                    initialScale * (currentDistance / initialDistance),
-                    0.3
-                    ), 4);
-                    scale = newScale;
-                    updateTransform();
-                }
-                }
-
-                e.preventDefault();
-            }, { passive: false });
-
-            mermaidElement.addEventListener('touchend', (e) => {
-                // 重置状态
-                if (e.touches.length === 0) {
-                isDragging = false;
-                isPinching = false;
-                initialDistance = 0;
-
-                // 延迟重置isTouch，避免鼠标事件立即触发
-                setTimeout(() => {
-                    isTouch = false;
-                }, 100);
-                } else if (e.touches.length === 1 && isPinching) {
-                // 从双指变为单指，切换为拖动模式
-                isPinching = false;
-                isDragging = true;
-
-                const touch = e.touches[0];
-                startX = touch.clientX - translateX;
-                startY = touch.clientY - translateY;
-                }
-
-                updateTransform();
-            });
-
-            mermaidElement.addEventListener('touchcancel', (e) => {
-                isDragging = false;
-                isPinching = false;
-                initialDistance = 0;
-
-                setTimeout(() => {
-                isTouch = false;
-                }, 100);
-
-                updateTransform();
-            });
-
-            // Enhanced wheel zoom with better center point handling
-            container.addEventListener('wheel', (e) => {
-                e.preventDefault();
-                const rect = container.getBoundingClientRect();
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-
-                const delta = e.deltaY > 0 ? 0.9 : 1.1;
-                const newScale = Math.min(Math.max(scale * delta, 0.3), 4);
-
-                // Adjust translation to zoom towards center
-                if (newScale !== scale) {
-                const scaleDiff = newScale / scale;
-                translateX = translateX * scaleDiff;
-                translateY = translateY * scaleDiff;
-                scale = newScale;
-
-                if (scale <= 1) {
-                    translateX = 0;
-                    translateY = 0;
-                }
-
-                updateTransform();
-                }
-            });
-
-            // Initialize display
-            updateTransform();
-            });
+    <!-- СКРИПТЫ -->
+    <script>
+        // Модальное окно
+        function showModal(title, text) {
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalText').textContent = text;
+            document.getElementById('modal').classList.add('active');
         }
 
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize Mermaid
-            mermaid.initialize({ 
-                startOnLoad: true, 
-                theme: 'base',
-                themeVariables: {
-                    primaryColor: '#f8fafc',
-                    primaryTextColor: '#0f172a',
-                    primaryBorderColor: '#1e293b',
-                    lineColor: '#475569',
-                    secondaryColor: '#e2e8f0',
-                    tertiaryColor: '#f1f5f9',
-                    background: '#ffffff',
-                    mainBkg: '#f8fafc',
-                    secondBkg: '#e2e8f0',
-                    tertiaryBkg: '#f1f5f9',
-                    nodeBorder: '#1e293b',
-                    clusterBkg: '#f8fafc',
-                    clusterBorder: '#475569',
-                    defaultLinkColor: '#475569',
-                    titleColor: '#0f172a',
-                    edgeLabelBackground: '#ffffff',
-                    nodeTextColor: '#0f172a',
-                    // Enhanced contrast colors for different node types
-                    cScale0: '#e3f2fd',
-                    cScale1: '#f3e5f5', 
-                    cScale2: '#e8f5e8',
-                    cScale3: '#fff3e0',
-                    cScale4: '#fce4ec',
-                    cScale5: '#f5f5f5'
-                },
-                flowchart: {
-                    useMaxWidth: false,
-                    htmlLabels: true,
-                    curve: 'basis',
-                    padding: 20,
-                    nodeSpacing: 50,
-                    rankSpacing: 80,
-                    diagramPadding: 20
-                },
-                fontSize: 13,
-                fontFamily: 'Inter, sans-serif'
-            });
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+        }
+
+        // Закрытие по клику вне окна
+        document.getElementById('modal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        // Подписка
+        function handleSubscribe(e) {
+            e.preventDefault();
+            const email = document.getElementById('emailInput').value;
             
-            // Initialize Mermaid Controls
-            initializeMermaidControls();
+            // Проверка e-mail
+            if (!email.includes('@') || !email.includes('.')) {
+                showModal('Ошибка', 'Пожалуйста, введите корректный e-mail адрес.');
+                return;
+            }
+            
+            // Сохраняем в localStorage (пока нет сервера)
+            let subscribers = JSON.parse(localStorage.getItem('subscribers') || '[]');
+            
+            if (subscribers.includes(email)) {
+                showModal('Уже подписаны!', 'Вы уже в списке подписчиков. Спасибо за интерес!');
+                return;
+            }
+            
+            subscribers.push(email);
+            localStorage.setItem('subscribers', JSON.stringify(subscribers));
+            
+            // Очищаем поле
+            document.getElementById('emailInput').value = '';
+            
+            showModal(
+                '✓ Подписка оформлена!', 
+                'Спасибо, ' + email + '! Вы добавлены в список. Как только мы запустим рассылку — вы получите первую инструкцию.\n\nПока что следите за обновлениями в группе ВКонтакте (ссылка скоро появится).'
+            );
+        }
 
-            // Smooth scrolling for TOC links
-            document.querySelectorAll('.toc-link').forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const targetId = this.getAttribute('href').substring(1);
-                    const targetElement = document.getElementById(targetId);
-                    if (targetElement) {
-                        targetElement.scrollIntoView({ 
-                            behavior: 'smooth',
-                            block: 'start'
-                        });
-                    }
-                });
+        // Плавная прокрутка для навигации
+        document.querySelectorAll('.nav a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
             });
+        });
 
-            // Highlight active section in TOC
-            window.addEventListener('scroll', function() {
-                const sections = document.querySelectorAll('section[id], div[id]');
-                const tocLinks = document.querySelectorAll('.toc-link');
-                
-                let currentSection = '';
-                sections.forEach(section => {
-                    const sectionTop = section.offsetTop;
-                    const sectionHeight = section.offsetHeight;
-                    if (window.scrollY >= sectionTop - 200) {
-                        currentSection = section.getAttribute('id');
-                    }
-                });
-
-                tocLinks.forEach(link => {
-                    link.classList.remove('text-white', 'font-semibold');
-                    link.classList.add('text-slate-300');
-                    if (link.getAttribute('href') === '#' + currentSection) {
-                        link.classList.remove('text-slate-300');
-                        link.classList.add('text-white', 'font-semibold');
-                    }
-                });
+        // Анимация статистики при загрузке
+        window.addEventListener('load', function() {
+            const stats = document.querySelectorAll('.stat-box .number');
+            stats.forEach((stat, index) => {
+                setTimeout(() => {
+                    stat.style.transform = 'scale(1.1)';
+                    setTimeout(() => {
+                        stat.style.transform = 'scale(1)';
+                    }, 200);
+                }, index * 200);
             });
         });
     </script>
-  
 
-</body></html>
+</body>
+</html>
