@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Генератор постов ВК | Морской помощник</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #e8f0f8 0%, #d4e4f0 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #1a5f9e;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #5a6c7d;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            color: #2c3e50;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        select, input, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e6ed;
+            border-radius: 10px;
+            font-size: 1em;
+            font-family: inherit;
+        }
+        textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+        button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #e8913a, #f5b76a);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 10px 0;
+        }
+        .result {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+            display: none;
+        }
+        .result.show {
+            display: block;
+        }
+        .copy-btn {
+            background: #1a5f9e;
+            margin-top: 10px;
+        }
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 30px;
+            color: #1a5f9e;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📝 Генератор постов ВК</h1>
+        <p class="subtitle">Создавайте посты для группы «Морской помощник»</p>
+
+        <div class="form-group">
+            <label>Тема поста</label>
+            <select id="topic">
+                <option value="czn">Центр занятости — пособия</option>
+                <option value="grant">Социальный контракт — гранты</option>
+                <option value="tax">Налоги и декларации</option>
+                <option value="docs">Документы в МФЦ</option>
+                <option value="vacation">Отпускные — расчёт</option>
+                <option value="custom">Своя тема</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Заголовок (если своя тема)</label>
+            <input type="text" id="customTitle" placeholder="Введите заголовок">
+        </div>
+
+        <div class="form-group">
+            <label>Ключевые факты (через запятую)</label>
+            <input type="text" id="facts" placeholder="Например: пособие 12000, срок 10 дней, документы 3 штуки">
+        </div>
+
+        <div class="form-group">
+            <label>Тон поста</label>
+            <select id="tone">
+                <option value="info">Информационный</option>
+                <option value="warning">Предупреждающий</option>
+                <option value="motivation">Мотивирующий</option>
+                <option value="question">Вопросный</option>
+            </select>
+        </div>
+
+        <button onclick="generatePost()">✨ Сгенерировать пост</button>
+
+        <div class="result" id="result">
+            <h3>Готовый пост:</h3>
+            <textarea id="postText" readonly></textarea>
+            <button class="copy-btn" onclick="copyPost()">📋 Копировать</button>
+            <p style="color: #5a6c7d; font-size: 0.9em; margin-top: 10px;">
+                Вставьте в ВКонтакте. Хештеги добавлены автоматически.
+            </p>
+        </div>
+
+        <a href="index.html" class="back-link">← Вернуться на главную</a>
+    </div>
+
+    <script>
+        const templates = {
+            czn: {
+                title: '💼 Как встать на учёт в Центре занятости',
+                body: 'Моряки, внимание! В отпуске не забудьте оформить пособие по безработице.\n\n📋 Что нужно:\n• Паспорт\n• Трудовая книжка/СТД-Р\n• Справка о среднем заработке\n• СНИЛС и ИНН\n\n⏰ Сроки:\nВстаём на учёт в первый день отпуска. Пособие назначают через 10 дней.\n\n💰 Размер:\nОт 1 500 до 12 000 ₽ в месяц (зависит от региона и стажа).',
+                tags: '#моряк #центрзанятости #пособие #безработица #документы #ела буга'
+            },
+            grant: {
+                title: '🎯 Социальный контракт: 350 000 ₽ на бизнес',
+                body: 'Мечтаете открыть своё дело? Государство даст до 350 000 ₽!\n\n✅ Условия:\n• Статус безработного\n• Бизнес-план\n• Доход ниже прожиточного минимума\n\n📍 Куда подавать:\nУправление социальной защиты по месту жительства\n\n⏳ Срок рассмотрения:\nДо 30 дней\n\nИдея для моряка: образовательный сайт, консультации, курсы цифровой грамотности.',
+                tags: '#грант #соцконтракт #бизнес #моряк #предпринимательство #ела буга #татарстан'
+            },
+            tax: {
+                title: '⚠️ Налоги: что должен знать каждый моряк',
+                body: 'До 30 апреля — срок подачи декларации 3-НДФЛ!\n\n📝 Кто должен подать:\n• Имеете дополнительный доход\n• Продали имущество\n• Получили наследство\n• Хотите вернуть вычет\n\n💻 Как подать:\nЧерез личный кабинет ФНС или Госуслуги\n\n❌ Штраф за просрочку:\n5% от суммы налога за каждый месяц',
+                tags: '#налоги #ндфл #декларация #фнс #моряк #штраф #документы'
+            },
+            docs: {
+                title: '📄 Справки в МФЦ: чек-лист для моряка',
+                body: 'Собираете документы для пособий? Вот полный список справок из МФЦ:\n\n✅ Справка о составе семьи\n✅ Справка о доходах\n✅ Выписка из ЕГРН\n✅ Заверенные копии документов\n\n💡 Совет:\nЗапишитесь через Госуслуги заранее — очереди в МФЦ большие!\n\n⏰ Время оформления:\nОт 3 до 10 рабочих дней',
+                tags: '#мфц #справки #документы #моряк #госуслуги #очередь #ела буга'
+            },
+            vacation: {
+                title: '💰 Сколько вы получите в отпуск?',
+                body: 'Рассчитайте отпускные за 2 минуты!\n\n📊 Формула:\nСредний дневной заработок × количество дней + северная надбавка - НДФЛ 13%\n\n🧮 Пример:\nЗарплата 80 000 ₽, 60 дней отпуска, надбавка 50%\n= 80 000 / 29.3 × 60 + 50% - 13%\n= ~90 000 ₽ чистыми\n\n🔗 Калькулятор на нашем сайте!',
+                tags: '#отпускные #калькулятор #моряк #зарплата #север #надбавка #деньги'
+            }
+        };
+
+        function generatePost() {
+            const topic = document.getElementById('topic').value;
+            const customTitle = document.getElementById('customTitle').value;
+            const facts = document.getElementById('facts').value;
+            const tone = document.getElementById('tone').value;
+            
+            let template = templates[topic] || templates.czn;
+            
+            let title = customTitle || template.title;
+            let body = template.body;
+            
+            // Добавляем факты
+            if (facts) {
+                body += '\n\n📌 Важно:\n' + facts.split(',').map(f => '• ' + f.trim()).join('\n');
+            }
+            
+            // Добавляем призыв к действию
+            const cta = {
+                info: '\n\nℹ️ Подробнее на нашем сайте: trainingsw75-cloud.github.io',
+                warning: '\n\n⚠️ Не откладывайте! Проверьте документы сейчас.',
+                motivation: '\n\n💪 Вы справитесь! Мы поможем с любыми документами.',
+                question: '\n\n❓ Есть вопросы? Задавайте в комментариях или в чате на сайте!'
+            };
+            
+            body += cta[tone] || cta.info;
+            
+            // Добавляем теги
+            body += '\n\n' + template.tags;
+            
+            const fullPost = title + '\n\n' + body;
+            
+            document.getElementById('postText').value = fullPost;
+            document.getElementById('result').classList.add('show');
+        }
+
+        function copyPost() {
+            const text = document.getElementById('postText');
+            text.select();
+            document.execCommand('copy');
+            alert('✅ Пост скопирован! Вставьте в ВКонтакте.');
+        }
+    </script>
+</body>
+</html>

@@ -4,11 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Морской помощник — бесплатные инструкции по документам для моряков и вахтовиков. AI генератор контента, психолог, калькулятор отпускных, тесты.">
-    <meta name="keywords" content="моряк, вахтовик, документы, AI, YandexGPT, Kandinsky, GigaChat, психолог, отпускные, госуслуги">
     <title>Морской помощник — Документы и AI для моряков</title>
     <style>
         *{margin:0;padding:0;box-sizing:border-box}
-        :root{--primary:#1a5f9e;--primary-dark:#0d3d5c;--accent:#e8913a;--accent-light:#f5b76a;--dark:#1a2332;--light:#f8fafc;--card:rgba(255,255,255,0.95);--text:#2c3e50;--text-light:#5a6c7d;--success:#27ae60;--warning:#e67e22;--ai-purple:#3f51b5;--ai-pink:#e91e63}
+        :root{--primary:#1a5f9e;--primary-dark:#0d3d5c;--accent:#e8913a;--accent-light:#f5b76a;--dark:#1a2332;--light:#f8fafc;--card:rgba(255,255,255,0.95);--text:#2c3e50;--text-light:#5a6c7d;--ai-purple:#3f51b5;--ai-pink:#e91e63}
         body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:linear-gradient(135deg,#e8f0f8 0%,#d4e4f0 100%);color:var(--text);line-height:1.6;min-height:100vh}
         .header{background:linear-gradient(135deg,var(--primary-dark) 0%,var(--primary) 50%,#2a7cc7 100%);color:white;padding:40px 20px;text-align:center;position:relative;overflow:hidden}
         .header::before{content:'⚓';position:absolute;font-size:200px;opacity:0.05;top:-50px;right:-30px}
@@ -241,6 +240,8 @@
             </div>
         </div>
 
+        <h2 class="section-title" id="ai">🤖 AI Инструменты</h2>
+
         <!-- AI ГЕНЕРАТОР -->
         <div class="generator-section ai-purple" id="ai-generator">
             <h2 style="color:#3f51b5;text-align:center;margin-bottom:20px">🤖 AI Генератор контента</h2>
@@ -360,32 +361,26 @@
             </div>
         </div>
 
-        <!-- ДАЙДЖЕСТ -->
-        <div class="digest-section" id="digest">
-            <h2 style="color:var(--primary-dark);text-align:center;margin-bottom:20px">📰 Дайджест моряка</h2>
-            <p style="text-align:center;color:var(--text-light);margin-bottom:25px">Актуальные новости и изменения</p>
-            
+        <h2 class="section-title" id="digest">📰 Дайджест моряка</h2>
+        <div class="digest-section">
             <div class="news-item">
                 <h4>🆕 Изменения в оформлении пособий</h4>
                 <p>С 1 мая 2026 года упростили процедуру получения пособия по безработице для моряков. Теперь не нужна справка с судна — достаточно трудового договора.</p>
                 <span class="tag">Пособия</span>
                 <span class="tag">ЦЗН</span>
             </div>
-            
             <div class="news-item">
                 <h4>💰 Новый размер социального контракта</h4>
                 <p>В Татарстане увеличили максимальную сумму социального контракта с 350 000 до 400 000 ₽ для жителей прибрежных городов.</p>
                 <span class="tag">Гранты</span>
                 <span class="tag">Татарстан</span>
             </div>
-            
             <div class="news-item">
                 <h4>📱 Госуслуги обновили приложение</h4>
                 <p>Новая версия приложения Госуслуги позволяет подавать документы на загранпаспорт без посещения МФЦ. Полезно для моряков!</p>
                 <span class="tag">Госуслуги</span>
                 <span class="tag">Документы</span>
             </div>
-            
             <div class="news-item">
                 <h4>⚠️ Новые штрафы за неоформленные дроны</h4>
                 <p>ФАВТ ужесточил контроль. Штраф за незарегистрированный БПЛА теперь от 50 000 ₽. Проверьте регистрацию вашего дрона.</p>
@@ -394,11 +389,8 @@
             </div>
         </div>
 
-        <!-- ГЕНЕРАТОР ПОСТОВ ВК -->
-        <div class="generator-section" id="generator">
-            <h2 style="color:var(--primary-dark);text-align:center;margin-bottom:20px">📝 Генератор постов ВК</h2>
-            <p style="text-align:center;color:var(--text-light);margin-bottom:25px">Создавайте посты для группы за 1 минуту</p>
-            
+        <h2 class="section-title" id="generator">📝 Генератор постов ВК</h2>
+        <div class="generator-section">
             <div class="form-group">
                 <label>Тема поста</label>
                 <select id="postTopic">
@@ -410,17 +402,14 @@
                     <option value="custom">Своя тема</option>
                 </select>
             </div>
-            
             <div class="form-group">
                 <label>Заголовок (если своя тема)</label>
                 <input type="text" id="postCustomTitle" placeholder="Введите заголовок">
             </div>
-            
             <div class="form-group">
                 <label>Ключевые факты (через запятую)</label>
                 <input type="text" id="postFacts" placeholder="Например: пособие 12000, срок 10 дней">
             </div>
-            
             <div class="form-group">
                 <label>Тон поста</label>
                 <select id="postTone">
@@ -430,9 +419,7 @@
                     <option value="question">Вопросный</option>
                 </select>
             </div>
-            
             <button onclick="generatePost()" class="card-btn" style="width:100%">✨ Сгенерировать пост</button>
-            
             <div class="result-box" id="postResult">
                 <h3>Готовый пост:</h3>
                 <textarea id="postText" readonly style="width:100%;min-height:200px;padding:15px;border:1px solid #ddd;border-radius:10px;font-family:inherit"></textarea>
@@ -440,32 +427,26 @@
             </div>
         </div>
 
-        <!-- АВТОПОСТИНГ ВК -->
-        <div class="vk-section" id="vk">
-            <h2>📱 Автопостинг ВКонтакте</h2>
+        <h2 class="section-title" id="vk">📱 Автопостинг ВКонтакте</h2>
+        <div class="vk-section">
+            <h2>Автопостинг ВКонтакте</h2>
             <p>Настройте автоматическую публикацию постов в вашу группу ВК.</p>
-            
             <div class="form-group">
                 <label style="color:white;opacity:0.9">Токен доступа ВК (получить на vk.com/dev)</label>
                 <input type="text" id="vkToken" class="vk-token-input" placeholder="vk1.a.xxxxxxxxxxxxxxxxxxxxxxxxxx">
             </div>
-            
             <div class="form-group">
                 <label style="color:white;opacity:0.9">ID группы ВК (без минуса)</label>
                 <input type="number" id="vkGroupId" class="vk-token-input" placeholder="123456789">
             </div>
-            
             <div class="form-group">
                 <label style="color:white;opacity:0.9">Текст поста</label>
                 <textarea id="vkMessage" class="vk-token-input" placeholder="Введите текст поста..."></textarea>
             </div>
-            
             <button onclick="postToVK()" class="vk-btn">🚀 Опубликовать в ВК</button>
-            
             <div id="vkResult" style="margin-top:15px;padding:15px;background:rgba(255,255,255,0.2);border-radius:10px;display:none">
                 <p id="vkStatus"></p>
             </div>
-            
             <p style="font-size:0.85em;margin-top:15px;opacity:0.8">
                 💡 <strong>Как получить токен:</strong> vk.com/dev → Создать приложение → Настройки → Доступы → wall,groups
             </p>
@@ -566,420 +547,7 @@
     </div>
     <button onclick="toggleChat()" id="chat-button">💬 Помощник</button>
 
-    <script>
-        // ПОДПИСКА
-        function handleSubscribe(e){
-            e.preventDefault();
-            const email=document.getElementById('emailInput').value;
-            if(!email.includes('@')){alert('Введите корректный e-mail');return}
-            let subscribers=JSON.parse(localStorage.getItem('subscribers')||'[]');
-            if(subscribers.includes(email)){alert('Вы уже подписаны!');return}
-            subscribers.push(email);
-            localStorage.setItem('subscribers',JSON.stringify(subscribers));
-            document.getElementById('emailInput').value='';
-            alert('✓ Подписка оформлена! Первые инструкции придут на '+email)
-        }
-
-        // ЧАТ-БОТ
-        function toggleChat(){
-            const widget=document.getElementById('chat-widget');
-            const button=document.getElementById('chat-button');
-            if(widget.style.display==='none'||widget.style.display===''){
-                widget.style.display='block';
-                button.style.display='none'
-            }else{
-                widget.style.display='none';
-                button.style.display='block'
-            }
-        }
-        function addMessage(text,isBot){
-            const messages=document.getElementById('chat-messages');
-            const div=document.createElement('div');
-            div.style.cssText=isBot?'background:white;padding:12px;border-radius:12px;margin-bottom:10px;font-size:0.9em;box-shadow:0 1px 3px rgba(0,0,0,0.1)':'background:#e3f2fd;padding:12px;border-radius:12px;margin-bottom:10px;font-size:0.9em;margin-left:20px';
-            div.innerHTML='<strong style="color:'+(isBot?'#1a5f9e':'#e8913a')+';">'+(isBot?'Бот':'Вы')+':</strong><br>'+text;
-            messages.appendChild(div);
-            messages.scrollTop=messages.scrollHeight
-        }
-        function quickAsk(topic){
-            document.getElementById('chat-input').value=topic;
-            sendMessage()
-        }
-        function sendMessage(){
-            const input=document.getElementById('chat-input');
-            const msg=input.value.trim();
-            if(!msg)return;
-            addMessage(msg,false);
-            input.value='';
-            setTimeout(()=>{
-                const lower=msg.toLowerCase();
-                let reply='Извините, я пока учусь. Посмотрите разделы сайта или подпишитесь на обновления.';
-                if(lower.includes('отпуск')||lower.includes('отпускные')||lower.includes('зарплат')){
-                    reply='💰 <a href="finance-calc.html" style="color:#1a5f9e">Откройте калькулятор</a><br><br>Формула: средний дневной заработок × количество дней + северная надбавка - НДФЛ 13%.<br><br>Для моряков обычно 60 дней отпуска.'
-                }else if(lower.includes('цзн')||lower.includes('центр занятости')||lower.includes('безработ')){
-                    reply='📋 Документы для ЦЗН:<br>• Паспорт<br>• Трудовая книжка/СТД-Р<br>• Справка о среднем заработке<br>• СНИЛС, ИНН<br><br>Встают на учёт в первый день отпуска. Пособие через 10 дней.'
-                }else if(lower.includes('грант')||lower.includes('соцконтракт')||lower.includes('350')||lower.includes('бизнес')){
-                    reply='🎯 Социальный контракт — до 350 000 ₽<br><br>Условия:<br>• Статус безработного<br>• Бизнес-план<br>• Доход ниже прожиточного минимума<br><br>Подаётся в соцзащиту по месту жительства.'
-                }else if(lower.includes('налог')||lower.includes('ндфл')||lower.includes('декларац')||lower.includes('фнс')){
-                    reply='📊 Налоги для моряков:<br>• 3-НДФЛ: до 30 апреля следующего года<br>• Проверить задолженность: nalog.gov.ru<br>• Вычеты: имущественный, социальный<br><br>Работодатель обычно платит НДФЛ сам.'
-                }else if(lower.includes('тест')||lower.includes('экзамен')||lower.includes('проверка')){
-                    reply='🎓 <a href="exam-test.html" style="color:#1a5f9e">Пройдите тест</a><br><br>5 вопросов о цифровой грамотности. Проверьте, готовы ли вы к отпуску!'
-                }else if(lower.includes('привет')||lower.includes('здравств')){
-                    reply='⚓ Привет, моряк! Я помогу с документами в отпуске. Спрашивайте про отпускные, ЦЗН, гранты, налоги — или пройдите тест!'
-                }else if(lower.includes('психолог')||lower.includes('стресс')||lower.includes('тревога')){
-                    reply='🧠 <a href="#ai-psychologist" style="color:#1a5f9e">AI Психолог</a> готов помочь!<br><br>Выберите ситуацию: стресс в рейсе, разлука с семьёй, адаптация, финансы, страх будущего.<br><br>Или звоните бесплатно: 8-800-2000-122'
-                }else if(lower.includes('ai')||lower.includes('генератор')||lower.includes('пост')){
-                    reply='🤖 <a href="#ai-generator" style="color:#1a5f9e">AI Генератор</a> создаёт контент через YandexGPT, Kandinsky, GigaChat.<br><br>Выберите сервис, тему, формат — и получите готовый пост!'
-                }
-                addMessage(reply,true)
-            },500)
-        }
-
-        // AI ГЕНЕРАТОР
-        const aiTemplates={
-            yandex:{
-                name:'YandexGPT',
-                intro:'Сгенерировано с помощью YandexGPT (yandex.ru/gpt)',
-                post:(topic)=>'🔥 '+topic+'\n\nКратко и по делу:\n\n✅ Главное, что нужно знать\n✅ 3 шага к результату\n✅ Полезный лайфхак\n\nЧитайте подробнее на нашем сайте!',
-                article:(topic)=>'📖 '+topic+': полное руководство\n\nВведение:\nПроблема, с которой сталкиваются многие моряки...\n\nРаздел 1: Подготовка\n• Документ 1\n• Документ 2\n• Сроки\n\nРаздел 2: Процесс\n• Шаг 1\n• Шаг 2\n• Шаг 3\n\nРаздел 3: Итог\nЧто получите в результате\n\nЗаключение:\nНе откладывайте! Начните сегодня.',
-                instruction:(topic)=>'📋 Инструкция: '+topic+'\n\nШаг 1: Подготовка документов\n[список]\n\nШаг 2: Подача заявления\n[где и как]\n\nШаг 3: Ожидание результата\n[сроки]\n\nШаг 4: Получение\n[что делать дальше]\n\n❗ Важно: проверьте актуальность на официальных сайтах!',
-                script:(topic)=>'🎬 Сценарий видео: '+topic+'\n\n[0:00-0:30] Приветствие + проблема\n"Здравствуйте, моряки! Сегодня разберём..."\n\n[0:30-2:00] Основная часть\n• Пункт 1\n• Пункт 2\n• Пункт 3\n\n[2:00-2:30] Лайфхак\n"А вот что мало кто знает..."\n\n[2:30-3:00] Призыв к действию\n"Подписывайтесь, ставьте лайк, задавайте вопросы!"'
-            },
-            kandinsky:{
-                name:'Kandinsky',
-                intro:'Картинка будет сгенерирована в Kandinsky (fusionbrain.ai)',
-                prompt:(topic)=>'Морская тема: '+topic+'. Стиль: инфографика, яркие цвета, понятные иконки, текст читаемый.'
-            },
-            gigachat:{
-                name:'GigaChat',
-                intro:'Сгенерировано с помощью GigaChat (developers.sber.ru/gigachat)',
-                post:(topic)=>'📌 '+topic+'\n\nАнализ ситуации:\nНа основании опыта 200 000+ моряков в РФ...\n\nКлючевые факторы:\n1. Фактор А — влияет на сроки\n2. Фактор Б — влияет на сумму\n3. Фактор В — влияет на результат\n\nРекомендации:\n• Действие 1 (срочно)\n• Действие 2 (важно)\n• Действие 3 (планово)\n\nИсточники: официальные сайты госорганов.',
-                article:(topic)=>'📚 Глубокий анализ: '+topic+'\n\n1. Правовая база\nУпомянуть законы, приказы, постановления\n\n2. Статистика\nЦифры, тренды, изменения за последние годы\n\n3. Практические кейсы\nРеальные истории моряков (анонимно)\n\n4. Экспертное мнение\nЧто говорят юристы, бухгалтеры, кадровики\n\n5. Прогноз\nЧто изменится в ближайшее время\n\nВыводы и рекомендации.',
-                instruction:(topic)=>'📑 Детальная инструкция: '+topic+'\n\nПодготовительный этап:\n□ Пункт 1\n□ Пункт 2\n□ Пункт 3\n\nОсновной этап:\n1. Действие...\n   • Поддействие 1\n   • Поддействие 2\n2. Действие...\n3. Действие...\n\nЗавершающий этап:\n□ Проверка\n□ Подтверждение\n□ Сохранение документов\n\nЧастые ошибки:\n❌ Ошибка 1 — как избежать\n❌ Ошибка 2 — как избежать\n❌ Ошибка 3 — как избежать',
-                script:(topic)=>'🎥 Профессиональный сценарий: '+topic+'\n\nКАДР 1 (0:00-0:15)\nВИД: Заставка с логотипом\nЗВУК: Фоновая музыка\nТЕКСТ: "Морской помощник представляет..."\n\nКАДР 2 (0:15-0:45)\nВИД: Спикер в кадре / скриншоты\nЗВУК: Голос за кадром\nТЕКСТ: Введение в тему\n\nКАДР 3-5 (0:45-3:00)\nВИД: Инфографика, демонстрация\nЗВУК: Объяснение с примерами\nТЕКСТ: Основной контент\n\nКАДР 6 (3:00-3:30)\nВИД: Призыв к действию\nЗВУК: Энергично\nТЕКСТ: "Подписывайтесь, комментируйте!"\n\nКАДР 7 (3:30-3:45)\nВИД: Контакты, ссылки\nЗВУК: Музыка затихает\nТЕКСТ: Сайт, соцсети, e-mail'
-            }
-        };
-
-        function generateAIContent(){
-            const service=document.getElementById('aiService').value;
-            const topic=document.getElementById('aiTopic').value||'Как оформить документы моряку';
-            const format=document.getElementById('aiFormat').value;
-            const tone=document.getElementById('aiTone').value;
-            const template=aiTemplates[service];
-            let result='';
-            if(service==='kandinsky'){
-                result='🎨 '+template.name+'\n\n'+template.intro+'\n\nПромпт для генерации картинки:\n"'+template.prompt(topic)+'"\n\n🔗 Откройте: https://fusionbrain.ai\nВставьте промпт, выберите стиль "Инфографика" или "Реализм", нажмите "Создать".\n\n💡 Совет: Сгенерированную картинку можно использовать как обложку для поста ВК.'
-            }else{
-                let content=template[format]?template[format](topic):template.post(topic);
-                if(tone==='simple'){
-                    content=content.replace(/📖|📚|📑/g,'📋').replace(/анализ|глубокий|детальный/g,'простой')
-                }else if(tone==='professional'){
-                    content='📊 Профессиональный обзор\n\n'+content
-                }else if(tone==='friendly'){
-                    content='👋 Друзья, привет!\n\n'+content.replace(/Введение|Анализ/g,'Давайте разберёмся')
-                }else if(tone==='strict'){
-                    content='⚠️ ОФИЦИАЛЬНАЯ ИНФОРМАЦИЯ\n\n'+content
-                }
-                result='✨ '+template.name+'\n\n'+template.intro+'\n\n'+content+'\n\n---\n💡 Доработайте вручную или вставьте в '+template.name+' для улучшения.\n🔗 '+(service==='yandex'?'yandex.ru/gpt':'developers.sber.ru/gigachat')
-            }
-            document.getElementById('aiOutput').textContent=result;
-            document.getElementById('aiResult').classList.add('show')
-        }
-        function copyAIResult(){
-            const text=document.getElementById('aiOutput');
-            const range=document.createRange();
-            range.selectNode(text);
-            window.getSelection().removeAllRanges();
-            window.getSelection().addRange(range);
-            document.execCommand('copy');
-            alert('✅ Контент скопирован!')
-        }
-        function postAIToVK(){
-            const text=document.getElementById('aiOutput').textContent;
-            document.getElementById('vkMessage').value=text;
-            document.getElementById('vk').scrollIntoView({behavior:'smooth'});
-            alert('✅ Текст перенесён в форму автопостинга ВК. Заполните токен и ID группы.')
-        }
-
-        // AI ПСИХОЛОГ
-        const psychResponses={
-            stress:{
-                title:'😰 Стресс в рейсе',
-                advice:'Понимаем, в рейсе тяжело. Вот что помогает:\n\n1. 🌬️ Дыхательная техника\n   Вдох 4 сек → задержка 4 сек → выдох 6 сек. Повторите 5 раз.\n\n2. 📝 Дневник эмоций\n   Записывайте мысли в телефоне. Это разгружает голову.\n\n3. 🎧 Аудиокниги/подкасты\n   Отвлекают от тревожных мыслей.\n\n4. 💪 Физическая активность\n   Даже зарядка в каюте помогает снять напряжение.\n\n5. 🤝 Поговорите с коллегой\n   Иногда просто выговориться — уже помощь.\n\nПомните: стресс — это нормальная реакция. Не бойтесь просить поддержки.'
-            },
-            family:{
-                title:'💔 Разлука с семьёй',
-                advice:'Разлука — испытание для отношений. Вот стратегии:\n\n1. 📞 Регулярные звонки\n   Договоритесь о времени. Даже 10 минут в день важны.\n\n2. 💌 Сюрпризы из рейса\n   Отправьте открытку, фото, видео. Покажите, что думаете о них.\n\n3. 🗣️ Обсудите ожидания\n   Поговорите перед рейсом: как часто звонить, что обсуждать.\n\n4. 🤗 Вернувшись домой:\n   • Не критикуйте сразу — всё изменилось\n   • Слушайте, что произошло за время разлуки\n   • Планируйте время вместе заранее\n\n5. 👨‍👩‍👧 Вовлекайте детей\n   Рассказывайте про работу, показывайте фото корабля.\n\nЕсли конфликты накапливаются — обратитесь к семейному психологу. Это нормально.'
-            },
-            adaptation:{
-                title:'🔄 Адаптация после рейса',
-                advice:'Возвращение дома — тоже стресс. Вот как справиться:\n\n1. ⏳ Дайте себе время\n   Не планируйте важных дел первые 3-5 дней.\n\n2. 🔄 Медленный переход\n   Режим сна, еда, активность — меняйте постепенно.\n\n3. 🗓️ Совместное планирование\n   Обсудите с семьёй планы на отпуск. Будьте готовы к компромиссам.\n\n4. 🧘 Личное пространство\n   Нужно время для себя — это нормально, не обида.\n\n5. 📋 Не всё сразу\n   Документы, дела, встречи — распределите по неделям.\n\nЧастая ошибка: пытаться "наверстать" всё за первую неделю. Не надо.'
-            },
-            money:{
-                title:'💰 Финансовый стресс',
-                advice:'Деньги — главный стрессор. Давайте разберёмся:\n\n1. 📊 Счёт доходов и расходов\n   Запишите ВСЕ траты за месяц. Удивитесь, куда уходит.\n\n2. 🎯 Приоритеты\n   Обязательные: жильё, еда, лечение\n   Отложить: развлечения, импульсные покупки\n\n3. 💰 План "Финансовая подушка"\n   Цель: 3-6 месяцев расходов на сбережениях\n   Начните с 10% от каждой зарплаты\n\n4. 📈 Дополнительный доход\n   • Курсы, консультации (ваш опыт ценен!)\n   • Сезонная работа в отпуск\n   • Удалённая работа через интернет\n\n5. 🆘 Если долги:\n   • Не берите новые кредиты для погашения старых\n   • Обратитесь в банк за реструктуризацией\n   • Бесплатная юридическая помощь: 8-800-2000-122\n\nПомните: финансовые проблемы решаемы. Главное — начать действовать.'
-            },
-            future:{
-                title:'🌫️ Страх будущего',
-                advice:'Неопределённость пугает. Вот как справиться:\n\n1. 🎯 Конкретика вместо тумана\n   "Я останусь без работы" → "Я найду 3 варианта работы за месяц"\n\n2. 📋 План Б\n   Что если...? Запишите ответы. План снижает тревогу.\n\n3. 🎓 Обучение\n   Новые навыки = уверенность. Бесплатные курсы в ЦЗН.\n\n4. 🤝 Сеть контактов\n   Связи помогают найти работу. Поддерживайте знакомства.\n\n5. 🏥 Здоровье\n   Профосмотры, страховка, здоровый образ жизни — инвестиция в будущее.\n\nВажно: будущее не приходит само. Но шаги к нему можно делать сегодня.'
-            },
-            custom:{
-                title:'✏️ Ваша ситуация',
-                advice:'Спасибо, что поделились. Вот универсальные шаги:\n\n1. 🗣️ Выговоритесь\n   Расскажите другу, напишите в дневник, обратитесь к психологу.\n\n2. 🔍 Разберите проблему\n   Что конкретно беспокоит? Когда началось? Что пробовали?\n\n3. 🎯 Один шаг\n   Не надо всё решать сразу. Выберите ОДНО действие на сегодня.\n\n4. 🤝 Поддержка\n   Вы не одни. Многие моряки проходят через это.\n\n5. 📞 Профессиональная помощь\n   Если тяжело справиться самому — это нормально обратиться за помощью.\n\nТелефон доверия: 8-800-2000-122 (круглосуточно, бесплатно, анонимно)'
-            }
-        };
-
-        function setPsychTopic(topic){
-            const response=psychResponses[topic];
-            if(response){
-                document.getElementById('psychInput').value='['+response.title+']\n\nОпишите свою ситуацию подробнее, если нужно...'
-            }
-        }
-        function getPsychSupport(){
-            const input=document.getElementById('psychInput').value;
-            let topic='custom';
-            const lower=input.toLowerCase();
-            if(lower.includes('стресс')||lower.includes('тревога')||lower.includes('бессонница'))topic='stress';
-            else if(lower.includes('жена')||lower.includes('семья')||lower.includes('дети')||lower.includes('разлука'))topic='family';
-            else if(lower.includes('адаптация')||lower.includes('вернулся')||lower.includes('домой'))topic='adaptation';
-            else if(lower.includes('деньги')||lower.includes('долг')||lower.includes('кредит')||lower.includes('зарплата'))topic='money';
-            else if(lower.includes('будущее')||lower.includes('страх')||lower.includes('пенсия')||lower.includes('безработ'))topic='future';
-            const response=psychResponses[topic];
-            let output='<h4 style="color:#e91e63;margin-bottom:15px">'+response.title+'</h4>';
-            output+='<div style="white-space:pre-wrap">'+response.advice+'</div>';
-            if(input&&!input.includes('Опишите свою ситуацию')){
-                output+='<div style="margin-top:20px;padding:15px;background:#fce4ec;border-radius:10px"><strong>Ваш запрос:</strong><br>'+input.substring(0,200)+(input.length>200?'...':'')+'</div>'
-            }
-            document.getElementById('psychOutput').innerHTML=output;
-            document.getElementById('psychResult').classList.add('show');
-            document.getElementById('psychResult').scrollIntoView({behavior:'smooth'})
-        }
-
-        // ГЕНЕРАТОР ПОСТОВ ВК
-        const postTemplates={
-            czn:{
-                title:'💼 Как встать на учёт в Центре занятости',
-                body:'Моряки, внимание! В отпуске не забудьте оформить пособие по безработице.\n\n📋 Что нужно:\n• Паспорт\n• Трудовая книжка/СТД-Р\n• Справка о среднем заработке\n• СНИЛС и ИНН\n\n⏰ Сроки:\nВстаём на учёт в первый день отпуска. Пособие назначают через 10 дней.\n\n💰 Размер:\nОт 1 500 до 12 000 ₽ в месяц (зависит от региона и стажа).',
-                tags:'#моряк #центрзанятости #пособие #безработица #документы #елабуга'
-            },
-            grant:{
-                title:'🎯 Социальный контракт: 350 000 ₽ на бизнес',
-                body:'Мечтаете открыть своё дело? Государство даст до 350 000 ₽!\n\n✅ Условия:\n• Статус безработного\n• Бизнес-план\n• Доход ниже прожиточного минимума\n\n📍 Куда подавать:\nУправление социальной защиты по месту жительства\n\n⏳ Срок рассмотрения:\nДо 30 дней\n\nИдея для моряка: образовательный сайт, консультации, курсы цифровой грамотности.',
-                tags:'#грант #соцконтракт #бизнес #моряк #предпринимательство #елабуга #татарстан'
-            },
-            tax:{
-                title:'⚠️ Налоги: что должен знать каждый моряк',
-                body:'До 30 апреля — срок подачи декларации 3-НДФЛ!\n\n📝 Кто должен подать:\n• Имеете дополнительный доход\n• Продали имущество\n• Получили наследство\n• Хотите вернуть вычет\n\n💻 Как подать:\nЧерез личный кабинет ФНС или Госуслуги\n\n❌ Штраф за просрочку:\n5% от суммы налога за каждый месяц',
-                tags:'#налоги #ндфл #декларация #фнс #моряк #штраф #документы'
-            },
-            docs:{
-                title:'📄 Справки в МФЦ: чек-лист для моряка',
-                body:'Собираете документы для пособий? Вот полный список справок из МФЦ:\n\n✅ Справка о составе семьи\n✅ Справка о доходах\n✅ Выписка из ЕГРН\n✅ Заверенные копии документов\n\n💡 Совет:\nЗапишитесь через Госуслуги заранее — очереди в МФЦ большие!\n\n⏰ Время оформления:\nОт 3 до 10 рабочих дней',
-                tags:'#мфц #справки #документы #моряк #госуслуги #очередь #елабуга'
-            },
-            vacation:{
-                title:'💰 Сколько вы получите в отпуск?',
-                body:'Рассчитайте отпускные за 2 минуты!\n\n📊 Формула:\nСредний дневной заработок × количество дней + северная надбавка - НДФЛ 13%\n\n🧮 Пример:\nЗарплата 80 000 ₽, 60 дней отпуска, надбавка 50%\n= 80 000 / 29.3 × 60 + 50% - 13%\n= ~90 000 ₽ чистыми\n\n🔗 Калькулятор на нашем сайте!',
-                tags:'#отпускные #калькулятор #моряк #зарплата #север #надбавка #деньги'
-            }
-        };
-
-        function generatePost(){
-            const topic=document.getElementById('postTopic').value;
-            const customTitle=document.getElementById('postCustomTitle').value;
-            const facts=document.getElementById('postFacts').value;
-            const tone=document.getElementById('postTone').value;
-            let template=postTemplates[topic]||postTemplates.czn;
-            let title=customTitle||template.title;
-            let body=template.body;
-            if(facts){
-                body+='\n\n📌 Важно:\n'+facts.split(',').map(f=>'• '+f.trim()).join('\n')
-            }
-            const cta={
-                info:'\n\nℹ️ Подробнее на нашем сайте: trainingsw75-cloud.github.io',
-                warning:'\n\n⚠️ Не откладывайте! Проверьте документы сейчас.',
-                motivation:'\n\n💪 Вы справитесь! Мы поможем с любыми документами.',
-                question:'\n\n❓ Есть вопросы? Задавайте в комментариях или в чате на сайте!'
-            };
-            body+=cta[tone]||cta.info;
-            body+='\n\n'+template.tags;
-            document.getElementById('postText').value=title+'\n\n'+body;
-            document.getElementById('postResult').classList.add('show')
-        }
-        function copyPost(){
-            const text=document.getElementById('postText');
-            text.select();
-            document.execCommand('copy');
-            alert('✅ Пост скопирован! Вставьте в ВКонтакте.')
-        }
-
-        // АВТОПОСТИНГ ВК
-        function postToVK(){
-            const token=document.getElementById('vkToken').value.trim();
-            const groupId=document.getElementById('vkGroupId').value.trim();
-            const message=document.getElementById('vkMessage').value.trim();
-            const resultDiv=document.getElementById('vkResult');
-            const statusP=document.getElementById('vkStatus');
-            if(!token||!groupId||!message){
-                alert('Заполните все поля: токен, ID группы и текст поста');
-                return
-            }
-            resultDiv.style.display='block';
-            statusP.innerHTML='⏳ Отправка поста...';
-            const apiUrl='https://api.vk.com/method/wall.post';
-            const params=new URLSearchParams({
-                owner_id:'-'+groupId,
-                message:message,
-                access_token:token,
-                v:'5.131'
-            });
-            const script=document.createElement('script');
-            const callbackName='vkCallback_'+Date.now();
-            window[callbackName]=function(response){
-                if(response.error){
-                    statusP.innerHTML='❌ Ошибка: '+response.error.error_msg+'<br><br>💡 Проверьте токен и права доступа (нужен scope: wall)'
-                }else{
-                    statusP.innerHTML='✅ Пост опубликован!<br>ID поста: '+response.response.post_id+'<br><br><a href="https://vk.com/wall-'+groupId+'_'+response.response.post_id+'" target="_blank" style="color:white">Открыть пост →</a>'
-                }
-                delete window[callbackName];
-                if(script.parentNode)document.head.removeChild(script)
-            };
-            script.src=apiUrl+'?'+params.toString()+'&callback='+callbackName;
-            script.onerror=function(){
-                statusP.innerHTML='❌ Ошибка сети. Возможно, токен неверный или истёк.<br><br>💡 Альтернатива: скопируйте текст поста и вставьте в ВК вручную.';
-                delete window[callbackName];
-                if(script.parentNode)document.head.removeChild(script)
-            };
-            document.head.appendChild(script);
-            setTimeout(()=>{
-                if(window[callbackName]){
-                    statusP.innerHTML='⏱️ Время ожидания истекло.<br><br>💡 ВК может блокировать запросы с GitHub Pages. Скопируйте текст и опубликуйте вручную.';
-                    delete window[callbackName];
-                    if(script.parentNode)document.head.removeChild(script)
-                }
-            },10000)
-       
-20px;padding:15px;background:#fce4ec;border-radius:10px"><strong>Ваш запрос:</strong><br>'+input.substring(0,200)+(input.length>200?'...':'')+'</div>'
-            }
-            document.getElementById('psychOutput').innerHTML=output;
-            document.getElementById('psychResult').classList.add('show');
-            document.getElementById('psychResult').scrollIntoView({behavior:'smooth'})
-        }
-
-        // ГЕНЕРАТОР ПОСТОВ ВК
-        const postTemplates={
-            czn:{
-                title:'💼 Как встать на учёт в Центре занятости',
-                body:'Моряки, внимание! В отпуске не забудьте оформить пособие по безработице.\n\n📋 Что нужно:\n• Паспорт\n• Трудовая книжка/СТД-Р\n• Справка о среднем заработке\n• СНИЛС и ИНН\n\n⏰ Сроки:\nВстаём на учёт в первый день отпуска. Пособие назначают через 10 дней.\n\n💰 Размер:\nОт 1 500 до 12 000 ₽ в месяц (зависит от региона и стажа).',
-                tags:'#моряк #центрзанятости #пособие #безработица #документы #елабуга'
-            },
-            grant:{
-                title:'🎯 Социальный контракт: 350 000 ₽ на бизнес',
-                body:'Мечтаете открыть своё дело? Государство даст до 350 000 ₽!\n\n✅ Условия:\n• Статус безработного\n• Бизнес-план\n• Доход ниже прожиточного минимума\n\n📍 Куда подавать:\nУправление социальной защиты по месту жительства\n\n⏳ Срок рассмотрения:\nДо 30 дней\n\nИдея для моряка: образовательный сайт, консультации, курсы цифровой грамотности.',
-                tags:'#грант #соцконтракт #бизнес #моряк #предпринимательство #елабуга #татарстан'
-            },
-            tax:{
-                title:'⚠️ Налоги: что должен знать каждый моряк',
-                body:'До 30 апреля — срок подачи декларации 3-НДФЛ!\n\n📝 Кто должен подать:\n• Имеете дополнительный доход\n• Продали имущество\n• Получили наследство\n• Хотите вернуть вычет\n\n💻 Как подать:\nЧерез личный кабинет ФНС или Госуслуги\n\n❌ Штраф за просрочку:\n5% от суммы налога за каждый месяц',
-                tags:'#налоги #ндфл #декларация #фнс #моряк #штраф #документы'
-            },
-            docs:{
-                title:'📄 Справки в МФЦ: чек-лист для моряка',
-                body:'Собираете документы для пособий? Вот полный список справок из МФЦ:\n\n✅ Справка о составе семьи\n✅ Справка о доходах\n✅ Выписка из ЕГРН\n✅ Заверенные копии документов\n\n💡 Совет:\nЗапишитесь через Госуслуги заранее — очереди в МФЦ большие!\n\n⏰ Время оформления:\nОт 3 до 10 рабочих дней',
-                tags:'#мфц #справки #документы #моряк #госуслуги #очередь #елабуга'
-            },
-            vacation:{
-                title:'💰 Сколько вы получите в отпуск?',
-                body:'Рассчитайте отпускные за 2 минуты!\n\n📊 Формула:\nСредний дневной заработок × количество дней + северная надбавка - НДФЛ 13%\n\n🧮 Пример:\nЗарплата 80 000 ₽, 60 дней отпуска, надбавка 50%\n= 80 000 / 29.3 × 60 + 50% - 13%\n= ~90 000 ₽ чистыми\n\n🔗 Калькулятор на нашем сайте!',
-                tags:'#отпускные #калькулятор #моряк #зарплата #север #надбавка #деньги'
-            }
-        };
-
-        function generatePost(){
-            const topic=document.getElementById('postTopic').value;
-            const customTitle=document.getElementById('postCustomTitle').value;
-            const facts=document.getElementById('postFacts').value;
-            const tone=document.getElementById('postTone').value;
-            let template=postTemplates[topic]||postTemplates.czn;
-            let title=customTitle||template.title;
-            let body=template.body;
-            if(facts){
-                body+='\n\n📌 Важно:\n'+facts.split(',').map(f=>'• '+f.trim()).join('\n')
-            }
-            const cta={
-                info:'\n\nℹ️ Подробнее на нашем сайте: trainingsw75-cloud.github.io',
-                warning:'\n\n⚠️ Не откладывайте! Проверьте документы сейчас.',
-                motivation:'\n\n💪 Вы справитесь! Мы поможем с любыми документами.',
-                question:'\n\n❓ Есть вопросы? Задавайте в комментариях или в чате на сайте!'
-            };
-            body+=cta[tone]||cta.info;
-            body+='\n\n'+template.tags;
-            document.getElementById('postText').value=title+'\n\n'+body;
-            document.getElementById('postResult').classList.add('show')
-        }
-
-        function copyPost(){
-            const text=document.getElementById('postText');
-            text.select();
-            document.execCommand('copy');
-            alert('✅ Пост скопирован! Вставьте в ВКонтакте.')
-        }
-
-        // АВТОПОСТИНГ ВК
-        function postToVK(){
-            const token=document.getElementById('vkToken').value.trim();
-            const groupId=document.getElementById('vkGroupId').value.trim();
-            const message=document.getElementById('vkMessage').value.trim();
-            const resultDiv=document.getElementById('vkResult');
-            const statusP=document.getElementById('vkStatus');
-            if(!token||!groupId||!message){
-                alert('Заполните все поля: токен, ID группы и текст поста');
-                return
-            }
-            resultDiv.style.display='block';
-            statusP.innerHTML='⏳ Отправка поста...';
-            const apiUrl='https://api.vk.com/method/wall.post';
-            const params=new URLSearchParams({
-                owner_id:'-'+groupId,
-                message:message,
-                access_token:token,
-                v:'5.131'
-            });
-            const script=document.createElement('script');
-            const callbackName='vkCallback_'+Date.now();
-            window[callbackName]=function(response){
-                if(response.error){
-                    statusP.innerHTML='❌ Ошибка: '+response.error.error_msg+'<br><br>💡 Проверьте токен и права доступа (нужен scope: wall)'
-                }else{
-                    statusP.innerHTML='✅ Пост опубликован!<br>ID поста: '+response.response.post_id+'<br><br><a href="https://vk.com/wall-'+groupId+'_'+response.response.post_id+'" target="_blank" style="color:white">Открыть пост →</a>'
-                }
-                delete window[callbackName];
-                if(script.parentNode)document.head.removeChild(script)
-            };
-            script.src=apiUrl+'?'+params.toString()+'&callback='+callbackName;
-            script.onerror=function(){
-                statusP.innerHTML='❌ Ошибка сети. Возможно, токен неверный или истёк.<br><br>💡 Альтернатива: скопируйте текст и вставьте в ВК вручную.';
-                delete window[callbackName];
-                if(script.parentNode)document.head.removeChild(script)
-            };
-            document.head.appendChild(script);
-            setTimeout(()=>{
-                if(window[callbackName]){
-                    statusP.innerHTML='⏱️ Время ожидания истекло.<br><br>💡 ВК может блокировать запросы с GitHub Pages. Скопируйте текст и опубликуйте вручную.';
-                    delete window[callbackName];
-                    if(script.parentNode)document.head.removeChild(script)
-                }
-            },10000)
-        }
-
-        // ПЛАВНАЯ ПРОКРУТКА
-        document.querySelectorAll('.nav a').forEach(link=>{
-            link.addEventListener('click',function(e){
-                e.preventDefault();
-                const target=document.querySelector(this.getAttribute('href'));
-                if(target)target.scrollIntoView({behavior:'smooth'})
-            })
-        })
-    </script>
+    <script src="app.js"></script>
 
 </body>
 </html>
