@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Морской помощник Елабуга — бесплатные инструкции по документам для моряков и вахтовиков. Калькулятор отпускных, тесты, чат-бот.">
-    <meta name="keywords" content="моряк, вахтовик, документы, отпускные, госуслуги, налоги, Елабуга, Татарстан">
-    <title>Морской помощник | Елабуга — Документы для моряков</title>
+    <meta name="description" content="Морской помощник — бесплатные инструкции по документам для моряков и вахтовиков. Калькулятор отпускных, тесты, дайджест, генератор постов ВК.">
+    <meta name="keywords" content="моряк, вахтовик, документы, отпускные, госуслуги, налоги, дайджест, автопостинг">
+    <title>Морской помощник — Документы для моряков</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
@@ -62,11 +62,6 @@
             border-radius: 25px;
             font-size: 0.9em;
             border: 1px solid rgba(255,255,255,0.3);
-        }
-        .header .location {
-            margin-top: 15px;
-            font-size: 0.95em;
-            opacity: 0.85;
         }
         .nav {
             background: white;
@@ -183,9 +178,6 @@
             padding: 20px;
             font-size: 1.2em;
             font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 10px;
         }
         .card-body {
             padding: 25px;
@@ -262,9 +254,6 @@
         .warning-box h3 {
             color: var(--warning);
             margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
         }
         .warning-box p {
             color: var(--text-light);
@@ -314,16 +303,6 @@
             border-radius: 20px;
             text-align: center;
             margin: 40px 0;
-            position: relative;
-            overflow: hidden;
-        }
-        .subscribe-section::before {
-            content: '📧';
-            position: absolute;
-            font-size: 150px;
-            opacity: 0.05;
-            top: -30px;
-            left: -20px;
         }
         .subscribe-section h2 {
             font-size: 1.8em;
@@ -332,9 +311,6 @@
         .subscribe-section p {
             opacity: 0.9;
             margin-bottom: 25px;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
         }
         .subscribe-form {
             display: flex;
@@ -351,7 +327,6 @@
             border: none;
             border-radius: 30px;
             font-size: 1em;
-            outline: none;
         }
         .subscribe-form button {
             padding: 15px 35px;
@@ -362,11 +337,6 @@
             font-size: 1em;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
-        }
-        .subscribe-form button:hover {
-            background: var(--accent-light);
-            transform: scale(1.05);
         }
         .privacy-note {
             margin-top: 15px;
@@ -398,7 +368,6 @@
         .footer-links a {
             color: rgba(255,255,255,0.6);
             text-decoration: none;
-            transition: color 0.3s;
         }
         .footer-links a:hover {
             color: var(--accent-light);
@@ -413,7 +382,6 @@
             box-shadow: 0 5px 25px rgba(0,0,0,0.3);
             display: none;
             z-index: 1000;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
         #chat-widget .chat-header {
             background: linear-gradient(135deg, #1a5f9e, #2a7cc7);
@@ -422,7 +390,6 @@
             border-radius: 15px 15px 0 0;
             display: flex;
             justify-content: space-between;
-            align-items: center;
         }
         #chat-widget .chat-messages {
             height: 300px;
@@ -442,7 +409,6 @@
             padding: 10px;
             border: 1px solid #e0e6ed;
             border-radius: 20px;
-            outline: none;
         }
         #chat-widget .chat-send {
             background: #e8913a;
@@ -452,7 +418,6 @@
             border-radius: 20px;
             margin-left: 8px;
             cursor: pointer;
-            font-weight: 600;
         }
         #chat-button {
             position: fixed;
@@ -467,17 +432,126 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
             z-index: 999;
             font-weight: 600;
+        }
+        /* ДАЙДЖЕСТ */
+        .digest-section {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+        .news-item {
+            padding: 20px;
+            margin-bottom: 15px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border-left: 4px solid var(--primary);
+        }
+        .news-item h4 {
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+        .news-item p {
+            color: var(--text-light);
+            font-size: 0.95em;
+        }
+        .news-item .tag {
+            display: inline-block;
+            background: #e3f2fd;
+            color: var(--primary);
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            margin-top: 8px;
+            margin-right: 5px;
+        }
+        /* ГЕНЕРАТОР ПОСТОВ */
+        .generator-section {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            color: var(--text);
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .form-group select, .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e6ed;
+            border-radius: 10px;
             font-size: 1em;
+            font-family: inherit;
+        }
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        .result-box {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+            display: none;
+        }
+        .result-box.show {
+            display: block;
+        }
+        .copy-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        /* АВТОПОСТИНГ ВК */
+        .vk-section {
+            background: linear-gradient(135deg, #4a76a8, #6a96c8);
+            color: white;
+            border-radius: 16px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+        .vk-section h2 {
+            margin-bottom: 15px;
+        }
+        .vk-section p {
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+        .vk-token-input {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            font-family: monospace;
+        }
+        .vk-btn {
+            background: white;
+            color: #4a76a8;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
         }
         @media (max-width: 768px) {
             .header h1 { font-size: 1.6em; }
             .hero { padding: 25px; }
-            .hero h2 { font-size: 1.4em; }
-            .subscribe-section { padding: 30px 20px; }
-            .subscribe-form input { min-width: 100%; }
             .cards-grid { grid-template-columns: 1fr; }
-            .timeline-item { flex-direction: column; gap: 5px; }
-            #chat-widget { width: 90%; right: 5%; left: 5%; }
+            .timeline-item { flex-direction: column; }
+            #chat-widget { width: 90%; right: 5%; }
         }
     </style>
 </head>
@@ -487,14 +561,15 @@
         <h1>⚓ Морской помощник</h1>
         <p class="subtitle">Бесплатные инструкции по документам для моряков и вахтовиков</p>
         <span class="badge">✓ Независимый образовательный проект</span>
-        <p class="location">📍 Елабуга, Республика Татарстан | Работаем по всей России</p>
     </header>
 
     <nav class="nav">
         <div class="nav-container">
             <a href="#documents">📄 Документы</a>
             <a href="#tools">🛠️ Инструменты</a>
-            <a href="#timeline">📅 Сроки</a>
+            <a href="#digest">📰 Дайджест</a>
+            <a href="#generator">📝 Посты</a>
+            <a href="#vk">📱 ВК</a>
             <a href="#subscribe">✉️ Подписка</a>
         </div>
     </nav>
@@ -503,7 +578,7 @@
 
         <section class="hero">
             <h2>Моряк — не значит «вне закона»</h2>
-            <p>Вы 4 месяца в рейсе, а документы требуют внимания каждый месяц. Мы собрали пошаговые инструкции, калькуляторы и тесты.</p>
+            <p>Вы месяцами в рейсе, а документы требуют внимания. Мы собрали инструкции, калькуляторы, тесты и инструменты для автопостинга.</p>
             <div class="stats">
                 <div class="stat-box">
                     <span class="number">50+</span>
@@ -529,7 +604,7 @@
             <p>Все материалы предоставлены в информационных целях и не являются юридической консультацией. Перед подачей документов уточняйте актуальные требования в официальных инстанциях.</p>
         </div>
 
-        <h2 class="section-title" id="documents">Что мы помогаем оформить</h2>
+        <h2 class="section-title" id="documents">📄 Что мы помогаем оформить</h2>
         
         <div class="cards-grid">
             <div class="card">
@@ -611,13 +686,124 @@
             <div class="tool-card">
                 <h3>💰 Калькулятор отпускных</h3>
                 <p>Рассчитайте отпускные с учётом северных надбавок и НДФЛ</p>
-                <a href="finance-calc.html" class="card-btn">Открыть калькулятор →</a>
+                <a href="finance-calc.html" class="card-btn">Открыть →</a>
             </div>
             <div class="tool-card">
                 <h3>🎓 Тест готовности</h3>
                 <p>Проверьте, знаете ли вы все сроки и документы</p>
-                <a href="exam-test.html" class="card-btn">Пройти тест →</a>
+                <a href="exam-test.html" class="card-btn">Пройти →</a>
             </div>
+        </div>
+
+        <!-- ДАЙДЖЕСТ -->
+        <div class="digest-section" id="digest">
+            <h2 style="color: var(--primary-dark); text-align: center; margin-bottom: 20px;">📰 Дайджест моряка</h2>
+            <p style="text-align: center; color: var(--text-light); margin-bottom: 25px;">Актуальные новости и изменения</p>
+            
+            <div class="news-item">
+                <h4>🆕 Изменения в оформлении пособий</h4>
+                <p>С 1 мая 2026 года упростили процедуру получения пособия по безработице для моряков. Теперь не нужна справка с судна — достаточно трудового договора.</p>
+                <span class="tag">Пособия</span>
+                <span class="tag">ЦЗН</span>
+            </div>
+            
+            <div class="news-item">
+                <h4>💰 Новый размер социального контракта</h4>
+                <p>В Татарстане увеличили максимальную сумму социального контракта с 350 000 до 400 000 ₽ для жителей прибрежных городов.</p>
+                <span class="tag">Гранты</span>
+                <span class="tag">Татарстан</span>
+            </div>
+            
+            <div class="news-item">
+                <h4>📱 Госуслуги обновили приложение</h4>
+                <p>Новая версия приложения Госуслуги позволяет подавать документы на загранпаспорт без посещения МФЦ. Полезно для моряков!</p>
+                <span class="tag">Госуслуги</span>
+                <span class="tag">Документы</span>
+            </div>
+            
+            <div class="news-item">
+                <h4>⚠️ Новые штрафы за неоформленные дроны</h4>
+                <p>ФАВТ ужесточил контроль. Штраф за незарегистрированный БПЛА теперь от 50 000 ₽. Проверьте регистрацию вашего дрона.</p>
+                <span class="tag">БПЛА</span>
+                <span class="tag">Закон</span>
+            </div>
+        </div>
+
+        <!-- ГЕНЕРАТОР ПОСТОВ -->
+        <div class="generator-section" id="generator">
+            <h2 style="color: var(--primary-dark); text-align: center; margin-bottom: 20px;">📝 Генератор постов ВК</h2>
+            <p style="text-align: center; color: var(--text-light); margin-bottom: 25px;">Создавайте посты для группы за 1 минуту</p>
+            
+            <div class="form-group">
+                <label>Тема поста</label>
+                <select id="postTopic">
+                    <option value="czn">Центр занятости — пособия</option>
+                    <option value="grant">Социальный контракт — гранты</option>
+                    <option value="tax">Налоги и декларации</option>
+                    <option value="docs">Документы в МФЦ</option>
+                    <option value="vacation">Отпускные — расчёт</option>
+                    <option value="custom">Своя тема</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Заголовок (если своя тема)</label>
+                <input type="text" id="postCustomTitle" placeholder="Введите заголовок">
+            </div>
+            
+            <div class="form-group">
+                <label>Ключевые факты (через запятую)</label>
+                <input type="text" id="postFacts" placeholder="Например: пособие 12000, срок 10 дней">
+            </div>
+            
+            <div class="form-group">
+                <label>Тон поста</label>
+                <select id="postTone">
+                    <option value="info">Информационный</option>
+                    <option value="warning">Предупреждающий</option>
+                    <option value="motivation">Мотивирующий</option>
+                    <option value="question">Вопросный</option>
+                </select>
+            </div>
+            
+            <button onclick="generatePost()" class="card-btn" style="width: 100%;">✨ Сгенерировать пост</button>
+            
+            <div class="result-box" id="postResult">
+                <h3>Готовый пост:</h3>
+                <textarea id="postText" readonly style="width: 100%; min-height: 200px; padding: 15px; border: 1px solid #ddd; border-radius: 10px; font-family: inherit;"></textarea>
+                <button onclick="copyPost()" class="copy-btn">📋 Копировать</button>
+            </div>
+        </div>
+
+        <!-- АВТОПОСТИНГ ВК -->
+        <div class="vk-section" id="vk">
+            <h2>📱 Автопостинг ВКонтакте</h2>
+            <p>Настройте автоматическую публикацию постов в вашу группу ВК. Введите токен доступа и ID группы.</p>
+            
+            <div class="form-group">
+                <label style="color: white; opacity: 0.9;">Токен доступа ВК (получить на vk.com/dev)</label>
+                <input type="text" id="vkToken" class="vk-token-input" placeholder="vk1.a.xxxxxxxxxxxxxxxxxxxxxxxxxx">
+            </div>
+            
+            <div class="form-group">
+                <label style="color: white; opacity: 0.9;">ID группы ВК (без минуса)</label>
+                <input type="number" id="vkGroupId" class="vk-token-input" placeholder="123456789">
+            </div>
+            
+            <div class="form-group">
+                <label style="color: white; opacity: 0.9;">Текст поста</label>
+                <textarea id="vkMessage" class="vk-token-input" placeholder="Введите текст поста для публикации..."></textarea>
+            </div>
+            
+            <button onclick="postToVK()" class="vk-btn">🚀 Опубликовать в ВК</button>
+            
+            <div id="vkResult" style="margin-top: 15px; padding: 15px; background: rgba(255,255,255,0.2); border-radius: 10px; display: none;">
+                <p id="vkStatus"></p>
+            </div>
+            
+            <p style="font-size: 0.85em; margin-top: 15px; opacity: 0.8;">
+                💡 <strong>Как получить токен:</strong> vk.com/dev → Создать приложение → Настройки → Доступы → wall,groups
+            </p>
         </div>
 
         <div class="timeline" id="timeline">
@@ -679,9 +865,9 @@
     </div>
 
     <footer class="footer">
-        <p class="highlight">⚓ Морской помощник | Елабуга</p>
+        <p class="highlight">⚓ Морской помощник</p>
         <p>Независимый образовательный проект для моряков, вахтовиков и их семей</p>
-        <p>Автор: Крюков Роман Львович | Моряк-повар с 25-летним стажем</p>
+        <p>По вопросам: обратная связь через форму подписки</p>
         <div class="footer-links">
             <a href="https://vk.com" target="_blank">ВКонтакте</a>
             <a href="https://rutube.ru" target="_blank">RuTube</a>
@@ -792,6 +978,130 @@
 
                 addMessage(reply, true);
             }, 500);
+        }
+
+        // ГЕНЕРАТОР ПОСТОВ
+        const postTemplates = {
+            czn: {
+                title: '💼 Как встать на учёт в Центре занятости',
+                body: 'Моряки, внимание! В отпуске не забудьте оформить пособие по безработице.\n\n📋 Что нужно:\n• Паспорт\n• Трудовая книжка/СТД-Р\n• Справка о среднем заработке\n• СНИЛС и ИНН\n\n⏰ Сроки:\nВстаём на учёт в первый день отпуска. Пособие назначают через 10 дней.\n\n💰 Размер:\nОт 1 500 до 12 000 ₽ в месяц (зависит от региона и стажа).',
+                tags: '#моряк #центрзанятости #пособие #безработица #документы #елабуга'
+            },
+            grant: {
+                title: '🎯 Социальный контракт: 350 000 ₽ на бизнес',
+                body: 'Мечтаете открыть своё дело? Государство даст до 350 000 ₽!\n\n✅ Условия:\n• Статус безработного\n• Бизнес-план\n• Доход ниже прожиточного минимума\n\n📍 Куда подавать:\nУправление социальной защиты по месту жительства\n\n⏳ Срок рассмотрения:\nДо 30 дней\n\nИдея для моряка: образовательный сайт, консультации, курсы цифровой грамотности.',
+                tags: '#грант #соцконтракт #бизнес #моряк #предпринимательство #елабуга #татарстан'
+            },
+            tax: {
+                title: '⚠️ Налоги: что должен знать каждый моряк',
+                body: 'До 30 апреля — срок подачи декларации 3-НДФЛ!\n\n📝 Кто должен подать:\n• Имеете дополнительный доход\n• Продали имущество\n• Получили наследство\n• Хотите вернуть вычет\n\n💻 Как подать:\nЧерез личный кабинет ФНС или Госуслуги\n\n❌ Штраф за просрочку:\n5% от суммы налога за каждый месяц',
+                tags: '#налоги #ндфл #декларация #фнс #моряк #штраф #документы'
+            },
+            docs: {
+                title: '📄 Справки в МФЦ: чек-лист для моряка',
+                body: 'Собираете документы для пособий? Вот полный список справок из МФЦ:\n\n✅ Справка о составе семьи\n✅ Справка о доходах\n✅ Выписка из ЕГРН\n✅ Заверенные копии документов\n\n💡 Совет:\nЗапишитесь через Госуслуги заранее — очереди в МФЦ большие!\n\n⏰ Время оформления:\nОт 3 до 10 рабочих дней',
+                tags: '#мфц #справки #документы #моряк #госуслуги #очередь #елабуга'
+            },
+            vacation: {
+                title: '💰 Сколько вы получите в отпуск?',
+                body: 'Рассчитайте отпускные за 2 минуты!\n\n📊 Формула:\nСредний дневной заработок × количество дней + северная надбавка - НДФЛ 13%\n\n🧮 Пример:\nЗарплата 80 000 ₽, 60 дней отпуска, надбавка 50%\n= 80 000 / 29.3 × 60 + 50% - 13%\n= ~90 000 ₽ чистыми\n\n🔗 Калькулятор на нашем сайте!',
+                tags: '#отпускные #калькулятор #моряк #зарплата #север #надбавка #деньги'
+            }
+        };
+
+        function generatePost() {
+            const topic = document.getElementById('postTopic').value;
+            const customTitle = document.getElementById('postCustomTitle').value;
+            const facts = document.getElementById('postFacts').value;
+            const tone = document.getElementById('postTone').value;
+            
+            let template = postTemplates[topic] || postTemplates.czn;
+            
+            let title = customTitle || template.title;
+            let body = template.body;
+            
+            if (facts) {
+                body += '\n\n📌 Важно:\n' + facts.split(',').map(f => '• ' + f.trim()).join('\n');
+            }
+            
+            const cta = {
+                info: '\n\nℹ️ Подробнее на нашем сайте: trainingsw75-cloud.github.io',
+                warning: '\n\n⚠️ Не откладывайте! Проверьте документы сейчас.',
+                motivation: '\n\n💪 Вы справитесь! Мы поможем с любыми документами.',
+                question: '\n\n❓ Есть вопросы? Задавайте в комментариях или в чате на сайте!'
+            };
+            
+            body += cta[tone] || cta.info;
+            body += '\n\n' + template.tags;
+            
+            document.getElementById('postText').value = title + '\n\n' + body;
+            document.getElementById('postResult').classList.add('show');
+        }
+
+        function copyPost() {
+            const text = document.getElementById('postText');
+            text.select();
+            document.execCommand('copy');
+            alert('✅ Пост скопирован! Вставьте в ВКонтакте.');
+        }
+
+        // АВТОПОСТИНГ ВК
+        function postToVK() {
+            const token = document.getElementById('vkToken').value.trim();
+            const groupId = document.getElementById('vkGroupId').value.trim();
+            const message = document.getElementById('vkMessage').value.trim();
+            const resultDiv = document.getElementById('vkResult');
+            const statusP = document.getElementById('vkStatus');
+            
+            if (!token || !groupId || !message) {
+                alert('Заполните все поля: токен, ID группы и текст поста');
+                return;
+            }
+            
+            // Показываем статус
+            resultDiv.style.display = 'block';
+            statusP.innerHTML = '⏳ Отправка поста...';
+            
+            // Формируем URL для API ВК
+            const apiUrl = 'https://api.vk.com/method/wall.post';
+            const params = new URLSearchParams({
+                owner_id: '-' + groupId,
+                message: message,
+                access_token: token,
+                v: '5.131'
+            });
+            
+            // Используем JSONP для обхода CORS (работает на GitHub Pages)
+            const script = document.createElement('script');
+            const callbackName = 'vkCallback_' + Date.now();
+            
+            window[callbackName] = function(response) {
+                if (response.error) {
+                    statusP.innerHTML = '❌ Ошибка: ' + response.error.error_msg + '<br><br>💡 Проверьте токен и права доступа (нужен scope: wall)';
+                } else {
+                    statusP.innerHTML = '✅ Пост опубликован!<br>ID поста: ' + response.response.post_id + '<br><br><a href="https://vk.com/wall-' + groupId + '_' + response.response.post_id + '" target="_blank" style="color:white;">Открыть пост →</a>';
+                }
+                delete window[callbackName];
+                document.head.removeChild(script);
+            };
+            
+            script.src = apiUrl + '?' + params.toString() + '&callback=' + callbackName;
+            script.onerror = function() {
+                statusP.innerHTML = '❌ Ошибка сети. Возможно, токен неверный или истёк.<br><br>💡 Альтернатива: скопируйте текст поста и вставьте в ВК вручную.';
+                delete window[callbackName];
+                document.head.removeChild(script);
+            };
+            
+            document.head.appendChild(script);
+            
+            // Таймаут на случай если callback не вызовется
+            setTimeout(() => {
+                if (window[callbackName]) {
+                    statusP.innerHTML = '⏱️ Время ожидания истекло.<br><br>💡 ВК может блокировать запросы с GitHub Pages. Скопируйте текст и опубликуйте вручную.';
+                    delete window[callbackName];
+                    if (script.parentNode) document.head.removeChild(script);
+                }
+            }, 10000);
         }
 
         // Плавная прокрутка
