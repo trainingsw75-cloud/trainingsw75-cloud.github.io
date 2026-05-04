@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Калькулятор отпускных | Морской помощник</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #e8f0f8 0%, #d4e4f0 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #1a5f9e;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 1.8em;
+        }
+        .subtitle {
+            text-align: center;
+            color: #5a6c7d;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            color: #2c3e50;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e6ed;
+            border-radius: 12px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+        input:focus {
+            outline: none;
+            border-color: #1a5f9e;
+        }
+        .hint {
+            font-size: 0.85em;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #e8913a, #f5b76a);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        button:hover {
+            transform: scale(1.02);
+        }
+        .result {
+            margin-top: 30px;
+            padding: 25px;
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            border-radius: 15px;
+            display: none;
+        }
+        .result.show {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .result h2 {
+            color: #2e7d32;
+            margin-bottom: 15px;
+        }
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+        .result-row.total {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #1b5e20;
+            border-top: 2px solid #4caf50;
+            border-bottom: none;
+            margin-top: 10px;
+            padding-top: 15px;
+        }
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 30px;
+            color: #1a5f9e;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>💰 Калькулятор отпускных</h1>
+        <p class="subtitle">Для моряков и вахтовиков с северными надбавками</p>
+        
+        <div class="form-group">
+            <label>Среднемесячная зарплата (₽)</label>
+            <input type="number" id="salary" placeholder="80000" value="80000">
+            <p class="hint">Возьмите из расчётного листа за последние 12 месяцев</p>
+        </div>
+        
+        <div class="form-group">
+            <label>Количество отпускных дней</label>
+            <input type="number" id="days" placeholder="60" value="60">
+            <p class="hint">Обычно 60 дней для моряков (2 месяца отпуска)</p>
+        </div>
+        
+        <div class="form-group">
+            <label>Районный коэффициент (%)</label>
+            <input type="number" id="north" placeholder="50" value="50">
+            <p class="hint">Мурманская область: 50%, Татарстан: 15%, СПб: 0%</p>
+        </div>
+        
+        <div class="form-group">
+            <label>Стаж работы (лет)</label>
+            <input type="number" id="experience" placeholder="25" value="25">
+            <p class="hint">Влияет на дополнительные надбавки</p>
+        </div>
+        
+        <button onclick="calculate()">Рассчитать отпускные</button>
+        
+        <div class="result" id="result">
+            <h2>📊 Расчёт</h2>
+            <div class="result-row">
+                <span>Среднедневной заработок:</span>
+                <span id="daily">0 ₽</span>
+            </div>
+            <div class="result-row">
+                <span>Отпускные (без надбавок):</span>
+                <span id="base">0 ₽</span>
+            </div>
+            <div class="result-row">
+                <span>Районная надбавка:</span>
+                <span id="northBonus">0 ₽</span>
+            </div>
+            <div class="result-row">
+                <span>НДФЛ (13%):</span>
+                <span id="tax">0 ₽</span>
+            </div>
+            <div class="result-row total">
+                <span>К получению на руки:</span>
+                <span id="total">0 ₽</span>
+            </div>
+        </div>
+        
+        <a href="index.html" class="back-link">← Вернуться на главную</a>
+    </div>
+
+    <script>
+        function calculate() {
+            const salary = parseFloat(document.getElementById('salary').value) || 0;
+            const days = parseFloat(document.getElementById('days').value) || 0;
+            const north = parseFloat(document.getElementById('north').value) || 0;
+            
+            // Среднедневной заработок (среднее количество дней в месяце = 29.3)
+            const daily = salary / 29.3;
+            
+            // Базовые отпускные
+            const base = daily * days;
+            
+            // Районная надбавка
+            const northBonus = base * (north / 100);
+            
+            // Итого до налогов
+            const gross = base + northBonus;
+            
+            // НДФЛ 13%
+            const tax = gross * 0.13;
+            
+            // Чистыми
+            const total = gross - tax;
+            
+            // Выводим результат
+            document.getElementById('daily').textContent = daily.toFixed(2) + ' ₽';
+            document.getElementById('base').textContent = base.toFixed(2) + ' ₽';
+            document.getElementById('northBonus').textContent = northBonus.toFixed(2) + ' ₽';
+            document.getElementById('tax').textContent = '-' + tax.toFixed(2) + ' ₽';
+            document.getElementById('total').textContent = total.toFixed(2) + ' ₽';
+            
+            document.getElementById('result').classList.add('show');
+        }
+    </script>
+</body>
+</html>

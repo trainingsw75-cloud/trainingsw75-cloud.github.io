@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест: Цифровая грамотность моряка | Морской помощник</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #e8f0f8 0%, #d4e4f0 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #1a5f9e;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #5a6c7d;
+            margin-bottom: 30px;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e6ed;
+            border-radius: 4px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #1a5f9e, #e8913a);
+            border-radius: 4px;
+            transition: width 0.5s;
+        }
+        .question {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 15px;
+            border-left: 4px solid #1a5f9e;
+        }
+        .question-number {
+            color: #e8913a;
+            font-weight: bold;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+        .question-text {
+            color: #2c3e50;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        .options button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 10px;
+            background: white;
+            border: 2px solid #e0e6ed;
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: left;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+        .options button:hover:not(:disabled) {
+            border-color: #1a5f9e;
+            background: #f0f7ff;
+        }
+        .options button.correct {
+            background: #e8f5e9;
+            border-color: #4caf50;
+            color: #2e7d32;
+        }
+        .options button.wrong {
+            background: #ffebee;
+            border-color: #f44336;
+            color: #c62828;
+        }
+        .options button:disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+        #result {
+            display: none;
+            text-align: center;
+            padding: 40px;
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        #result.show {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .score {
+            font-size: 3em;
+            color: #1a5f9e;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        .message {
+            font-size: 1.2em;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        .restart-btn {
+            padding: 15px 40px;
+            background: #1a5f9e;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 1em;
+            cursor: pointer;
+        }
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 30px;
+            color: #1a5f9e;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎓 Тест: Цифровая грамотность моряка</h1>
+        <p class="subtitle">Проверьте, готовы ли вы к работе с документами в отпуске</p>
+        
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress"></div>
+        </div>
+        
+        <div id="quiz">
+            <div class="question" data-q="1">
+                <div class="question-number">Вопрос 1 из 5</div>
+                <div class="question-text">Какой документ нужен в первую очередь для постановки на учёт в Центре занятости?</div>
+                <div class="options">
+                    <button onclick="check(1, 'a', this)">A) Только паспорт</button>
+                    <button onclick="check(1, 'b', this)">B) Паспорт + трудовая книжка/СТД-Р + справка о заработке</button>
+                    <button onclick="check(1, 'c', this)">C) Только СНИЛС</button>
+                </div>
+            </div>
+            
+            <div class="question" data-q="2">
+                <div class="question-number">Вопрос 2 из 5</div>
+                <div class="question-text">До какого числа нужно подать декларацию 3-НДФЛ?</div>
+                <div class="options">
+                    <button onclick="check(2, 'a', this)">A) 30 апреля года, следующего за отчётным</button>
+                    <button onclick="check(2, 'b', this)">B) 1 января каждого года</button>
+                    <button onclick="check(2, 'c', this)">C) В любое время, без сроков</button>
+                </div>
+            </div>
+            
+            <div class="question" data-q="3">
+                <div class="question-number">Вопрос 3 из 5</div>
+                <div class="question-text">Максимальная сумма социального контракта на открытие бизнеса?</div>
+                <div class="options">
+                    <button onclick="check(3, 'a', this)">A) 100 000 ₽</button>
+                    <button onclick="check(3, 'b', this)">B) 350 000 ₽</button>
+                    <button onclick="check(3, 'c', this)">C) 1 000 000 ₽</button>
+                </div>
+            </div>
+            
+            <div class="question" data-q="4">
+                <div class="question-number">Вопрос 4 из 5</div>
+                <div class="question-text">Где получить справку о составе семьи?</div>
+                <div class="options">
+                    <button onclick="check(4, 'a', this)">A) В паспортном столе или МФЦ</button>
+                    <button onclick="check(4, 'b', this)">B) В налоговой инспекции</button>
+                    <button onclick="check(4, 'c', this)">C) На работе</button>
+                </div>
+            </div>
+            
+            <div class="question" data-q="5">
+                <div class="question-number">Вопрос 5 из 5</div>
+                <div class="question-text">Можно ли получать пособие по безработице и одновременно работать?</div>
+                <div class="options">
+                    <button onclick="check(5, 'a', this)">A) Нет, пособие только при отсутствии работы</button>
+                    <button onclick="check(5, 'b', this)">B) Да, если работа неофициальная</button>
+                    <button onclick="check(5, 'c', this)">C) Да, всегда можно</button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="result">
+            <h2>Результат</h2>
+            <div class="score" id="score">0/5</div>
+            <div class="message" id="message"></div>
+            <button class="restart-btn" onclick="restart()">Пройти ещё раз</button>
+        </div>
+        
+        <a href="index.html" class="back-link">← Вернуться на главную</a>
+    </div>
+
+    <script>
+        const answers = {
+            1: 'b',
+            2: 'a',
+            3: 'b',
+            4: 'a',
+            5: 'a'
+        };
+        
+        let score = 0;
+        let answered = 0;
+        const total = 5;
+        
+        function check(q, ans, btn) {
+            const question = btn.closest('.question');
+            const buttons = question.querySelectorAll('button');
+            
+            // Блокируем все кнопки вопроса
+            buttons.forEach(b => b.disabled = true);
+            
+            // Проверяем ответ
+            const correct = answers[q] === ans;
+            if (correct) {
+                btn.classList.add('correct');
+                score++;
+            } else {
+                btn.classList.add('wrong');
+                // Подсвечиваем правильный
+                buttons.forEach(b => {
+                    if (b.getAttribute('onclick').includes(`'${answers[q]}'`)) {
+                        b.classList.add('correct');
+                    }
+                });
+            }
+            
+            answered++;
+            
+            // Обновляем прогресс
+            document.getElementById('progress').style.width = (answered / total * 100) + '%';
+            
+            // Если все ответили — показываем результат
+            if (answered === total) {
+                showResult();
+            }
+        }
+        
+        function showResult() {
+            const percent = Math.round((score / total) * 100);
+            let msg = '';
+            let color = '';
+            
+            if (percent >= 80) {
+                msg = '🎉 Отлично! Вы готовы к цифровым задачам. Можете помогать другим морякам!';
+                color = '#e8f5e9';
+            } else if (percent >= 60) {
+                msg = '👍 Неплохо! Но есть пробелы. Изучите материалы на нашем сайте.';
+                color = '#fff3e0';
+            } else {
+                msg = '📚 Нужно подготовиться! Пройдите все разделы сайта перед отпуском.';
+                color = '#ffebee';
+            }
+            
+            document.getElementById('score').textContent = score + '/' + total + ' (' + percent + '%)';
+            document.getElementById('message').textContent = msg;
+            document.getElementById('result').style.background = 'linear-gradient(135deg, ' + color + ', white)';
+            document.getElementById('result').classList.add('show');
+            
+            // Прокручиваем к результату
+            document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function restart() {
+            score = 0;
+            answered = 0;
+            document.getElementById('progress').style.width = '0%';
+            document.getElementById('result').classList.remove('show');
+            
+            // Сбрасываем все вопросы
+            document.querySelectorAll('.question').forEach(q => {
+                const buttons = q.querySelectorAll('button');
+                buttons.forEach(b => {
+                    b.disabled = false;
+                    b.classList.remove('correct', 'wrong');
+                });
+            });
+            
+            // Прокручиваем вверх
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
