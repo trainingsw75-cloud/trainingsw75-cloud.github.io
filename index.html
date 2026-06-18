@@ -707,6 +707,54 @@
 
         #chat-button:hover{transform:scale(1.05);box-shadow:0 8px 30px rgba(0,212,255,0.6)}
 
+        /* ═══ VK LOGIN ═══ */
+        .btn-vk-login{
+            background:linear-gradient(135deg,#4a76a8,#5181b8);
+            color:white;border:none;
+            padding:12px 28px;border-radius:50px;
+            cursor:pointer;font-size:0.9rem;font-weight:700;
+            transition:all 0.3s;
+            box-shadow:0 4px 15px rgba(74,118,168,0.5);
+            display:inline-flex;align-items:center;gap:8px;
+            margin-bottom:20px;
+        }
+        .btn-vk-login:hover{transform:translateY(-2px);box-shadow:0 6px 25px rgba(74,118,168,0.7)}
+        .vk-user-card{
+            background:rgba(74,118,168,0.15);
+            border:1px solid rgba(74,118,168,0.3);
+            border-radius:50px;padding:8px 20px;
+            display:inline-flex;align-items:center;gap:10px;
+            color:var(--white);font-size:0.9rem;margin-bottom:20px;
+        }
+        .vk-user-card button{background:none;border:none;color:var(--gray);cursor:pointer;font-size:0.78rem}
+        .vk-user-card button:hover{color:var(--white)}
+        .vk-sites-block{
+            background:rgba(74,118,168,0.07);
+            border:1px solid rgba(74,118,168,0.2);
+            border-radius:14px;padding:16px 18px;margin-bottom:20px;
+        }
+        .vk-site-row{
+            display:flex;align-items:center;justify-content:space-between;
+            padding:8px 0;border-bottom:1px solid rgba(74,118,168,0.1);
+            flex-wrap:wrap;gap:8px;font-size:0.88rem;
+        }
+        .vk-site-row:last-of-type{border-bottom:none}
+        .vk-site-row a{color:#6a96c8;text-decoration:none;word-break:break-all}
+        .vk-site-row a:hover{text-decoration:underline}
+        .btn-copy-link{
+            background:rgba(74,118,168,0.2);border:1px solid rgba(74,118,168,0.3);
+            color:#6a96c8;padding:4px 12px;border-radius:20px;
+            cursor:pointer;font-size:0.78rem;white-space:nowrap;
+        }
+        .btn-copy-link:hover{background:rgba(74,118,168,0.4)}
+        .btn-add-links{
+            width:100%;margin-top:12px;
+            background:linear-gradient(135deg,#4a76a8,#5181b8);
+            color:white;border:none;padding:10px;border-radius:10px;
+            cursor:pointer;font-weight:700;font-size:0.88rem;
+        }
+        .btn-add-links:hover{opacity:0.9}
+
         .user-msg{
             background:rgba(255,214,10,0.06);
             border-left:2px solid rgba(255,214,10,0.3);
@@ -760,6 +808,21 @@
         <span class="badge">✓ Независимый проект</span>
         <span class="badge">🤖 AI-инструменты</span>
         <span class="badge">🔒 Бесплатно и без регистрации</span>
+    </div>
+    <div id="vk-login-area">
+        <div id="vk-logged-out">
+            <button onclick="loginVK()" class="btn-vk-login">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M15.07 2H8.93C3.33 2 2 3.33 2 8.93v6.14C2 20.67 3.33 22 8.93 22h6.14C20.67 22 22 20.67 22 15.07V8.93C22 3.33 20.67 2 15.07 2zm2.95 13.36h-1.67c-.63 0-.82-.5-1.95-1.64-1-.96-1.43-1.09-1.67-1.09-.34 0-.44.1-.44.57v1.5c0 .4-.13.64-1.18.64-1.74 0-3.67-1.05-5.03-3.02C4.38 9.97 4 7.97 4 7.53c0-.24.1-.47.57-.47h1.67c.42 0 .58.19.74.64.82 2.37 2.18 4.44 2.74 4.44.21 0 .31-.1.31-.64V9.26c-.07-1.14-.67-1.24-.67-1.65 0-.2.16-.4.42-.4h2.62c.36 0 .49.19.49.61v3.27c0 .36.16.49.26.49.21 0 .39-.13.78-.52 1.21-1.35 2.07-3.44 2.07-3.44.11-.24.31-.47.73-.47h1.67c.5 0 .61.26.5.61-.21 1.06-2.3 3.94-2.3 3.94-.18.3-.25.43 0 .76.18.24.77.74 1.16 1.19.72.82 1.27 1.51 1.42 1.98.14.47-.1.7-.57.7z"/></svg>
+                Войти через ВКонтакте
+            </button>
+        </div>
+        <div id="vk-logged-in" style="display:none">
+            <div class="vk-user-card">
+                <img id="vk-avatar" src="" width="32" height="32" style="border-radius:50%" alt="">
+                <span id="vk-username"></span>
+                <button onclick="logoutVK()">Выйти</button>
+            </div>
+        </div>
     </div>
     <div class="stats-bar">
         <div class="stat"><span class="num" data-target="50">0</span><span class="lbl">Инструкций</span></div>
@@ -1069,6 +1132,22 @@
     <div class="vk-section reveal">
         <h2>Автопостинг ВКонтакте</h2>
         <p>Настройте автоматическую публикацию постов в вашу группу ВК.</p>
+
+        <div class="vk-sites-block">
+            <p style="color:var(--gray);font-size:0.83rem;margin-bottom:10px">🔗 Адреса сайта — вставьте в описание группы и посты:</p>
+            <div class="vk-site-row">
+                <span>🐙 GitHub</span>
+                <a href="https://trainingsw75-cloud.github.io" target="_blank">trainingsw75-cloud.github.io</a>
+                <button class="btn-copy-link" onclick="copyLink('https://trainingsw75-cloud.github.io')">Копировать</button>
+            </div>
+            <div class="vk-site-row">
+                <span>☁️ Cloudflare</span>
+                <a href="https://morskoy-pomoshnik.pages.dev" target="_blank">morskoy-pomoshnik.pages.dev</a>
+                <button class="btn-copy-link" onclick="copyLink('https://morskoy-pomoshnik.pages.dev')">Копировать</button>
+            </div>
+            <button class="btn-add-links" onclick="addLinksToPost()">+ Добавить оба адреса в текст поста</button>
+        </div>
+
         <div class="form-group">
             <label style="color:rgba(232,244,253,0.8)">Токен доступа ВК</label>
             <input type="text" id="vkToken" class="vk-input" placeholder="vk1.a.xxxxxxxxxxxxxxxxxxxxxxxxxx">

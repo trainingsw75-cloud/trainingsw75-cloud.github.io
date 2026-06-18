@@ -1,3 +1,94 @@
+// === VK OAUTH ===
+var VK_APP_ID = ''; // Вставьте App ID из vk.com/apps
+
+function loginVK(){
+    if(!VK_APP_ID){
+        alert('Укажите App ID ВКонтакте в файле app.js (строка VK_APP_ID).\n\nСоздайте приложение на vk.com/apps → Веб-сайт');
+        return;
+    }
+    var redirect=encodeURIComponent(window.location.origin+window.location.pathname);
+    window.location.href='https://oauth.vk.com/authorize?client_id='+VK_APP_ID+
+        '&display=popup&redirect_uri='+redirect+
+        '&scope=email,wall,groups&response_type=token&v=5.131';
+}
+
+function logoutVK(){
+    localStorage.removeItem('vk_token');
+    localStorage.removeItem('vk_user_id');
+    localStorage.removeItem('vk_user_name');
+    localStorage.removeItem('vk_user_photo');
+    document.getElementById('vk-logged-in').style.display='none';
+    document.getElementById('vk-logged-out').style.display='block';
+}
+
+function showVKUser(name,photo){
+    document.getElementById('vk-username').textContent=name;
+    document.getElementById('vk-avatar').src=photo;
+    document.getElementById('vk-logged-in').style.display='block';
+    document.getElementById('vk-logged-out').style.display='none';
+}
+
+function loadVKUser(token,userId){
+    var script=document.createElement('script');
+    var cb='vkUser_'+Date.now();
+    window[cb]=function(data){
+        if(data.response&&data.response[0]){
+            var u=data.response[0];
+            var name=u.first_name+' '+u.last_name;
+            var photo=u.photo_100;
+            localStorage.setItem('vk_user_name',name);
+            localStorage.setItem('vk_user_photo',photo);
+            showVKUser(name,photo);
+        }
+        delete window[cb];
+        if(script.parentNode)document.head.removeChild(script);
+    };
+    script.src='https://api.vk.com/method/users.get?user_ids='+userId+
+               '&fields=photo_100&access_token='+token+'&v=5.131&callback='+cb;
+    document.head.appendChild(script);
+}
+
+// Проверяем авторизацию при загрузке страницы
+(function checkVKAuth(){
+    var hash=window.location.hash;
+    if(hash.indexOf('access_token')!==-1){
+        var params={};
+        hash.slice(1).split('&').forEach(function(p){
+            var kv=p.split('=');
+            params[kv[0]]=decodeURIComponent(kv[1]||'');
+        });
+        if(params.access_token){
+            localStorage.setItem('vk_token',params.access_token);
+            localStorage.setItem('vk_user_id',params.user_id);
+            history.replaceState(null,'',window.location.pathname);
+            loadVKUser(params.access_token,params.user_id);
+        }
+    }else{
+        var name=localStorage.getItem('vk_user_name');
+        var photo=localStorage.getItem('vk_user_photo');
+        if(name&&photo) showVKUser(name,photo);
+    }
+})();
+
+function copyLink(url){
+    if(navigator.clipboard){
+        navigator.clipboard.writeText(url).then(function(){alert('Скопировано: '+url)});
+    }else{
+        var t=document.createElement('textarea');
+        t.value=url;document.body.appendChild(t);t.select();
+        document.execCommand('copy');document.body.removeChild(t);
+        alert('Скопировано!');
+    }
+}
+
+function addLinksToPost(){
+    var ta=document.getElementById('vkMessage');
+    var links='\n\n🌐 Морской помощник — два адреса сайта:\n📌 https://trainingsw75-cloud.github.io\n📌 https://morskoy-pomoshnik.pages.dev';
+    ta.value=(ta.value||'').trimRight()+links;
+    ta.focus();
+    document.getElementById('vk').scrollIntoView({behavior:'smooth'});
+}
+
 // === ПОДПИСКА ===
 function handleSubscribe(e){
     e.preventDefault();
