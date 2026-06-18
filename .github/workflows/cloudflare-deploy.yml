@@ -23,4 +23,3 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           projectName: morskoy-pomoshnik
           directory: .
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
