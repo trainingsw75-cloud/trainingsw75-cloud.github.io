@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Барбершоп BORODA — мужские стрижки, оформление бороды, королевское бритьё. Запись онлайн.">
+<title>BORODA — Барбершоп премиум-класса</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--black:#0d0d0d;--dark:#161616;--card:#1d1d1d;--gold:#c9a24b;--gold2:#e0bd6a;
+  --white:#f5f3ef;--gray:#9a9590;--line:rgba(201,162,75,.2)}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--black);color:var(--white);line-height:1.7}
+.container{max-width:1140px;margin:0 auto;padding:0 24px}
+h1,h2,h3,h4,.logo{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:1px}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:16px 0;
+  background:rgba(13,13,13,.9);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{display:flex;justify-content:space-between;align-items:center}
+.logo{font-size:1.6rem;font-weight:700;color:var(--white)}
+.logo b{color:var(--gold)}
+.nav-links{display:flex;gap:30px;align-items:center}
+.nav-links a{text-decoration:none;color:var(--gray);font-size:.9rem;font-weight:500;
+  text-transform:uppercase;letter-spacing:1px;transition:.2s}
+.nav-links a:hover{color:var(--gold)}
+.btn{display:inline-block;background:var(--gold);color:var(--black);padding:13px 30px;
+  font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:1px;font-weight:600;
+  text-decoration:none;border:none;cursor:pointer;transition:.3s;font-size:.9rem}
+.btn:hover{background:var(--gold2);transform:translateY(-2px)}
+.burger{display:none;font-size:1.6rem;cursor:pointer;background:none;border:none;color:var(--gold)}
+
+header{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;
+  background:linear-gradient(135deg,#0d0d0d 0%,#1a1611 100%)}
+header::before{content:'✂';position:absolute;right:-40px;top:50%;transform:translateY(-50%) rotate(-20deg);
+  font-size:34rem;color:rgba(201,162,75,.04);z-index:1}
+.hero{position:relative;z-index:2;max-width:680px}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;color:var(--gold);
+  font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:3px;
+  font-size:.9rem;margin-bottom:20px}
+.hero-tag::before{content:'';width:40px;height:2px;background:var(--gold)}
+.hero h1{font-size:clamp(3rem,8vw,6rem);font-weight:700;line-height:.95;margin-bottom:24px}
+.hero h1 b{color:var(--gold)}
+.hero p{font-size:1.2rem;color:var(--gray);margin-bottom:36px;font-weight:300;max-width:520px}
+.hero-actions{display:flex;gap:16px;flex-wrap:wrap}
+.btn-out{background:transparent;border:1.5px solid var(--line);color:var(--white)}
+.btn-out:hover{border-color:var(--gold);background:transparent}
+
+section{padding:110px 0}
+.sec-head{text-align:center;max-width:620px;margin:0 auto 60px}
+.sec-tag{color:var(--gold);font-family:'Oswald',sans-serif;letter-spacing:3px;
+  text-transform:uppercase;font-size:.9rem}
+.sec-head h2{font-size:clamp(2.2rem,5vw,3.4rem);font-weight:700;margin:14px 0}
+.sec-head p{color:var(--gray)}
+
+.services{background:var(--dark)}
+.serv-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+.serv-card{background:var(--card);border:1px solid var(--line);padding:32px;
+  display:flex;justify-content:space-between;align-items:center;gap:20px;transition:.3s}
+.serv-card:hover{border-color:var(--gold);transform:translateY(-4px)}
+.serv-card .ico{font-size:2.6rem}
+.serv-card .body{flex:1}
+.serv-card h4{font-size:1.3rem;margin-bottom:6px}
+.serv-card p{font-size:.88rem;color:var(--gray)}
+.serv-card .price{font-family:'Oswald',sans-serif;font-size:1.8rem;font-weight:700;color:var(--gold);white-space:nowrap}
+
+.masters-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.master{background:var(--card);border:1px solid var(--line);overflow:hidden;transition:.3s}
+.master:hover{transform:translateY(-6px);border-color:var(--gold)}
+.master-photo{height:280px;display:flex;align-items:center;justify-content:center;font-size:6rem;
+  background:linear-gradient(135deg,#1d1d1d,#2a241a)}
+.master-info{padding:24px;text-align:center}
+.master-info h4{font-size:1.3rem;margin-bottom:4px}
+.master-info .role{color:var(--gold);font-size:.85rem;text-transform:uppercase;letter-spacing:2px;margin-bottom:10px}
+.master-info .exp{color:var(--gray);font-size:.85rem}
+
+.cta-strip{background:linear-gradient(135deg,#1a1611,#0d0d0d);text-align:center;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.cta-strip h2{font-size:clamp(2rem,5vw,3.2rem);margin-bottom:16px}
+.cta-strip p{color:var(--gray);margin-bottom:30px;font-size:1.1rem}
+
+.booking-card{background:var(--card);border:1px solid var(--line);padding:50px;max-width:640px;margin:0 auto}
+.booking-card h2{font-size:2.2rem;text-align:center;margin-bottom:8px}
+.booking-card>p{text-align:center;color:var(--gray);margin-bottom:32px}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:.8rem;text-transform:uppercase;letter-spacing:1px;
+  color:var(--gold);margin-bottom:6px;font-family:'Oswald',sans-serif}
+.field input,.field select{width:100%;padding:14px 16px;background:var(--black);
+  border:1px solid var(--line);color:var(--white);font-family:inherit;font-size:.95rem;transition:.2s}
+.field input:focus,.field select:focus{outline:none;border-color:var(--gold)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.booking-card .btn{width:100%;padding:16px;margin-top:8px;font-size:1rem}
+#bMsg{display:none;text-align:center;margin-top:16px;color:var(--gold);font-weight:600}
+
+footer{background:var(--black);padding:60px 0 30px;border-top:1px solid var(--line)}
+.foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:40px;margin-bottom:36px}
+.foot-logo{font-family:'Oswald',sans-serif;font-size:1.8rem;font-weight:700;text-transform:uppercase;margin-bottom:14px}
+.foot-logo b{color:var(--gold)}
+.foot-col h4{color:var(--gold);margin-bottom:16px;font-size:1rem}
+.foot-col p,.foot-col a{display:block;color:var(--gray);text-decoration:none;margin-bottom:8px;font-size:.92rem}
+.foot-col a:hover{color:var(--gold)}
+.foot-bottom{border-top:1px solid var(--line);padding-top:24px;text-align:center;font-size:.85rem;color:rgba(154,149,144,.5)}
+
+@media(max-width:860px){
+  .nav-links{display:none}.burger{display:block}
+  .serv-grid,.masters-grid,.form-row{grid-template-columns:1fr}
+  .foot-grid{grid-template-columns:1fr}.booking-card{padding:32px 24px}
+  section{padding:70px 0}
+}
+.reveal{opacity:0;transform:translateY(30px);transition:.7s}.reveal.show{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<nav><div class="container nav-inner">
+  <div class="logo">BO<b>RODA</b></div>
+  <div class="nav-links">
+    <a href="#services">Услуги</a><a href="#masters">Мастера</a>
+    <a href="#booking" class="btn">Записаться</a>
+  </div>
+  <button class="burger" onclick="var n=document.querySelector('.nav-links');n.style.display=n.style.display==='flex'?'none':'flex'">☰</button>
+</div></nav>
+
+<header><div class="container">
+  <div class="hero">
+    <span class="hero-tag">Барбершоп премиум-класса</span>
+    <h1>Стиль для<br><b>настоящих</b> мужчин</h1>
+    <p>Мужские стрижки, оформление бороды и королевское бритьё опасной бритвой. Атмосфера, мастерство и характер.</p>
+    <div class="hero-actions">
+      <a href="#booking" class="btn">Записаться онлайн</a>
+      <a href="#services" class="btn btn-out">Услуги и цены</a>
+    </div>
+  </div>
+</div></header>
+
+<section id="services" class="services"><div class="container">
+  <div class="sec-head reveal"><span class="sec-tag">Прайс</span><h2>Услуги</h2><p>Чёткие цены без сюрпризов</p></div>
+  <div class="serv-grid reveal">
+    <div class="serv-card"><div class="ico">💈</div><div class="body"><h4>Мужская стрижка</h4><p>Любая сложность, укладка в подарок</p></div><div class="price">1200₽</div></div>
+    <div class="serv-card"><div class="ico">🧔</div><div class="body"><h4>Оформление бороды</h4><p>Моделирование, горячее полотенце</p></div><div class="price">900₽</div></div>
+    <div class="serv-card"><div class="ico">🪒</div><div class="body"><h4>Королевское бритьё</h4><p>Опасная бритва, уход за кожей</p></div><div class="price">1100₽</div></div>
+    <div class="serv-card"><div class="ico">✂️</div><div class="body"><h4>Стрижка + борода</h4><p>Полный образ, комплекс</p></div><div class="price">1900₽</div></div>
+    <div class="serv-card"><div class="ico">👦</div><div class="body"><h4>Детская стрижка</h4><p>До 12 лет, без слёз и нервов</p></div><div class="price">800₽</div></div>
+    <div class="serv-card"><div class="ico">👑</div><div class="body"><h4>VIP-комплекс</h4><p>Всё включено + напиток</p></div><div class="price">2500₽</div></div>
+  </div>
+</div></section>
+
+<section id="masters"><div class="container">
+  <div class="sec-head reveal"><span class="sec-tag">Команда</span><h2>Наши мастера</h2><p>Профессионалы своего дела</p></div>
+  <div class="masters-grid reveal">
+    <div class="master"><div class="master-photo">👨‍🦱</div><div class="master-info"><h4>Артём</h4><div class="role">Топ-барбер</div><p class="exp">Опыт 9 лет · 12 000+ клиентов</p></div></div>
+    <div class="master"><div class="master-photo">🧔‍♂️</div><div class="master-info"><h4>Денис</h4><div class="role">Мастер бороды</div><p class="exp">Опыт 7 лет · чемпион региона</p></div></div>
+    <div class="master"><div class="master-photo">👨</div><div class="master-info"><h4>Максим</h4><div class="role">Барбер-стилист</div><p class="exp">Опыт 5 лет · фейд-специалист</p></div></div>
+  </div>
+</div></section>
+
+<section class="cta-strip"><div class="container reveal">
+  <h2>Первая стрижка — <span style="color:var(--gold)">скидка 30%</span></h2>
+  <p>Записывайся прямо сейчас и оцени мастерство BORODA</p>
+  <a href="#booking" class="btn">Хочу записаться</a>
+</div></section>
+
+<section id="booking"><div class="container">
+  <div class="booking-card reveal">
+    <h2>Онлайн-запись</h2>
+    <p>Выбери услугу и удобное время — мастер подтвердит запись</p>
+    <form onsubmit="book(event)">
+      <div class="form-row">
+        <div class="field"><label>Имя</label><input type="text" required placeholder="Александр"></div>
+        <div class="field"><label>Телефон</label><input type="tel" required placeholder="+7 (___) ___-__-__"></div>
+      </div>
+      <div class="field"><label>Услуга</label><select><option>Мужская стрижка — 1200₽</option><option>Оформление бороды — 900₽</option><option>Королевское бритьё — 1100₽</option><option>Стрижка + борода — 1900₽</option><option>VIP-комплекс — 2500₽</option></select></div>
+      <div class="form-row">
+        <div class="field"><label>Дата</label><input type="date" required></div>
+        <div class="field"><label>Мастер</label><select><option>Любой</option><option>Артём</option><option>Денис</option><option>Максим</option></select></div>
+      </div>
+      <button type="submit" class="btn">Записаться</button>
+      <p id="bMsg">✓ Запись принята! Мастер свяжется для подтверждения.</p>
+    </form>
+  </div>
+</div></section>
+
+<footer><div class="container">
+  <div class="foot-grid">
+    <div><div class="foot-logo">BO<b>RODA</b></div><p style="color:var(--gray);max-width:320px">Барбершоп для тех, кто ценит стиль, качество и мужскую атмосферу.</p></div>
+    <div class="foot-col"><h4>Контакты</h4><a href="tel:+78555000000">+7 (8555) 00-00-00</a><p>ул. Центральная, 5</p><a href="#">@boroda_shop</a></div>
+    <div class="foot-col"><h4>Часы работы</h4><p>Ежедневно</p><p>10:00 – 22:00</p><p>Без выходных</p></div>
+  </div>
+  <div class="foot-bottom">© 2026 Барбершоп BORODA. Демо-сайт · Разработка сайтов и ботов</div>
+</div></footer>
+
+<script>
+function book(e){e.preventDefault();document.getElementById('bMsg').style.display='block';e.target.querySelector('button').textContent='Отправлено ✓';setTimeout(function(){e.target.reset();document.getElementById('bMsg').style.display='none';e.target.querySelector('button').textContent='Записаться'},4000)}
+var obs=new IntersectionObserver(function(en){en.forEach(function(x){if(x.isIntersecting){x.target.classList.add('show');obs.unobserve(x.target)}})},{threshold:.15});
+document.querySelectorAll('.reveal').forEach(function(el){obs.observe(el)});
+</script>
+</body>
+</html>

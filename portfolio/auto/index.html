@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Гараж 116 — автосервис в Татарстане. Ремонт, диагностика, ТО любых авто. Честные цены, гарантия. Онлайн-запись.">
+<title>Гараж 116 — автосервис полного цикла</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--dark:#0f1620;--dark2:#16202e;--card:#1b2738;--blue:#2e8bff;--blue2:#1a6fd4;
+  --orange:#ff7a18;--orange2:#ff9540;--white:#eef3f9;--gray:#8595aa;--line:rgba(46,139,255,.18)}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--dark);color:var(--white);line-height:1.7}
+.container{max-width:1160px;margin:0 auto;padding:0 24px}
+h1,h2,h3,h4,.logo{font-family:'Rajdhani',sans-serif;text-transform:uppercase;letter-spacing:.5px}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:14px 0;
+  background:rgba(15,22,32,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{display:flex;justify-content:space-between;align-items:center}
+.logo{font-size:1.5rem;font-weight:700;color:var(--white);display:flex;align-items:center;gap:8px}
+.logo b{color:var(--orange)}
+.nav-links{display:flex;gap:28px;align-items:center}
+.nav-links a{text-decoration:none;color:var(--gray);font-size:.92rem;font-weight:500;transition:.2s}
+.nav-links a:hover{color:var(--blue)}
+.btn{display:inline-block;background:var(--orange);color:#fff;padding:13px 28px;border-radius:8px;
+  font-family:'Rajdhani',sans-serif;text-transform:uppercase;letter-spacing:1px;font-weight:700;
+  text-decoration:none;border:none;cursor:pointer;transition:.3s;font-size:.95rem}
+.btn:hover{background:var(--orange2);transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,122,24,.35)}
+.btn-blue{background:var(--blue)}.btn-blue:hover{background:var(--blue2);box-shadow:0 8px 24px rgba(46,139,255,.35)}
+.burger{display:none;font-size:1.6rem;cursor:pointer;background:none;border:none;color:var(--orange)}
+
+header{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;
+  background:linear-gradient(135deg,#0f1620 0%,#16202e 60%,#1a2536 100%)}
+header::before{content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 75% 40%,rgba(255,122,24,.12),transparent 45%),
+  radial-gradient(circle at 15% 70%,rgba(46,139,255,.12),transparent 45%)}
+header::after{content:'🔧';position:absolute;right:2%;bottom:5%;font-size:18rem;opacity:.05;transform:rotate(15deg)}
+.hero{position:relative;z-index:2;max-width:680px}
+.hero-tag{display:inline-block;background:rgba(46,139,255,.15);color:var(--blue);
+  padding:8px 18px;border-radius:6px;font-weight:600;font-size:.85rem;margin-bottom:22px;border:1px solid var(--line)}
+.hero h1{font-size:clamp(2.8rem,7vw,5.5rem);font-weight:700;line-height:1;margin-bottom:22px}
+.hero h1 b{color:var(--orange)}
+.hero p{font-size:1.2rem;color:var(--gray);margin-bottom:34px;font-weight:300;max-width:540px}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:40px}
+.btn-out{background:transparent;border:1.5px solid var(--line);color:var(--white)}
+.btn-out:hover{border-color:var(--blue);box-shadow:none}
+.hero-trust{display:flex;gap:36px;flex-wrap:wrap}
+.trust-item{display:flex;align-items:center;gap:10px;font-size:.92rem;color:var(--gray)}
+.trust-item b{color:var(--white);font-family:'Rajdhani',sans-serif;font-size:1.4rem}
+
+section{padding:100px 0}
+.sec-head{text-align:center;max-width:620px;margin:0 auto 56px}
+.sec-tag{color:var(--orange);font-family:'Rajdhani',sans-serif;letter-spacing:3px;text-transform:uppercase;font-weight:600;font-size:.9rem}
+.sec-head h2{font-size:clamp(2rem,5vw,3.2rem);font-weight:700;margin:12px 0}
+.sec-head p{color:var(--gray)}
+
+.services{background:var(--dark2)}
+.serv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.serv-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:30px;transition:.3s}
+.serv-card:hover{transform:translateY(-6px);border-color:var(--orange)}
+.serv-card .ico{font-size:2.8rem;margin-bottom:16px}
+.serv-card h4{font-size:1.3rem;margin-bottom:10px}
+.serv-card p{font-size:.9rem;color:var(--gray);margin-bottom:14px}
+.serv-card .from{color:var(--orange);font-family:'Rajdhani',sans-serif;font-weight:700;font-size:1.2rem}
+
+/* CALCULATOR */
+.calc-section{background:linear-gradient(135deg,#16202e,#0f1620)}
+.calc-card{background:var(--card);border:1px solid var(--line);border-radius:20px;
+  padding:46px;max-width:760px;margin:0 auto}
+.calc-card h2{font-size:2rem;text-align:center;margin-bottom:8px}
+.calc-card>p{text-align:center;color:var(--gray);margin-bottom:32px}
+.calc-opts{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px}
+.calc-opt{background:var(--dark);border:1.5px solid var(--line);border-radius:10px;padding:16px;
+  cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:.2s;user-select:none}
+.calc-opt:hover{border-color:var(--blue)}
+.calc-opt.active{border-color:var(--orange);background:rgba(255,122,24,.08)}
+.calc-opt span:first-child{font-weight:500}
+.calc-opt .p{color:var(--orange);font-family:'Rajdhani',sans-serif;font-weight:700}
+.calc-result{background:var(--dark);border-radius:14px;padding:24px;text-align:center;border:1px solid var(--line)}
+.calc-result .lbl{color:var(--gray);font-size:.9rem;margin-bottom:6px}
+.calc-result .total{font-family:'Rajdhani',sans-serif;font-size:3rem;font-weight:700;color:var(--orange)}
+.calc-result .note{font-size:.82rem;color:var(--gray);margin-top:6px}
+.calc-card .btn{width:100%;margin-top:20px;padding:16px}
+
+.why-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.why{text-align:center;padding:24px}
+.why .ico{font-size:2.6rem;margin-bottom:14px}
+.why h4{font-size:1.15rem;margin-bottom:8px}
+.why p{font-size:.88rem;color:var(--gray)}
+
+.booking{background:var(--dark2)}
+.booking-card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:46px;max-width:640px;margin:0 auto}
+.booking-card h2{font-size:2rem;text-align:center;margin-bottom:8px}
+.booking-card>p{text-align:center;color:var(--gray);margin-bottom:30px}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:.82rem;color:var(--blue);margin-bottom:6px;font-weight:600}
+.field input,.field select{width:100%;padding:14px 16px;background:var(--dark);border:1px solid var(--line);
+  color:var(--white);border-radius:8px;font-family:inherit;font-size:.95rem;transition:.2s}
+.field input:focus,.field select:focus{outline:none;border-color:var(--orange)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.booking-card .btn{width:100%;padding:16px;margin-top:8px}
+#aMsg{display:none;text-align:center;margin-top:16px;color:var(--orange);font-weight:600}
+
+footer{background:var(--dark);padding:60px 0 30px;border-top:1px solid var(--line)}
+.foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:40px;margin-bottom:36px}
+.foot-logo{font-family:'Rajdhani',sans-serif;font-size:1.7rem;font-weight:700;text-transform:uppercase;margin-bottom:14px}
+.foot-logo b{color:var(--orange)}
+.foot-col h4{color:var(--orange);margin-bottom:16px;font-size:1rem}
+.foot-col p,.foot-col a{display:block;color:var(--gray);text-decoration:none;margin-bottom:8px;font-size:.92rem}
+.foot-col a:hover{color:var(--blue)}
+.foot-bottom{border-top:1px solid var(--line);padding-top:24px;text-align:center;font-size:.85rem;color:rgba(133,149,170,.5)}
+
+@media(max-width:860px){
+  .nav-links{display:none}.burger{display:block}
+  .serv-grid,.why-grid,.calc-opts,.form-row{grid-template-columns:1fr}
+  .why-grid{grid-template-columns:1fr 1fr}
+  .foot-grid{grid-template-columns:1fr}.calc-card,.booking-card{padding:30px 22px}
+  section{padding:70px 0}
+}
+.reveal{opacity:0;transform:translateY(30px);transition:.7s}.reveal.show{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<nav><div class="container nav-inner">
+  <div class="logo">🔧 ГАРАЖ<b>116</b></div>
+  <div class="nav-links">
+    <a href="#services">Услуги</a><a href="#calc">Калькулятор</a><a href="#why">Почему мы</a>
+    <a href="#booking" class="btn">Записаться</a>
+  </div>
+  <button class="burger" onclick="var n=document.querySelector('.nav-links');n.style.display=n.style.display==='flex'?'none':'flex'">☰</button>
+</div></nav>
+
+<header><div class="container">
+  <div class="hero">
+    <span class="hero-tag">⚡ Автосервис полного цикла · Татарстан</span>
+    <h1>Ремонт авто <b>без переплат</b></h1>
+    <p>Диагностика, ремонт и ТО любых автомобилей. Честные цены, гарантия на работы, оригинальные запчасти.</p>
+    <div class="hero-actions">
+      <a href="#booking" class="btn">Записаться на ремонт</a>
+      <a href="#calc" class="btn btn-out">Рассчитать стоимость</a>
+    </div>
+    <div class="hero-trust">
+      <div class="trust-item">⭐ <b>4.9</b> рейтинг</div>
+      <div class="trust-item">🚗 <b>15К+</b> авто в год</div>
+      <div class="trust-item">🛡️ <b>2 года</b> гарантии</div>
+    </div>
+  </div>
+</div></header>
+
+<section id="services" class="services"><div class="container">
+  <div class="sec-head reveal"><span class="sec-tag">Услуги</span><h2>Что мы делаем</h2><p>Полный спектр работ под одной крышей</p></div>
+  <div class="serv-grid reveal">
+    <div class="serv-card"><div class="ico">🔍</div><h4>Диагностика</h4><p>Компьютерная диагностика всех систем за 30 минут</p><div class="from">от 800 ₽</div></div>
+    <div class="serv-card"><div class="ico">🛢️</div><h4>Замена масла и ТО</h4><p>Плановое обслуживание, расходники в наличии</p><div class="from">от 1500 ₽</div></div>
+    <div class="serv-card"><div class="ico">⚙️</div><h4>Ремонт двигателя</h4><p>От замены ремня ГРМ до капремонта</p><div class="from">от 5000 ₽</div></div>
+    <div class="serv-card"><div class="ico">🛞</div><h4>Шиномонтаж</h4><p>Сезонная замена, балансировка, хранение</p><div class="from">от 1200 ₽</div></div>
+    <div class="serv-card"><div class="ico">🔩</div><h4>Ходовая часть</h4><p>Подвеска, тормоза, рулевое управление</p><div class="from">от 2500 ₽</div></div>
+    <div class="serv-card"><div class="ico">❄️</div><h4>Заправка кондиционера</h4><p>Диагностика и обслуживание климата</p><div class="from">от 1800 ₽</div></div>
+  </div>
+</div></section>
+
+<section id="calc" class="calc-section"><div class="container">
+  <div class="calc-card reveal">
+    <h2>Калькулятор стоимости</h2>
+    <p>Выберите нужные работы — узнайте цену сразу</p>
+    <div class="calc-opts" id="calcOpts">
+      <div class="calc-opt" data-price="800"><span>Диагностика</span><span class="p">800 ₽</span></div>
+      <div class="calc-opt" data-price="1800"><span>Замена масла + ТО</span><span class="p">1800 ₽</span></div>
+      <div class="calc-opt" data-price="1200"><span>Шиномонтаж</span><span class="p">1200 ₽</span></div>
+      <div class="calc-opt" data-price="3500"><span>Ремонт тормозов</span><span class="p">3500 ₽</span></div>
+      <div class="calc-opt" data-price="2500"><span>Подвеска</span><span class="p">2500 ₽</span></div>
+      <div class="calc-opt" data-price="1800"><span>Кондиционер</span><span class="p">1800 ₽</span></div>
+    </div>
+    <div class="calc-result">
+      <div class="lbl">Предварительная стоимость</div>
+      <div class="total" id="calcTotal">0 ₽</div>
+      <div class="note">Точную цену назовёт мастер после осмотра</div>
+    </div>
+    <a href="#booking" class="btn btn-blue">Записаться с этим расчётом</a>
+  </div>
+</div></section>
+
+<section id="why"><div class="container">
+  <div class="sec-head reveal"><span class="sec-tag">Преимущества</span><h2>Почему выбирают нас</h2></div>
+  <div class="why-grid reveal">
+    <div class="why"><div class="ico">💰</div><h4>Честные цены</h4><p>Согласуем смету до начала работ. Никаких накруток</p></div>
+    <div class="why"><div class="ico">🛡️</div><h4>Гарантия 2 года</h4><p>На все работы и установленные запчасти</p></div>
+    <div class="why"><div class="ico">⏱️</div><h4>Быстро</h4><p>Большинство работ — в день обращения</p></div>
+    <div class="why"><div class="ico">👨‍🔧</div><h4>Опытные мастера</h4><p>Стаж от 10 лет, сертификаты</p></div>
+  </div>
+</div></section>
+
+<section id="booking" class="booking"><div class="container">
+  <div class="booking-card reveal">
+    <h2>Записаться на сервис</h2>
+    <p>Оставьте заявку — перезвоним за 10 минут и подберём время</p>
+    <form onsubmit="bookAuto(event)">
+      <div class="form-row">
+        <div class="field"><label>Имя</label><input type="text" required placeholder="Иван"></div>
+        <div class="field"><label>Телефон</label><input type="tel" required placeholder="+7 (___) ___-__-__"></div>
+      </div>
+      <div class="form-row">
+        <div class="field"><label>Марка авто</label><input type="text" placeholder="Lada, Toyota..."></div>
+        <div class="field"><label>Услуга</label><select><option>Диагностика</option><option>ТО / замена масла</option><option>Ремонт двигателя</option><option>Шиномонтаж</option><option>Ходовая / тормоза</option><option>Другое</option></select></div>
+      </div>
+      <button type="submit" class="btn">Отправить заявку</button>
+      <p id="aMsg">✓ Заявка принята! Перезвоним в течение 10 минут.</p>
+    </form>
+  </div>
+</div></section>
+
+<footer><div class="container">
+  <div class="foot-grid">
+    <div><div class="foot-logo">🔧 ГАРАЖ<b>116</b></div><p style="color:var(--gray);max-width:320px">Автосервис полного цикла. Ремонтируем так, как для себя.</p></div>
+    <div class="foot-col"><h4>Контакты</h4><a href="tel:+78555000000">+7 (8555) 00-00-00</a><p>ул. Промышленная, 8</p><a href="#">@garage116</a></div>
+    <div class="foot-col"><h4>Часы работы</h4><p>Пн–Сб: 8:00 – 20:00</p><p>Вс: 9:00 – 18:00</p></div>
+  </div>
+  <div class="foot-bottom">© 2026 Гараж 116. Демо-сайт · Разработка сайтов и ботов</div>
+</div></footer>
+
+<script>
+var selected={};
+document.querySelectorAll('.calc-opt').forEach(function(opt,i){
+  opt.addEventListener('click',function(){
+    opt.classList.toggle('active');
+    var price=+opt.dataset.price;
+    if(opt.classList.contains('active'))selected[i]=price;else delete selected[i];
+    var total=Object.values(selected).reduce(function(a,b){return a+b},0);
+    document.getElementById('calcTotal').textContent=total.toLocaleString('ru-RU')+' ₽';
+  });
+});
+function bookAuto(e){e.preventDefault();document.getElementById('aMsg').style.display='block';e.target.querySelector('button').textContent='Отправлено ✓';setTimeout(function(){e.target.reset();document.getElementById('aMsg').style.display='none';e.target.querySelector('button').textContent='Отправить заявку'},4000)}
+var obs=new IntersectionObserver(function(en){en.forEach(function(x){if(x.isIntersecting){x.target.classList.add('show');obs.unobserve(x.target)}})},{threshold:.15});
+document.querySelectorAll('.reveal').forEach(function(el){obs.observe(el)});
+</script>
+</body>
+</html>

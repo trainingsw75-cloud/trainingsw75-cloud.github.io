@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Кафе «Гавань» — уютная атмосфера, авторская кухня, завтраки и ужины в центре города. Бронирование столиков онлайн.">
+<title>Кафе «Гавань» — уютная кухня в центре города</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700;900&family=Inter:wght@300;400;500;600&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --cream:#faf6f0;--dark:#1f1a15;--terra:#c0653a;--terra2:#a8502b;
+  --green:#2d4a3e;--gold:#d4a857;--gray:#7a7066;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--dark);line-height:1.7}
+.container{max-width:1140px;margin:0 auto;padding:0 24px}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 0;
+  background:rgba(250,246,240,0.92);backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(31,26,21,0.08);transition:.3s}
+.nav-inner{display:flex;justify-content:space-between;align-items:center}
+.logo{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:900;color:var(--green)}
+.logo span{color:var(--terra)}
+.nav-links{display:flex;gap:32px;align-items:center}
+.nav-links a{text-decoration:none;color:var(--dark);font-size:.95rem;font-weight:500;transition:.2s}
+.nav-links a:hover{color:var(--terra)}
+.btn{display:inline-block;background:var(--terra);color:#fff;padding:12px 26px;border-radius:50px;
+  text-decoration:none;font-weight:600;font-size:.92rem;border:none;cursor:pointer;transition:.3s}
+.btn:hover{background:var(--terra2);transform:translateY(-2px);box-shadow:0 8px 24px rgba(192,101,58,.35)}
+.burger{display:none;font-size:1.6rem;cursor:pointer;background:none;border:none;color:var(--green)}
+
+/* HERO */
+header{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;
+  background:linear-gradient(135deg,#2d4a3e 0%,#1f3329 100%)}
+header::before{content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 70% 30%,rgba(212,168,87,.18),transparent 50%),
+  radial-gradient(circle at 20% 80%,rgba(192,101,58,.15),transparent 50%)}
+.hero-content{position:relative;z-index:2;color:var(--cream);max-width:640px}
+.hero-tag{display:inline-block;background:rgba(212,168,87,.2);color:var(--gold);
+  padding:8px 18px;border-radius:50px;font-size:.85rem;font-weight:600;margin-bottom:24px;
+  border:1px solid rgba(212,168,87,.3)}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.6rem,6vw,4.5rem);
+  font-weight:900;line-height:1.1;margin-bottom:24px}
+.hero h1 em{color:var(--gold);font-style:italic}
+.hero p{font-size:1.2rem;color:rgba(250,246,240,.85);margin-bottom:36px;font-weight:300}
+.hero-actions{display:flex;gap:16px;flex-wrap:wrap}
+.btn-outline{background:transparent;border:1.5px solid rgba(250,246,240,.4);color:var(--cream)}
+.btn-outline:hover{background:rgba(250,246,240,.1);border-color:var(--cream)}
+.hero-plate{position:absolute;right:-80px;top:50%;transform:translateY(-50%);
+  width:480px;height:480px;border-radius:50%;
+  background:linear-gradient(135deg,var(--terra),var(--gold));
+  opacity:.25;filter:blur(20px);z-index:1}
+
+/* SECTIONS */
+section{padding:100px 0}
+.sec-head{text-align:center;max-width:600px;margin:0 auto 60px}
+.sec-tag{color:var(--terra);font-weight:600;font-size:.9rem;letter-spacing:2px;text-transform:uppercase}
+.sec-head h2{font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,3rem);
+  font-weight:700;margin:12px 0 16px;color:var(--green)}
+.sec-head p{color:var(--gray);font-size:1.05rem}
+
+/* ABOUT */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.about-visual{height:420px;border-radius:24px;
+  background:linear-gradient(135deg,var(--terra) 0%,var(--gold) 100%);
+  position:relative;overflow:hidden;box-shadow:0 30px 60px rgba(192,101,58,.25)}
+.about-visual::after{content:'☕';position:absolute;font-size:11rem;
+  top:50%;left:50%;transform:translate(-50%,-50%);opacity:.35}
+.about-text h3{font-family:'Playfair Display',serif;font-size:2rem;color:var(--green);margin-bottom:20px}
+.about-text p{color:var(--gray);margin-bottom:20px}
+.about-stats{display:flex;gap:40px;margin-top:30px}
+.about-stat .n{font-family:'Playfair Display',serif;font-size:2.4rem;font-weight:900;color:var(--terra)}
+.about-stat .l{font-size:.88rem;color:var(--gray)}
+
+/* MENU */
+.menu-section{background:var(--green);color:var(--cream)}
+.menu-section .sec-head h2{color:var(--cream)}
+.menu-section .sec-head p{color:rgba(250,246,240,.7)}
+.menu-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px 50px}
+.menu-item{display:flex;justify-content:space-between;align-items:baseline;gap:16px;
+  padding:18px 0;border-bottom:1px dashed rgba(212,168,87,.3)}
+.menu-item .info h4{font-size:1.1rem;font-weight:600;margin-bottom:4px}
+.menu-item .info p{font-size:.85rem;color:rgba(250,246,240,.6)}
+.menu-item .price{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;
+  color:var(--gold);white-space:nowrap}
+
+/* GALLERY */
+.gallery-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.gphoto{aspect-ratio:1;border-radius:16px;display:flex;align-items:center;justify-content:center;
+  font-size:3rem;transition:.3s;cursor:pointer}
+.gphoto:hover{transform:scale(1.05) rotate(-2deg)}
+.gphoto:nth-child(1){background:linear-gradient(135deg,#c0653a,#d4a857)}
+.gphoto:nth-child(2){background:linear-gradient(135deg,#2d4a3e,#4a6b5a)}
+.gphoto:nth-child(3){background:linear-gradient(135deg,#d4a857,#e8c87a)}
+.gphoto:nth-child(4){background:linear-gradient(135deg,#a8502b,#c0653a)}
+.gphoto:nth-child(5){background:linear-gradient(135deg,#4a6b5a,#2d4a3e)}
+.gphoto:nth-child(6){background:linear-gradient(135deg,#e8c87a,#d4a857)}
+.gphoto:nth-child(7){background:linear-gradient(135deg,#c0653a,#a8502b)}
+.gphoto:nth-child(8){background:linear-gradient(135deg,#2d4a3e,#d4a857)}
+
+/* BOOKING */
+.booking{background:linear-gradient(135deg,#1f3329,#2d4a3e)}
+.booking-card{background:var(--cream);border-radius:28px;padding:50px;max-width:680px;margin:0 auto;
+  box-shadow:0 40px 80px rgba(0,0,0,.3)}
+.booking-card h2{font-family:'Playfair Display',serif;font-size:2.2rem;color:var(--green);
+  text-align:center;margin-bottom:8px}
+.booking-card>p{text-align:center;color:var(--gray);margin-bottom:32px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.field label{display:block;font-size:.85rem;font-weight:600;margin-bottom:6px;color:var(--green)}
+.field input,.field select{width:100%;padding:13px 16px;border:1.5px solid rgba(31,26,21,.15);
+  border-radius:12px;font-family:inherit;font-size:.95rem;background:#fff;transition:.2s}
+.field input:focus,.field select:focus{outline:none;border-color:var(--terra);
+  box-shadow:0 0 0 3px rgba(192,101,58,.12)}
+.booking .btn{width:100%;padding:16px;font-size:1.05rem;margin-top:8px}
+#bookMsg{text-align:center;margin-top:16px;font-weight:600;color:var(--green);display:none}
+
+/* FOOTER */
+footer{background:var(--dark);color:rgba(250,246,240,.8);padding:70px 0 30px}
+.foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:40px;margin-bottom:40px}
+.foot-logo{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:900;color:var(--cream);margin-bottom:14px}
+.foot-logo span{color:var(--terra)}
+.foot-col h4{color:var(--gold);margin-bottom:16px;font-size:1rem}
+.foot-col p,.foot-col a{display:block;color:rgba(250,246,240,.65);text-decoration:none;
+  margin-bottom:8px;font-size:.92rem}
+.foot-col a:hover{color:var(--gold)}
+.foot-bottom{border-top:1px solid rgba(250,246,240,.1);padding-top:24px;text-align:center;
+  font-size:.85rem;color:rgba(250,246,240,.4)}
+
+@media(max-width:860px){
+  .nav-links{display:none}.burger{display:block}
+  .about-grid,.menu-grid,.form-row{grid-template-columns:1fr}
+  .gallery-grid{grid-template-columns:repeat(2,1fr)}
+  .foot-grid{grid-template-columns:1fr}
+  .booking-card{padding:32px 24px}
+  section{padding:70px 0}
+}
+.reveal{opacity:0;transform:translateY(30px);transition:.7s}
+.reveal.show{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="container nav-inner">
+    <div class="logo">Га<span>вань</span></div>
+    <div class="nav-links">
+      <a href="#about">О нас</a>
+      <a href="#menu">Меню</a>
+      <a href="#gallery">Галерея</a>
+      <a href="#booking" class="btn">Забронировать</a>
+    </div>
+    <button class="burger" onclick="document.querySelector('.nav-links').style.display=document.querySelector('.nav-links').style.display==='flex'?'none':'flex'">☰</button>
+  </div>
+</nav>
+
+<header>
+  <div class="hero-plate"></div>
+  <div class="container">
+    <div class="hero-content hero">
+      <span class="hero-tag">⭐ Лучшее кафе города 2025</span>
+      <h1>Вкус, который <em>возвращает</em> домой</h1>
+      <p>Авторская кухня, ароматный кофе и тёплая атмосфера в самом сердце города. Завтраки, обеды и романтические ужины.</p>
+      <div class="hero-actions">
+        <a href="#booking" class="btn">Забронировать столик</a>
+        <a href="#menu" class="btn btn-outline">Посмотреть меню</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="about">
+  <div class="container about-grid">
+    <div class="about-visual reveal"></div>
+    <div class="about-text reveal">
+      <span class="sec-tag">О нас</span>
+      <h3>Уют в каждой детали</h3>
+      <p>«Гавань» — это место, где время замедляется. Мы готовим из свежих локальных продуктов, обжариваем кофе сами и встречаем каждого гостя как родного.</p>
+      <p>За 8 лет мы стали любимым местом для тысяч горожан — от утреннего кофе до семейных праздников.</p>
+      <div class="about-stats">
+        <div class="about-stat"><div class="n">8</div><div class="l">лет с вами</div></div>
+        <div class="about-stat"><div class="n">120+</div><div class="l">блюд в меню</div></div>
+        <div class="about-stat"><div class="n">4.9</div><div class="l">рейтинг гостей</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="menu" class="menu-section">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="sec-tag">Меню</span>
+      <h2>Хиты нашей кухни</h2>
+      <p>Самые любимые блюда наших гостей</p>
+    </div>
+    <div class="menu-grid reveal">
+      <div class="menu-item"><div class="info"><h4>Паста с белыми грибами</h4><p>сливочный соус, пармезан, трюфельное масло</p></div><div class="price">590 ₽</div></div>
+      <div class="menu-item"><div class="info"><h4>Стейк рибай</h4><p>мраморная говядина, овощи гриль</p></div><div class="price">1290 ₽</div></div>
+      <div class="menu-item"><div class="info"><h4>Том ям с креветками</h4><p>кокосовое молоко, грибы, лемонграсс</p></div><div class="price">650 ₽</div></div>
+      <div class="menu-item"><div class="info"><h4>Брускетта с лососем</h4><p>крем-сыр, авокадо, руккола</p></div><div class="price">450 ₽</div></div>
+      <div class="menu-item"><div class="info"><h4>Сырники со сметаной</h4><p>домашний рецепт, ягодный соус</p></div><div class="price">380 ₽</div></div>
+      <div class="menu-item"><div class="info"><h4>Тирамису</h4><p>классический, с маскарпоне</p></div><div class="price">420 ₽</div></div>
+      <div class="menu-item"><div class="info"><h4>Капучино</h4><p>зерно собственной обжарки</p></div><div class="price">220 ₽</div></div>
+      <div class="menu-item"><div class="info"><h4>Авторский лимонад</h4><p>облепиха, мята, имбирь</p></div><div class="price">290 ₽</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="gallery">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="sec-tag">Галерея</span>
+      <h2>Атмосфера «Гавани»</h2>
+      <p>Загляните к нам ещё до визита</p>
+    </div>
+    <div class="gallery-grid reveal">
+      <div class="gphoto">🍝</div><div class="gphoto">☕</div><div class="gphoto">🥗</div><div class="gphoto">🍷</div>
+      <div class="gphoto">🍰</div><div class="gphoto">🥐</div><div class="gphoto">🍳</div><div class="gphoto">🍓</div>
+    </div>
+  </div>
+</section>
+
+<section id="booking" class="booking">
+  <div class="container">
+    <div class="booking-card reveal">
+      <h2>Забронировать столик</h2>
+      <p>Оставьте заявку — мы перезвоним в течение 15 минут</p>
+      <form onsubmit="bookTable(event)">
+        <div class="form-row">
+          <div class="field"><label>Ваше имя</label><input type="text" required placeholder="Иван"></div>
+          <div class="field"><label>Телефон</label><input type="tel" required placeholder="+7 (___) ___-__-__"></div>
+        </div>
+        <div class="form-row">
+          <div class="field"><label>Дата</label><input type="date" required></div>
+          <div class="field"><label>Гостей</label>
+            <select><option>1 гость</option><option>2 гостя</option><option>3-4 гостя</option><option>5+ гостей</option></select>
+          </div>
+        </div>
+        <button type="submit" class="btn">Забронировать</button>
+        <p id="bookMsg">✓ Спасибо! Мы перезвоним вам в ближайшее время.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-logo">Га<span>вань</span></div>
+        <p style="max-width:320px">Уютное кафе с авторской кухней в центре города. Открыты для вас каждый день.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Контакты</h4>
+        <a href="tel:+78555000000">+7 (8555) 00-00-00</a>
+        <p>ул. Набережная, 12</p>
+        <a href="#">@gavan_cafe</a>
+      </div>
+      <div class="foot-col">
+        <h4>Часы работы</h4>
+        <p>Пн–Чт: 9:00 – 23:00</p>
+        <p>Пт–Сб: 9:00 – 02:00</p>
+        <p>Вс: 10:00 – 23:00</p>
+      </div>
+    </div>
+    <div class="foot-bottom">© 2026 Кафе «Гавань». Демо-сайт · Разработка сайтов и ботов</div>
+  </div>
+</footer>
+
+<script>
+function bookTable(e){e.preventDefault();document.getElementById('bookMsg').style.display='block';e.target.querySelector('button').textContent='Заявка отправлена ✓';setTimeout(function(){e.target.reset();document.getElementById('bookMsg').style.display='none';e.target.querySelector('button').textContent='Забронировать'},4000)}
+var obs=new IntersectionObserver(function(en){en.forEach(function(x){if(x.isIntersecting){x.target.classList.add('show');obs.unobserve(x.target)}})},{threshold:.15});
+document.querySelectorAll('.reveal').forEach(function(el){obs.observe(el)});
+window.addEventListener('scroll',function(){var n=document.querySelector('nav');n.style.boxShadow=window.scrollY>20?'0 6px 24px rgba(0,0,0,.08)':'none'});
+</script>
+</body>
+</html>
