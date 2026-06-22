@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Резюме судового повара Романа Крюкова — 15+ лет в море на судах PSV, AHTS, MPSV, ледоколах и буксирах. Открыт для контрактов.">
+<title>👨‍🍳 Резюме — Роман Крюков, судовой повар | Морской помощник</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --navy:#020c1b;--navy2:#0a1628;--navy3:#112240;--ocean:#1e3a5f;
+  --teal:#00d4ff;--teal2:#00b4d8;--gold:#ffd60a;--gold2:#ffb703;
+  --white:#e8f4fd;--gray:#8892b0;
+  --card:rgba(255,255,255,0.04);--card-border:rgba(0,212,255,0.15);
+  --glow:0 0 30px rgba(0,212,255,0.3);--glow-gold:0 0 30px rgba(255,214,10,0.3);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--navy);color:var(--white);line-height:1.7;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+.container{max-width:1080px;margin:0 auto;padding:0 22px}
+.grad{background:linear-gradient(135deg,#fff 25%,var(--teal) 65%,var(--gold) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+/* top bar */
+.topbar{position:sticky;top:0;z-index:50;background:rgba(2,12,27,.82);backdrop-filter:blur(14px);border-bottom:1px solid var(--card-border)}
+.topbar .container{display:flex;align-items:center;justify-content:space-between;height:60px}
+.back{display:inline-flex;align-items:center;gap:8px;color:var(--teal);font-weight:700;font-size:14px;transition:.2s}
+.back:hover{gap:12px;color:var(--gold)}
+.topbar .name{font-weight:800;color:var(--white);font-size:15px;opacity:.9}
+
+/* hero */
+header{position:relative;min-height:88vh;display:flex;align-items:center;overflow:hidden;
+  background:radial-gradient(ellipse 80% 60% at 75% 25%,rgba(0,212,255,.14),transparent 65%),
+             radial-gradient(ellipse 60% 50% at 10% 90%,rgba(255,214,10,.08),transparent 60%),
+             linear-gradient(180deg,var(--navy) 0%,var(--navy2) 100%)}
+.hero{display:grid;grid-template-columns:1fr .8fr;gap:50px;align-items:center;padding:50px 0;width:100%}
+.eyebrow{display:inline-flex;align-items:center;gap:9px;background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.3);color:var(--teal);
+  padding:8px 18px;border-radius:50px;font-size:.8rem;font-weight:700;letter-spacing:1px;backdrop-filter:blur(10px)}
+.hero h1{font-size:clamp(2.6rem,6vw,4.6rem);font-weight:900;line-height:1.05;letter-spacing:-2px;margin:20px 0 6px}
+.hero .role{font-size:clamp(1.1rem,2.4vw,1.6rem);color:var(--gold);font-weight:800;margin-bottom:16px}
+.hero p.lead{color:var(--gray);max-width:520px;font-size:1.05rem}
+.cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:30px}
+.btn{display:inline-flex;align-items:center;gap:9px;padding:14px 26px;border-radius:14px;font-weight:800;font-size:.98rem;cursor:pointer;border:0;transition:transform .18s,box-shadow .25s}
+.btn.primary{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#1a1300;box-shadow:var(--glow-gold)}
+.btn.ghost{background:rgba(0,212,255,.08);color:var(--teal);border:1px solid rgba(0,212,255,.35)}
+.btn:hover{transform:translateY(-3px)}
+.portrait-wrap{justify-self:center;position:relative}
+.portrait-wrap::before{content:'';position:absolute;inset:-18px;border-radius:34px;background:linear-gradient(135deg,var(--teal),var(--gold));opacity:.35;filter:blur(26px);z-index:0}
+.portrait{position:relative;z-index:1;width:280px;height:330px;object-fit:cover;border-radius:26px;border:2px solid rgba(0,212,255,.3);box-shadow:var(--glow)}
+.float-badge{position:absolute;z-index:2;bottom:-14px;left:50%;transform:translateX(-50%);white-space:nowrap;
+  background:var(--navy3);border:1px solid rgba(0,212,255,.3);color:var(--white);padding:10px 20px;border-radius:50px;font-weight:800;font-size:.82rem;box-shadow:var(--glow)}
+.float-badge .dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#27c93f;margin-right:8px;box-shadow:0 0 10px #27c93f}
+
+/* stats */
+.stats-bar{display:flex;flex-wrap:wrap;gap:26px;justify-content:center;background:var(--card);border:1px solid rgba(0,212,255,.12);
+  border-radius:22px;padding:28px 40px;backdrop-filter:blur(20px);margin-top:-46px;position:relative;z-index:5}
+.stat{text-align:center;flex:1;min-width:120px}
+.stat .num{font-size:2.4rem;font-weight:900;display:block;line-height:1;background:linear-gradient(135deg,var(--teal),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.stat .lbl{font-size:.78rem;color:var(--gray);margin-top:6px;text-transform:uppercase;letter-spacing:1px}
+
+/* sections */
+section{padding:64px 0}
+.section-title{font-size:clamp(1.7rem,4vw,2.5rem);font-weight:900;margin-bottom:30px;letter-spacing:-1px}
+.section-title span{background:linear-gradient(135deg,var(--teal),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.panel{background:var(--card);border:1px solid var(--card-border);border-radius:20px;backdrop-filter:blur(20px)}
+
+.about-grid{display:grid;grid-template-columns:1.4fr .9fr;gap:26px}
+.about-text{padding:32px 34px;color:#c5d6e8;font-size:1.02rem}
+.about-text b{color:var(--white)}
+.facts{padding:26px 30px}
+.facts li{list-style:none;display:flex;justify-content:space-between;gap:14px;padding:12px 0;border-bottom:1px dashed rgba(0,212,255,.14);font-size:.95rem}
+.facts li:last-child{border-bottom:0}
+.facts .k{color:var(--gray)}
+.facts .v{color:var(--white);font-weight:700;text-align:right}
+
+/* filter + timeline */
+.filterbar{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:26px}
+.chip{border:1px solid rgba(0,212,255,.2);background:rgba(0,212,255,.05);color:var(--gray);padding:9px 17px;border-radius:50px;font-size:.85rem;font-weight:700;cursor:pointer;transition:.18s}
+.chip.active,.chip:hover{background:linear-gradient(135deg,var(--teal2),var(--teal));color:var(--navy);border-color:transparent;box-shadow:var(--glow)}
+.tl-list{display:grid;gap:13px}
+.voyage{display:grid;grid-template-columns:140px 1fr auto;gap:18px;align-items:center;padding:16px 22px;border-radius:15px;
+  background:var(--card);border:1px solid var(--card-border);border-left:3px solid var(--teal);transition:.18s}
+.voyage:hover{transform:translateX(5px);border-left-color:var(--gold);box-shadow:var(--glow)}
+.voyage .when{font-size:.85rem;font-weight:800;color:var(--teal)}
+.voyage .when small{display:block;color:var(--gray);font-weight:600;font-size:.74rem;text-transform:uppercase;letter-spacing:.5px}
+.voyage .vessel{font-size:1.12rem;font-weight:800;color:var(--white)}
+.voyage .meta{font-size:.85rem;color:var(--gray);margin-top:2px}
+.voyage .flag{font-size:.78rem;background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.18);color:var(--teal);padding:6px 12px;border-radius:10px;font-weight:700;white-space:nowrap}
+.role-tag{display:inline-block;font-size:.66rem;font-weight:900;letter-spacing:.5px;color:#1a1300;background:linear-gradient(135deg,var(--gold),var(--gold2));padding:3px 9px;border-radius:6px;margin-left:9px;vertical-align:middle}
+
+/* certs + skills */
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.cert{padding:24px;border-radius:16px;background:var(--card);border:1px solid var(--card-border);transition:.18s}
+.cert:hover{transform:translateY(-5px);box-shadow:var(--glow);border-color:rgba(0,212,255,.4)}
+.cert .ico{font-size:1.7rem;margin-bottom:10px}
+.cert h4{color:var(--white);font-size:1.05rem;margin-bottom:4px}
+.cert p{color:var(--gray);font-size:.86rem}
+.cert .valid{margin-top:10px;font-size:.78rem;font-weight:800;color:var(--teal)}
+.skill-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.skill{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--card-border);border-radius:13px;padding:14px 18px;font-weight:600;color:#c5d6e8;font-size:.95rem}
+.skill .b{color:var(--gold);font-size:1.1rem}
+
+/* contact */
+.contact{text-align:center;padding:48px 30px;border-radius:24px;
+  background:radial-gradient(ellipse at 50% 0%,rgba(0,212,255,.14),transparent 70%),var(--card);border:1px solid var(--card-border);backdrop-filter:blur(20px)}
+.contact h2{font-size:clamp(1.7rem,4vw,2.4rem);font-weight:900}
+.contact p{color:var(--gray);margin:12px auto 28px;max-width:480px}
+.contact-row{display:flex;flex-wrap:wrap;justify-content:center;gap:14px}
+.ccard{display:flex;align-items:center;gap:13px;background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.2);padding:15px 22px;border-radius:15px;font-weight:800;transition:.18s}
+.ccard:hover{background:rgba(0,212,255,.13);transform:translateY(-3px);box-shadow:var(--glow)}
+.ccard .ico{font-size:1.4rem}
+.ccard small{display:block;color:var(--gray);font-weight:600;font-size:.7rem;letter-spacing:1px}
+footer{text-align:center;color:var(--gray);font-size:.85rem;padding:30px 0 46px;border-top:1px solid var(--card-border)}
+footer a{color:var(--teal);font-weight:700}
+
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s,transform .7s}
+.reveal.on{opacity:1;transform:none}
+
+@media(max-width:880px){
+  .hero{grid-template-columns:1fr;text-align:center}
+  .portrait-wrap{order:-1}.cta{justify-content:center}.hero p.lead{margin:0 auto}
+  .about-grid{grid-template-columns:1fr}.grid3{grid-template-columns:1fr 1fr}
+  .voyage{grid-template-columns:1fr;gap:9px}.voyage .flag{justify-self:start}
+}
+@media(max-width:560px){.grid3,.skill-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="container">
+    <a class="back" href="index.html">← На главную</a>
+    <span class="name">⚓ Морской помощник</span>
+  </div>
+</div>
+
+<header>
+  <div class="container hero">
+    <div>
+      <span class="eyebrow">👨‍🍳 Судовой повар · Ship's Cook</span>
+      <h1 class="grad">Роман Крюков</h1>
+      <div class="role">Судовой повар · 15+ лет в море</div>
+      <p class="lead">Кормлю экипажи в любых широтах — от офшорных судов PSV, AHTS и MPSV до ледоколов, буксиров и сухогрузов под флагами разных стран. Порядок на камбузе, многонациональное меню и безупречная пищевая безопасность.</p>
+      <div class="cta">
+        <a class="btn primary" href="#contact">📩 Связаться</a>
+        <a class="btn ghost" href="#experience">⚓ Опыт работы</a>
+      </div>
+    </div>
+    <div class="portrait-wrap">
+      <img class="portrait" src="assets/cook.jpg" alt="Роман Крюков — судовой повар">
+      <div class="float-badge"><span class="dot"></span>Открыт для контрактов</div>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  <div class="stats-bar reveal">
+    <div class="stat"><span class="num">15+</span><span class="lbl">лет в море</span></div>
+    <div class="stat"><span class="num">28</span><span class="lbl">контрактов</span></div>
+    <div class="stat"><span class="num">20+</span><span class="lbl">судов</span></div>
+    <div class="stat"><span class="num">$2.5k</span><span class="lbl">ожидание / мес</span></div>
+  </div>
+
+  <section id="about">
+    <h2 class="section-title reveal">🧭 <span>О себе</span></h2>
+    <div class="about-grid">
+      <div class="panel about-text reveal">
+        <p>Профессиональный <b>судовой повар</b> с непрерывным стажем в море <b>более 15 лет</b> (с 2011 года). Готовил для многонациональных экипажей на судах самых разных типов — <b>PSV, AHTS, MPSV, судах обеспечения и строительства, ледоколах, ASD-буксирах, земснарядах и сухогрузах</b> — в офшорных и арктических условиях.</p>
+        <br>
+        <p>Мой камбуз держится на <b>порядке, гигиене и хорошей еде</b>: ежедневное планирование меню в рамках бюджета, снабжение и учёт провизии, выпечка, строгие стандарты пищевой безопасности. Имею национальный диплом <b>повара</b>, полный пакет <b>сертификатов STCW</b>, а также эндорсменты <b>матроса (AB/OS)</b> и несения вахты. Английский подтверждён тестом <b>Marlins</b>.</p>
+        <br>
+        <p>Спокоен в нагрузке, пунктуален на сменах экипажа, лёгок в общении в команде. <b>Готов приступить.</b></p>
+      </div>
+      <div class="panel facts reveal">
+        <ul>
+          <li><span class="k">Должность</span><span class="v">Повар / OS</span></li>
+          <li><span class="k">Гражданство</span><span class="v">Россия</span></li>
+          <li><span class="k">Дата рождения</span><span class="v">08.11.1975</span></li>
+          <li><span class="k">База</span><span class="v">Санкт-Петербург</span></li>
+          <li><span class="k">Английский</span><span class="v">Marlins</span></li>
+          <li><span class="k">Готовность</span><span class="v">Открыт к offers</span></li>
+          <li><span class="k">Ожидаемая ЗП</span><span class="v">$2 500 / мес</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="experience">
+    <h2 class="section-title reveal">⚓ <span>Опыт на судах</span></h2>
+    <p style="color:var(--gray);margin:-14px 0 24px" class="reveal">28 контрактов: офшор, Арктика и портовые операции — 2011–2026. Нажмите категорию для фильтра.</p>
+    <div class="filterbar reveal" id="filterbar"></div>
+    <div class="tl-list" id="voyages"></div>
+  </section>
+
+  <section id="certs">
+    <h2 class="section-title reveal">📜 <span>Сертификаты и дипломы</span></h2>
+    <div class="grid3" id="certgrid"></div>
+  </section>
+
+  <section id="skills">
+    <h2 class="section-title reveal">✦ <span>Навыки на борту</span></h2>
+    <div class="skill-grid" id="skills"></div>
+  </section>
+
+  <section id="contact">
+    <div class="contact reveal">
+      <h2 class="grad">Поднимем якорь вместе</h2>
+      <p>Открыт для новых контрактов. Полное CV, рекомендации и копии сертификатов — по запросу.</p>
+      <div class="contact-row">
+        <a class="ccard" href="mailto:povarila@yandex.ru"><span class="ico">✉️</span><span><small>EMAIL</small>povarila@yandex.ru</span></a>
+        <a class="ccard" href="tel:+79819312482"><span class="ico">📞</span><span><small>ТЕЛЕФОН</small>+7 981 931 2482</span></a>
+        <span class="ccard"><span class="ico">📍</span><span><small>ГОРОД</small>Санкт-Петербург</span></span>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <div class="container">⚓ Роман Крюков — судовой повар · резюме обновлено в 2026 · <a href="index.html">Морской помощник</a></div>
+</footer>
+
+<script>
+const voyages=[
+ {v:"Cappella",t:"ASD-буксир",o:"Alliance in Murmansk",f:"Россия",r:"Повар",from:"Апр 2026",to:"Июн 2026",cat:"Буксир"},
+ {v:"Cappella",t:"ASD-буксир",o:"Alliance in Murmansk",f:"Россия",r:"Повар",from:"Дек 2025",to:"Фев 2026",cat:"Буксир"},
+ {v:"Cappella",t:"ASD-буксир",o:"Alliance in Murmansk",f:"Россия",r:"Повар",from:"Авг 2025",to:"Ноя 2025",cat:"Буксир"},
+ {v:"Emerald",t:"MPSV",o:"Alliance",f:"Россия",r:"Повар",from:"Мар 2025",to:"Июн 2025",cat:"Офшор"},
+ {v:"Cappella",t:"ASD-буксир",o:"Alliance in Murmansk",f:"Россия",r:"Повар",from:"Ноя 2024",to:"Фев 2025",cat:"Буксир"},
+ {v:"Germes",t:"Ледокол",o:"Ardal",f:"Россия",r:"Повар",from:"Май 2024",to:"Сен 2024",cat:"Ледокол"},
+ {v:"Germes",t:"Ледокол",o:"Ardal",f:"Россия",r:"Повар",from:"Дек 2023",to:"Мар 2024",cat:"Ледокол"},
+ {v:"Antei",t:"Ледокол",o:"Ardal",f:"Россия",r:"Повар",from:"Сен 2023",to:"Ноя 2023",cat:"Ледокол"},
+ {v:"Dian Dian",t:"Крановая баржа",o:"LTE Shipping",f:"Либерия",r:"Повар",from:"Мар 2023",to:"Июн 2023",cat:"Офшор"},
+ {v:"Vleere",t:"Земснаряд",o:"Nord Company",f:"Белиз",r:"Повар",from:"Июн 2022",to:"Авг 2022",cat:"Земснаряд"},
+ {v:"Vladivostok",t:"Ледокол",o:"Росморпорт",f:"Россия",r:"Повар",from:"Июн 2022",to:"Июн 2022",cat:"Ледокол"},
+ {v:"Viktor Chernomyrdin",t:"Ледокол",o:"Росморпорт",f:"Россия",r:"Матрос",from:"Апр 2022",to:"Июн 2022",cat:"Ледокол"},
+ {v:"Marshal Rokossovsky",t:"Ро-Ро",o:"Росморпорт",f:"Россия",r:"Повар",from:"Мар 2022",to:"Апр 2022",cat:"Грузовое"},
+ {v:"Bourbon Liberty 249",t:"AHTS",o:"Brave Wave Marine",f:"Люксембург",r:"Повар",from:"Окт 2021",to:"Дек 2021",cat:"Офшор"},
+ {v:"Baldur",t:"Земснаряд",o:"Boskalis",f:"Кипр",r:"Повар",from:"Сен 2021",to:"Окт 2021",cat:"Земснаряд"},
+ {v:"Bourbon Oceanteam 101",t:"MPSV (строит.)",o:"Bourbon",f:"Мальта",r:"Повар",from:"Апр 2021",to:"Июл 2021",cat:"Офшор"},
+ {v:"Bourbon Oceanteam 101",t:"MPSV (строит.)",o:"Bourbon",f:"Франция",r:"Повар",from:"Окт 2020",to:"Янв 2021",cat:"Офшор"},
+ {v:"Bourbon Evolution 804",t:"MPSV",o:"Bourbon",f:"Франция",r:"Повар",from:"Июл 2020",to:"Авг 2020",cat:"Офшор"},
+ {v:"Bourbon Liberty 152",t:"AHTS",o:"Bourbon",f:"Сент-Винсент",r:"Повар",from:"Мар 2020",to:"Июл 2020",cat:"Офшор"},
+ {v:"Bourbon Liberty 249",t:"AHTS",o:"Bourbon",f:"Люксембург",r:"Повар",from:"Янв 2020",to:"Мар 2020",cat:"Офшор"},
+ {v:"Bavenit",t:"Геотех. судно",o:"АМИГЭ",f:"Россия",r:"Повар",from:"Окт 2019",to:"Ноя 2019",cat:"Офшор"},
+ {v:"Bourbon Liberty 234",t:"AHTS",o:"Bourbon",f:"Греция",r:"Повар",from:"Май 2019",to:"Сен 2019",cat:"Офшор"},
+ {v:"Bourbon Liberty 225",t:"AHTS",o:"Bourbon",f:"Люксембург",r:"Повар",from:"Мар 2019",to:"Май 2019",cat:"Офшор"},
+ {v:"Bourbon Explorer 513",t:"PSV",o:"Bourbon",f:"Сент-Винсент",r:"Повар",from:"Сен 2018",to:"Дек 2018",cat:"Офшор"},
+ {v:"Bourbon Bahtera Permai",t:"PSV",o:"Bourbon",f:"Филиппины",r:"Повар",from:"Фев 2018",to:"Июн 2018",cat:"Офшор"},
+ {v:"Bourbon Explorer 513",t:"PSV",o:"Bourbon",f:"Сент-Винсент",r:"Повар",from:"Дек 2017",to:"Фев 2018",cat:"Офшор"},
+ {v:"Wilson Nantes",t:"Сухогруз",o:"Wilson",f:"Мальта",r:"Повар",from:"Дек 2011",to:"Фев 2012",cat:"Грузовое"},
+ {v:"Ivan Bobrov",t:"Сухогруз",o:"ООО Транс НАО",f:"Россия",r:"Повар",from:"Май 2011",to:"Июл 2011",cat:"Грузовое"},
+];
+const flag={"Россия":"🇷🇺","Мальта":"🇲🇹","Франция":"🇫🇷","Греция":"🇬🇷","Люксембург":"🇱🇺","Либерия":"🇱🇷","Белиз":"🇧🇿","Филиппины":"🇵🇭","Кипр":"🇨🇾","Сент-Винсент":"🇻🇨"};
+function render(filter){
+  const box=document.getElementById('voyages');box.innerHTML='';
+  voyages.filter(x=>!filter||filter==='Все'||x.cat===filter).forEach(x=>{
+    const el=document.createElement('div');el.className='voyage';
+    el.innerHTML=`<div class="when">${x.from}<small>по ${x.to}</small></div>
+      <div><div class="vessel">${x.v}<span class="role-tag">${x.r}</span></div><div class="meta">${x.t} · ${x.o}</div></div>
+      <div class="flag">${flag[x.f]||'🚩'} ${x.f}</div>`;
+    box.appendChild(el);
+  });
+}
+const cats=['Все',...new Set(voyages.map(v=>v.cat))];
+const fb=document.getElementById('filterbar');
+cats.forEach((c,i)=>{const b=document.createElement('button');b.className='chip'+(i?'':' active');b.textContent=c;
+  b.onclick=()=>{document.querySelectorAll('.chip').forEach(z=>z.classList.remove('active'));b.classList.add('active');render(c);};fb.appendChild(b);});
+render('Все');
+
+const certs=[
+ {i:"👨‍🍳",h:"Диплом повара",p:"Национальная квалификация судового повара",valid:"Бессрочно"},
+ {i:"🛟",h:"Начальная подготовка",p:"STCW A-VI/1-1…1-4",valid:"Действует до 2026"},
+ {i:"🚣",h:"Спасательные шлюпки",p:"STCW A-VI/2-1",valid:"Действует до 2026"},
+ {i:"🔒",h:"Охранные обязанности",p:"STCW A-VI/6-2",valid:"Действует до 2026"},
+ {i:"☢️",h:"Опасные грузы",p:"Перевозка опасных и вредных грузов",valid:"Действует до 2027"},
+ {i:"⚓",h:"Матрос AB/OS + вахта",p:"Эндорсмент палубного рейтинга",valid:"Бессрочно"},
+ {i:"🩺",h:"Медкомиссия + тест",p:"Годность моряка, нарко/алко-тест",valid:"Действует до 2026"},
+ {i:"💉",h:"Жёлтая лихорадка",p:"Международный сертификат вакцинации",valid:"Бессрочно"},
+ {i:"🗣️",h:"Marlins English",p:"Морской английский язык",valid:"Пройден"},
+];
+const cg=document.getElementById('certgrid');
+certs.forEach(c=>{const d=document.createElement('div');d.className='cert reveal';
+  d.innerHTML=`<div class="ico">${c.i}</div><h4>${c.h}</h4><p>${c.p}</p><div class="valid">● ${c.valid}</div>`;cg.appendChild(d);});
+
+const skills=["Управление камбузом и питанием","Меню для многонационального экипажа","Снабжение и учёт провизии","Пищевая безопасность и гигиена (HACCP)","Выпечка и хлеб","Контроль бюджета и затрат","Офшорные и арктические операции","Палубные работы (AB/OS) при необходимости"];
+const sg=document.getElementById('skills');
+skills.forEach(s=>{const d=document.createElement('div');d.className='skill reveal';d.innerHTML=`<span class="b">✦</span> ${s}`;sg.appendChild(d);});
+
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');io.unobserve(e.target);}}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
