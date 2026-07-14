@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>WARHOOK — генератор арта</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%;background:#0a0e17;overflow:hidden;font-family:-apple-system,Segoe UI,Roboto,sans-serif;color:#F6ECD6}
+  #c{display:block;position:absolute;inset:0;width:100vw;height:100vh}
+  #sig{position:absolute;top:12px;left:16px;z-index:5;color:#E4B24C;font-size:12px;letter-spacing:2px;opacity:.9}
+  #seed{position:absolute;top:12px;right:16px;z-index:5;color:#7f8ba3;font-size:11px}
+  .panel{position:absolute;left:0;right:0;bottom:0;z-index:6;background:rgba(10,14,23,.82);
+    backdrop-filter:blur(8px);border-top:1px solid rgba(228,178,76,.35);padding:12px 16px calc(12px + env(safe-area-inset-bottom))}
+  .row{display:flex;align-items:center;gap:10px;margin:7px 0}
+  .row label{font-size:12px;color:#c7cede;width:74px;flex:none}
+  input[type=range]{flex:1;accent-color:#E4B24C;height:22px}
+  .btns{display:flex;gap:8px;margin-top:8px}
+  button{flex:1;font-family:inherit;font-size:14px;padding:10px;border:none;border-radius:12px;cursor:pointer}
+  .b1{background:#E4B24C;color:#0a0e17;font-weight:600}
+  .b2{background:transparent;color:#E4B24C;border:1.5px solid #E4B24C}
+  .pals{display:flex;gap:6px;flex:1}
+  .pal{flex:1;height:26px;border-radius:8px;border:2px solid transparent;cursor:pointer;display:flex;overflow:hidden}
+  .pal.sel{border-color:#F6ECD6}
+  .pal span{flex:1}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="sig">WARHOOK LEO CROC</div>
+<div id="seed"></div>
+<div class="panel">
+  <div class="row"><label>🎨 Палитра</label><div class="pals" id="pals"></div></div>
+  <div class="row"><label>🌀 Хаос</label><input id="chaos" type="range" min="0" max="100" value="45"></div>
+  <div class="row"><label>✨ Плотность</label><input id="dens" type="range" min="10" max="100" value="55"></div>
+  <div class="btns">
+    <button class="b2" onclick="rnd()">🎲 Новый</button>
+    <button class="b2" onclick="save()">⬇ Скачать</button>
+    <button class="b1" onclick="order()">📦 Заказать печать</button>
+  </div>
+</div>
+<script>
+const tg = window.Telegram && Telegram.WebApp; if(tg){tg.ready();tg.expand();}
+const AUTHOR = "jk_slawly"; // Telegram Романа
+const cv=document.getElementById('c'), ctx=cv.getContext('2d');
+const PALS=[["#FF3EA5","#00E5FF","#FFB020"],["#E4032E","#FFD100","#003F6C"],["#A56BFF","#38E08A","#FF6B4A"],["#E4B24C","#E23B47","#00E5FF"],["#00E5FF","#A56BFF","#FF3EA5"],["#FFB020","#FF6B4A","#E4032E"]];
+let seed=Math.floor(Math.random()*1e9), palI=0, W,H,DPR;
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+function resize(){DPR=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;cv.width=W*DPR;cv.height=H*DPR;ctx.setTransform(DPR,0,0,DPR,0,0);}
+addEventListener('resize',()=>{resize();draw();});
+function field(x,y,ph,ch){return (Math.sin(x*0.0055+Math.cos(y*0.004+ph)*(1.5+ch*2))+Math.cos(y*0.0058-Math.sin(x*0.003)*(1+ch*2)))*Math.PI;}
+let raf=0;
+function draw(){
+  cancelAnimationFrame(raf);
+  const r=mulberry32(seed), pal=PALS[palI];
+  const ch=(+document.getElementById('chaos').value)/100;
+  const dens=(+document.getElementById('dens').value)/100;
+  ctx.globalCompositeOperation='source-over';ctx.fillStyle='#0a0e17';ctx.fillRect(0,0,W,H);
+  const ph=r()*10, N=Math.floor(400+dens*900), parts=[];
+  for(let i=0;i<N;i++)parts.push({x:r()*W,y:r()*H,c:pal[Math.floor(r()*3)]});
+  ctx.globalCompositeOperation='lighter';ctx.lineWidth=1.1;
+  let step=0;const maxStep=Math.floor(80+ch*120);
+  function chunk(){
+    for(let s=0;s<7&&step<maxStep;s++,step++){
+      for(const p of parts){
+        const a=field(p.x,p.y,ph,ch);
+        const nx=p.x+Math.cos(a)*(1.8+ch*2), ny=p.y+Math.sin(a)*(1.8+ch*2);
+        ctx.strokeStyle=p.c+'22';ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(nx,ny);ctx.stroke();
+        p.x=nx;p.y=ny;
+      }
+    }
+    if(step<maxStep)raf=requestAnimationFrame(chunk);
+    else{
+      const nb=2+Math.floor(r()*4);
+      for(let i=0;i<nb;i++){const cx=r()*W,cy=r()*H,rad=40+r()*140,col=pal[Math.floor(r()*3)];
+        const g=ctx.createRadialGradient(cx,cy,0,cx,cy,rad);g.addColorStop(0,col+'55');g.addColorStop(1,col+'00');
+        ctx.fillStyle=g;ctx.beginPath();ctx.arc(cx,cy,rad,0,6.2832);ctx.fill();}
+    }
+  }
+  chunk();
+  document.getElementById('seed').textContent='#'+seed;
+}
+function rnd(){seed=Math.floor(Math.random()*1e9);draw();}
+function save(){const a=document.createElement('a');a.download='warhook-'+seed+'.png';a.href=cv.toDataURL('image/png');a.click();}
+function order(){
+  const txt='Здравствуйте! Хочу заказать печать арта WARHOOK, код #'+seed;
+  const link='https://t.me/'+AUTHOR+'?text='+encodeURIComponent(txt);
+  if(tg&&tg.openTelegramLink){tg.openTelegramLink('https://t.me/'+AUTHOR);}
+  else{location.href=link;}
+}
+// palette swatches
+const pd=document.getElementById('pals');
+PALS.forEach((p,i)=>{const d=document.createElement('div');d.className='pal'+(i===0?' sel':'');
+  d.innerHTML=p.map(c=>'<span style="background:'+c+'"></span>').join('');
+  d.onclick=()=>{palI=i;[...pd.children].forEach(x=>x.classList.remove('sel'));d.classList.add('sel');draw();};pd.appendChild(d);});
+document.getElementById('chaos').oninput=draw;
+document.getElementById('dens').oninput=draw;
+if(tg&&tg.MainButton){tg.MainButton.setText('📦 Заказать печать').show().onClick(order);}
+resize();draw();
+</script>
+</body>
+</html>
