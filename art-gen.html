@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Генератор арта — WARHOOK LEO CROC</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%;background:#0a0e17;overflow:hidden;font-family:Georgia,serif}
+  #c{display:block;position:absolute;inset:0;width:100vw;height:100vh}
+  .bar{position:absolute;left:0;right:0;bottom:0;z-index:5;display:flex;gap:10px;justify-content:center;
+       padding:16px;background:linear-gradient(transparent,rgba(0,0,0,.55))}
+  button{font-family:Georgia,serif;font-size:15px;letter-spacing:1px;color:#0a0e17;background:#E4B24C;
+       border:none;border-radius:24px;padding:11px 20px;cursor:pointer}
+  button.ghost{background:transparent;color:#E4B24C;border:1.5px solid #E4B24C}
+  #sig{position:absolute;top:16px;left:20px;z-index:5;color:#E4B24C;font-size:13px;letter-spacing:3px;opacity:.85}
+  #seedL{position:absolute;top:16px;right:20px;z-index:5;color:#5f6b83;font-size:12px}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="sig">WARHOOK LEO CROC · ГЕНЕРАТОР АРТА</div>
+<div id="seedL"></div>
+<div class="bar">
+  <button onclick="again()">🎲 Новый арт</button>
+  <button class="ghost" onclick="save()">⬇ Скачать PNG</button>
+</div>
+<script>
+const cv=document.getElementById('c'), ctx=cv.getContext('2d');
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+function seedFromUrl(){const p=new URLSearchParams(location.search).get('seed');return p?(parseInt(p,10)||hash(p)):Math.floor(Math.random()*1e9);}
+function hash(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}return h>>>0;}
+let seed=seedFromUrl(), rnd, W, H, DPR;
+const PALETTES=[
+  ['#FF3EA5','#00E5FF','#FFB020','#F6ECD6'],
+  ['#E4032E','#FFD100','#003F6C','#F5F1E6'],
+  ['#A56BFF','#38E08A','#FF6B4A','#0a0e17'],
+  ['#E4B24C','#12263A','#E23B47','#F6ECD6'],
+  ['#00E5FF','#A56BFF','#FF3EA5','#0a0e17'],
+  ['#FFB020','#FF6B4A','#E4032E','#111111'],
+];
+function resize(){DPR=Math.min(window.devicePixelRatio||1,2);W=innerWidth;H=innerHeight;cv.width=W*DPR;cv.height=H*DPR;ctx.setTransform(DPR,0,0,DPR,0,0);}
+window.addEventListener('resize',()=>{resize();draw();});
+function field(x,y,ph){return (Math.sin(x*0.0055+Math.cos(y*0.004+ph)*2.2)+Math.cos(y*0.0058-Math.sin(x*0.003)*2))*Math.PI;}
+let raf=0;
+function draw(){
+  cancelAnimationFrame(raf);
+  rnd=mulberry32(seed);
+  const pal=PALETTES[Math.floor(rnd()*PALETTES.length)];
+  const dark=pal[3][1]==='0'||pal[3]==='#111111'||pal[3]==='#12263A'||pal[3]==='#003F6C';
+  const bg=dark?pal[3]:'#0a0e17';
+  ctx.globalCompositeOperation='source-over';ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+  const ph=rnd()*10;
+  const N=Math.floor(700+rnd()*500);
+  const particles=[];
+  for(let i=0;i<N;i++)particles.push({x:rnd()*W,y:rnd()*H,c:pal[Math.floor(rnd()*3)],life:60+rnd()*120});
+  ctx.globalCompositeOperation='lighter';ctx.lineWidth=1.1;
+  let step=0;const maxStep=140;
+  function chunk(){
+    for(let k=0;k<6&&step<maxStep;k++,step++){
+      for(const p of particles){
+        if(step>p.life)continue;
+        const a=field(p.x,p.y,ph);
+        const nx=p.x+Math.cos(a)*2.2, ny=p.y+Math.sin(a)*2.2;
+        ctx.strokeStyle=p.c+'22';ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(nx,ny);ctx.stroke();
+        p.x=nx;p.y=ny;
+      }
+    }
+    if(step<maxStep){raf=requestAnimationFrame(chunk);}
+    else{
+      // accent blooms
+      const nb=2+Math.floor(rnd()*4);
+      for(let i=0;i<nb;i++){
+        const cx=rnd()*W,cy=rnd()*H,r=40+rnd()*140,col=pal[Math.floor(rnd()*3)];
+        const g=ctx.createRadialGradient(cx,cy,0,cx,cy,r);
+        g.addColorStop(0,col+'55');g.addColorStop(1,col+'00');
+        ctx.fillStyle=g;ctx.beginPath();ctx.arc(cx,cy,r,0,6.2832);ctx.fill();
+      }
+    }
+  }
+  chunk();
+  document.getElementById('seedL').textContent='seed: '+seed;
+  history.replaceState(null,'','?seed='+seed);
+}
+function again(){seed=Math.floor(Math.random()*1e9);draw();}
+function save(){const a=document.createElement('a');a.download='warhook-art-'+seed+'.png';a.href=cv.toDataURL('image/png');a.click();}
+resize();draw();
+</script>
+</body>
+</html>
