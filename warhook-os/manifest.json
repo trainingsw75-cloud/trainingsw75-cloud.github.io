@@ -1,0 +1,17 @@
+{
+  "name": "WARHOOK LEO CROC",
+  "short_name": "WARHOOK",
+  "description": "Вселенная художника WARHOOK LEO CROC — генератор арта, витрина серии, паспорта картин.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0a0e17",
+  "theme_color": "#0e1a2b",
+  "lang": "ru",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
