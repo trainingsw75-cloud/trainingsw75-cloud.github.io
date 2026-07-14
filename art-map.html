@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Арт-рынок как данные — WARHOOK LEO CROC</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%;background:#0a1120;color:#F6ECD6;font-family:Georgia,'Times New Roman',serif;overflow:hidden}
+  #wrap{position:relative;width:100vw;height:100vh}
+  canvas{display:block;position:absolute;inset:0}
+  #title{position:absolute;top:22px;left:28px;z-index:5;pointer-events:none}
+  #title h1{font-size:26px;letter-spacing:2px;font-weight:normal;color:#F6ECD6}
+  #title .sub{font-size:14px;color:#E4B24C;letter-spacing:3px;margin-top:4px}
+  #title .by{font-size:12px;color:#7f8ba3;margin-top:10px;letter-spacing:1px}
+  #legend{position:absolute;bottom:22px;left:28px;z-index:5;font-size:13px;line-height:1.9;pointer-events:none;color:#c7cede}
+  #legend .row{display:flex;align-items:center;gap:8px}
+  #legend .dot{width:11px;height:11px;border-radius:50%}
+  #hint{position:absolute;bottom:22px;right:28px;z-index:5;font-size:12px;color:#5f6b83;letter-spacing:1px}
+  #tip{position:absolute;z-index:9;pointer-events:none;display:none;background:rgba(10,17,32,.92);border:1px solid #E4B24C;border-radius:8px;padding:8px 12px;max-width:280px}
+  #tip .tn{font-size:15px;color:#F6ECD6}
+  #tip .tw{font-size:12px;color:#c7cede;margin-top:2px}
+  #tip .tp{font-size:14px;color:#E4B24C;margin-top:4px}
+</style>
+</head>
+<body>
+<div id="wrap">
+  <canvas id="c"></canvas>
+  <div id="title">
+    <h1>АРТ-РЫНОК КАК ДАННЫЕ</h1>
+    <div class="sub">56 ХУДОЖНИКОВ · ЦЕНА · ВРЕМЯ · СТИЛЬ</div>
+    <div class="by">генеративное полотно — WARHOOK LEO CROC</div>
+  </div>
+  <div id="legend"></div>
+  <div id="hint">размер = цена · слева направо = год · наведи мышь</div>
+  <div id="tip"><div class="tn"></div><div class="tw"></div><div class="tp"></div></div>
+</div>
+<script>
+const DATA = [{"n":"Энди Уорхол","w":"Диптих Мэрилин","y":1962,"p":195040000,"c":"pop"},{"n":"Жан-Мишель Баския","w":"Untitled","y":1982,"p":110500000,"c":"expr"},{"n":"Кит Харинг","w":"Untitled","y":1982,"p":6537500,"c":"street"},{"n":"Рой Лихтенштейн","w":"Woman with Flowered Hat","y":1963,"p":56123750,"c":"pop"},{"n":"Марк Ротко","w":"Orange, Red, Yellow","y":1961,"p":86882500,"c":"abstract"},{"n":"Джексон Поллок","w":"Number 17A","y":1948,"p":61161000,"c":"abstract"},{"n":"Бэнкси","w":"«Девочка с воздушным шаром»","y":2006,"p":25400000,"c":"street"},{"n":"Джефф Кунс","w":"«Кролик»","y":1986,"p":91075000,"c":"pop"},{"n":"Дэмьен Хёрст","w":"«Физическая невозможность смерти в сознании живущего» — акул","y":1991,"p":19200000,"c":"west"},{"n":"Яёи Кусама","w":"Зеркальные «Комнаты бесконечности» и жёлтые тыквы в чёрный г","y":1959,"p":10496000,"c":"pop"},{"n":"Герхард Рихтер","w":"Абстрактные картины «Abstraktes Bild» и размытые фотокартины","y":1986,"p":46300000,"c":"west"},{"n":"Дэвид Хокни","w":"«Портрет художника","y":1972,"p":90312500,"c":"pop"},{"n":"Такаси Мураками","w":"Улыбающиеся разноцветные цветы, персонаж Mr. DOB","y":1998,"p":15161000,"c":"pop"},{"n":"КОУС (KAWS)","w":"Персонаж COMPANION","y":2005,"p":14772500,"c":"street"},{"n":"Завен Аршакуни","w":"«Благовещение» — библейский сюжет, перенесённый в современны","y":1980,"p":0,"c":"russia"},{"n":"Вячеслав Михайлов","w":"Серия «Художник и модель» — узнаваемые фактурные работы, реп","y":2000,"p":0,"c":"russia"},{"n":"Владимир Духовлинов","w":"Абстрактные работы 2006–2007 годов, вошедшие в постоянную ко","y":2006,"p":0,"c":"russia"},{"n":"Владимир Овчинников","w":"«Скорый поезд» — характерная картина, где будничная реальнос","y":2011,"p":0,"c":"russia"},{"n":"Елена Фигурина","w":"Узнаваемые экспрессивные фигуры и головы — её живопись часто","y":1990,"p":0,"c":"russia"},{"n":"Валерий Лукка","w":"Фактурные работы смешанной техники — им была посвящена отдел","y":2000,"p":0,"c":"russia"},{"n":"Ринат Волигамси","w":"Серия «Неофициальный альбом»","y":1968,"p":0,"c":"russia"},{"n":"Александр Дашевский","w":"Живописные серии с бассейнами, панельными домами, гаражами и","y":1980,"p":0,"c":"russia"},{"n":"Владимир Мигачёв","w":"Монохромные фактурные пейзажи","y":1959,"p":0,"c":"russia"},{"n":"Владлен Гаврильчик","w":"«Игра на баяне»","y":1988,"p":12500,"c":"russia"},{"n":"Николай Копейкин","w":"Яркие сатирические полотна в стиле мультреализма","y":1966,"p":0,"c":"russia"},{"n":"Пётр Горбань","w":"«Призывники» и другие работы о жизни народа","y":1923,"p":0,"c":"russia"},{"n":"Андрей Рудьев","w":"«Антарктическая миссия»","y":2005,"p":0,"c":"russia"},{"n":"Евгений Ухналёв","w":"Эскиз современного Государственного герба России","y":1993,"p":0,"c":"russia"},{"n":"Юлий Рыбаков","w":"42-метровая надпись на стене Петропавловской крепости","y":1976,"p":0,"c":"russia"},{"n":"Владимир Шинкарёв","w":"Книга «Митьки»","y":1984,"p":0,"c":"russia"},{"n":"Игорь Новиков","w":"Серии с человечками-пиктограммами, встроенными в узнаваемые ","y":1961,"p":0,"c":"russia"},{"n":"Николай Полисский","w":"«Полтора стула» — деревянный объект в фирменной манере худож","y":1957,"p":0,"c":"russia"},{"n":"Фрэнсис Бэкон","w":"'Три этюда к портрету Люсьена Фрейда'","y":1969,"p":142405000,"c":"west"},{"n":"Люсьен Фрейд","w":"'Спящая соцработница'","y":1981,"p":86265000,"c":"west"},{"n":"Виллем де Кунинг","w":"Серия 'Женщина'","y":1977,"p":66327500,"c":"west"},{"n":"Сай Твомбли","w":"Серия 'Blackboard'","y":1968,"p":70530000,"c":"west"},{"n":"Роберт Раушенберг","w":"'Монограмма'","y":1964,"p":88805000,"c":"west"},{"n":"Ив Кляйн","w":"Синие монохромы IKB и золотые 'MG'. Аукционный рекорд — 'Le ","y":1960,"p":36753200,"c":"west"},{"n":"Ай Вэйвэй","w":"«Круг животных / Головы зодиака» — бронзовые головы 12 звере","y":2010,"p":5410000,"c":"west"},{"n":"Аниш Капур","w":"«Cloud Gate» — гигантская зеркальная «фасолина» в Чикаго","y":2003,"p":3876653,"c":"west"},{"n":"Цзэн Фаньчжи","w":"«Тайная вечеря» — переосмысление Леонардо: вместо апостолов ","y":2001,"p":23300000,"c":"west"},{"n":"Питер Дойг","w":"«Swamped»","y":1990,"p":39862500,"c":"west"},{"n":"Шепард Фейри","w":"«HOPE» — тот самый красно-синий портрет Барака Обамы с надпи","y":2008,"p":950000,"c":"west"},{"n":"Бипл (Майк Винкельманн)","w":"«Everydays: The First 5000 Days» — единый коллаж из 5000 кар","y":2021,"p":69346250,"c":"nft"},{"n":"Дмитрий Шорин","w":"«И всё-таки они летают» — крылатые девушки-скульптуры в аэро","y":1998,"p":0,"c":"russia"},{"n":"Виталий Пушницкий","w":"Инсталляция с нагими мальчиками-путти, спускающимися по лест","y":1967,"p":0,"c":"russia"},{"n":"Керим Рагимов","w":"«Человеческий проект»","y":1994,"p":0,"c":"russia"},{"n":"Латиф Казбеков","w":"«Движение осени» и «Бег» — в коллекции Эрарты.","y":1954,"p":0,"c":"russia"},{"n":"Феликс Волосенков","w":"«Свердловская Венера» и «Явление бога Волоса в виде танца по","y":1944,"p":0,"c":"russia"},{"n":"Анатолий Заславский","w":"«Прекрасное болото» и «Сиреневые туфли» — в коллекции Эрарты","y":1939,"p":0,"c":"russia"},{"n":"Дмитрий Шагин","w":"Собирательный образ «Митька» в тельняшке — фактически он сам","y":1975,"p":1200,"c":"russia"},{"n":"Александр Флоренский","w":"Иллюстрации к трёхтомнику Сергея Довлатова и серия «Русский ","y":1997,"p":5500,"c":"russia"},{"n":"Владимир Яшке","w":"«Ледоход у Старой Ладоги»","y":1994,"p":10000,"c":"russia"},{"n":"Пётр Швецов","w":"Скандальный «Ящик Пандоры» с живыми мухами и проект «Живые и","y":1970,"p":0,"c":"russia"},{"n":"Иван Говорков","w":"Совместные с Еленой Губановой проекты-инсталляции — «Тонкая ","y":1949,"p":0,"c":"russia"},{"n":"Марина Колдобская","w":"Серия «Мелкие твари» из проекта «Охота и собирательство»","y":2016,"p":0,"c":"russia"}];
+const COLORS = {
+  pop:      ['Поп-арт',        '#FF3EA5'],
+  street:   ['Стрит-арт',      '#00E5FF'],
+  abstract: ['Абстракция',     '#FFB020'],
+  expr:     ['Экспрессионизм', '#FF6B4A'],
+  west:     ['Западная классика','#E4B24C'],
+  nft:      ['Цифра / NFT',    '#A56BFF'],
+  russia:   ['Россия · Эрарта','#38E08A'],
+};
+const cv = document.getElementById('c'), ctx = cv.getContext('2d');
+const tip = document.getElementById('tip');
+let W, H, DPR;
+function resize(){
+  DPR = Math.min(window.devicePixelRatio||1, 2);
+  W = window.innerWidth; H = window.innerHeight;
+  cv.width = W*DPR; cv.height = H*DPR; ctx.setTransform(DPR,0,0,DPR,0,0);
+}
+window.addEventListener('resize', ()=>{ resize(); layout(); });
+
+function rnd(s){ let x = Math.sin(s*99.13)*43758.5453; return x - Math.floor(x); }
+const years = DATA.map(d=>d.y);
+const minY = Math.min(...years), maxY = Math.max(...years);
+const maxP = Math.max(...DATA.map(d=>d.p));
+let pts = [];
+function layout(){
+  const padL = 70, padR = 60, padT = 130, padB = 90;
+  pts = DATA.map((d,i)=>{
+    const x = padL + (d.y - minY)/(maxY-minY||1) * (W - padL - padR);
+    const y = padT + rnd(i+7) * (H - padT - padB);
+    const r = d.p > 0 ? 7 + Math.log10(d.p)/Math.log10(maxP) * 34 : 5;
+    const col = (COLORS[d.c]||COLORS.west)[1];
+    return { d, x, y, r, col, ph: rnd(i+3)*6.28, sp: 0.4 + rnd(i+1)*0.7, priced: d.p>0 };
+  });
+}
+function fmtP(p){
+  if (!p) return 'нет аукционного рекорда (музей)';
+  if (p >= 1e6) return '$' + (p/1e6).toFixed(p>=1e7?0:1) + ' млн';
+  return '$' + p.toLocaleString('ru-RU');
+}
+let t = 0, mouse = {x:-1e9,y:-1e9};
+function frame(){
+  t += 0.016;
+  ctx.fillStyle = '#0a1120'; ctx.fillRect(0,0,W,H);
+  // faint year grid
+  ctx.globalCompositeOperation = 'source-over';
+  ctx.strokeStyle = 'rgba(120,140,180,.08)'; ctx.lineWidth = 1;
+  ctx.fillStyle = 'rgba(120,140,180,.35)'; ctx.font = '11px Georgia';
+  for (let yv = Math.ceil(minY/20)*20; yv <= maxY; yv += 20){
+    const x = 70 + (yv-minY)/(maxY-minY||1)*(W-130);
+    ctx.beginPath(); ctx.moveTo(x,120); ctx.lineTo(x,H-70); ctx.stroke();
+    ctx.fillText(yv, x-12, H-52);
+  }
+  ctx.globalCompositeOperation = 'lighter';
+  let hover = null, hd = 1e9;
+  for (const p of pts){
+    const pulse = 1 + Math.sin(t*p.sp + p.ph)*0.12;
+    const dy = Math.sin(t*0.5 + p.ph)*6;
+    const cx = p.x, cy = p.y + dy, r = p.r*pulse;
+    if (p.priced){
+      const g = ctx.createRadialGradient(cx,cy,0,cx,cy,r*2.4);
+      g.addColorStop(0, p.col); g.addColorStop(0.25, p.col+'cc'); g.addColorStop(1, p.col+'00');
+      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(cx,cy,r*2.4,0,6.2832); ctx.fill();
+      ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.arc(cx,cy,Math.max(1.5,r*0.28),0,6.2832); ctx.fill();
+    } else {
+      ctx.strokeStyle = p.col+'aa'; ctx.lineWidth = 1.4;
+      ctx.beginPath(); ctx.arc(cx,cy,r*1.6,0,6.2832); ctx.stroke();
+      ctx.fillStyle = p.col+'55'; ctx.beginPath(); ctx.arc(cx,cy,2,0,6.2832); ctx.fill();
+    }
+    const md = Math.hypot(mouse.x-cx, mouse.y-cy);
+    if (md < Math.max(r*2.4, 16) && md < hd){ hd = md; hover = {p, cx, cy, r}; }
+  }
+  // hover ring + tooltip
+  if (hover){
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.strokeStyle = '#F6ECD6'; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.arc(hover.cx, hover.cy, hover.r*2.4+6, 0, 6.2832); ctx.stroke();
+    tip.style.display = 'block';
+    tip.style.left = Math.min(hover.cx+18, W-290) + 'px';
+    tip.style.top  = Math.min(hover.cy+12, H-90) + 'px';
+    tip.querySelector('.tn').textContent = hover.p.d.n;
+    tip.querySelector('.tw').textContent = hover.p.d.w + (hover.p.d.y? ' · '+hover.p.d.y : '');
+    tip.querySelector('.tp').textContent = fmtP(hover.p.d.p);
+  } else { tip.style.display = 'none'; }
+  requestAnimationFrame(frame);
+}
+cv.addEventListener('mousemove', e=>{ mouse.x = e.clientX; mouse.y = e.clientY; });
+cv.addEventListener('mouseleave', ()=>{ mouse.x = mouse.y = -1e9; });
+
+// legend
+document.getElementById('legend').innerHTML = Object.values(COLORS)
+  .map(([lab,col])=>'<div class="row"><span class="dot" style="background:'+col+'"></span>'+lab+'</div>').join('')
+  + '<div class="row" style="margin-top:6px;color:#7f8ba3"><span class="dot" style="background:transparent;border:1.4px solid #38E08A"></span>кольцо = без цены (музей)</div>';
+
+resize(); layout(); frame();
+</script>
+</body>
+</html>
