@@ -1,4 +1,4 @@
-const CACHE = "warhook-os-v1";
+const CACHE = "warhook-os-v2";
 const ASSETS = [
   "./",
   "./index.html",

@@ -107,6 +107,7 @@
         <button class="p2" onclick="gSave()">⬇ Скачать</button>
         <button class="p1" onclick="gOrder()">📦 Заказать</button>
       </div>
+      <button class="p2" style="width:100%;margin-top:8px" onclick="gSound(this)">▶ Послушать этот арт</button>
     </div>
   </section>
 
@@ -125,6 +126,7 @@
   <a data-s="certs" onclick="go('certs')"><span class="ic">📜</span>Паспорта</a>
 </nav>
 
+<script src="../warhook-sound.js"></script>
 <script>
 const CERT_BASE = "../cert/";
 const STATUS = {
@@ -190,6 +192,7 @@ function gDraw(){
 function gRnd(){sSeed=Math.floor(Math.random()*1e9);gDraw();}
 function gSave(){const cv=document.getElementById('studioCanvas');const a=document.createElement('a');a.download='warhook-'+sSeed+'.png';a.href=cv.toDataURL('image/png');a.click();}
 function gOrder(){const link=(DATA&&DATA.brand.tg)||'https://t.me/jk_slawly';if(TG&&TG.openTelegramLink)TG.openTelegramLink(link);else window.open(link,'_blank');}
+function gSound(btn){if(!window.WarhookSound)return;if(WarhookSound.isPlaying()){WarhookSound.stop();btn.textContent='▶ Послушать этот арт';}else{btn.textContent='⏸ Остановить';WarhookSound.play(sSeed,null,function(){btn.textContent='▶ Послушать этот арт';});}}
 
 /* ---------- render data ---------- */
 function render(){

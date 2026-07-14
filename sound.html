@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WARHOOK Sound — картины, которые звучат</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{min-height:100vh;background:#070b13;color:#F6ECD6;font-family:Georgia,serif;padding:26px 16px 60px}
+  h1{text-align:center;font-weight:normal;color:#E4B24C;letter-spacing:2px;font-size:30px}
+  .sub{text-align:center;color:#8fa0bd;font-size:14px;margin:6px 0 18px}
+  .stage{max-width:760px;margin:0 auto}
+  .vizwrap{background:#0e1a2b;border:1px solid rgba(228,178,76,.3);border-radius:16px;padding:14px 16px}
+  #viz{width:100%;height:150px;display:block}
+  .now{text-align:center;color:#E4B24C;font-size:15px;min-height:22px;margin-top:8px;letter-spacing:1px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;max-width:760px;margin:18px auto 0}
+  .b{display:flex;align-items:center;gap:10px;background:#0e1a2b;border:1px solid rgba(228,178,76,.28);border-radius:12px;padding:12px 14px;color:#F6ECD6;font-size:15px;cursor:pointer;text-align:left;font-family:inherit}
+  .b:hover{border-color:#E4B24C}
+  .b.on{background:rgba(228,178,76,.15);border-color:#E4B24C}
+  .b .ic{font-size:18px;width:22px;flex:none}
+  .b .code{margin-left:auto;font-family:monospace;font-size:12px;color:#8fa0bd}
+  .foot{text-align:center;color:#5f6b83;font-size:12px;margin-top:26px}
+  .foot a{color:#E4B24C;text-decoration:none}
+</style>
+</head>
+<body>
+<h1>WARHOOK Sound</h1>
+<div class="sub">Каждая картина серии звучит по-своему · нажми и слушай</div>
+<div class="stage">
+  <div class="vizwrap"><canvas id="viz"></canvas><div class="now" id="now">— выбери картину —</div></div>
+</div>
+<div class="grid" id="grid"></div>
+<div class="foot">Голос выведен из кода каждой работы · <a href="./cert/">сертификаты</a> · <a href="./warhook-os/">приложение</a> · © 2026 Роман Крюков</div>
+
+<script src="warhook-sound.js"></script>
+<script>
+const WORKS=[
+ ["WH-2026-01","Автопортрет с крюком"],["WH-2026-02","Лев Львович"],["WH-2026-03","Крюк как знак вопроса"],
+ ["WH-2026-04","Консервная банка «WARHOOK»"],["WH-2026-05","Шторм в иллюминаторе"],["WH-2026-06","Спасательный круг с сердцем"],
+ ["WH-2026-07","Рыба на крюке (свобода)"],["WH-2026-08","Морской узел"],["WH-2026-09","Компас Львовича"],["WH-2026-10","Волна Крюкова"]
+];
+function fnv(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}return h>>>0;}
+const grid=document.getElementById('grid'), viz=document.getElementById('viz'), now=document.getElementById('now');
+let cur=null;
+function reset(){document.querySelectorAll('.b').forEach(b=>{b.classList.remove('on');b.querySelector('.ic').textContent='▶';});now.textContent='— выбери картину —';cur=null;}
+WORKS.forEach(([code,name],i)=>{
+  const b=document.createElement('button'); b.className='b';
+  b.innerHTML='<span class="ic">▶</span> '+name+' <span class="code">'+code+'</span>';
+  b.onclick=()=>{
+    if(cur===code){WarhookSound.stop();reset();return;}
+    document.querySelectorAll('.b').forEach(x=>{x.classList.remove('on');x.querySelector('.ic').textContent='▶';});
+    b.classList.add('on'); b.querySelector('.ic').textContent='⏸';
+    now.textContent='♪ '+name;
+    cur=code;
+    WarhookSound.play(fnv(code), viz, ()=>{ if(cur===code) reset(); });
+  };
+  grid.appendChild(b);
+});
+</script>
+</body>
+</html>
